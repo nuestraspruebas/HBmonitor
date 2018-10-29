@@ -99,7 +99,7 @@ def alias_string(_id, _dict):
 
 # Build the HBlink connections table
 def build_hblink_table(_config):
-    _stats_table = {'MASTERS': {}, 'PEERS': {}}
+    _stats_table = {'MASTERS': {}, 'PEERS': {}, 'OPENBRIDGES': {}}
     for _hbp, _hbp_data in _config.iteritems(): 
         if _hbp_data['ENABLED'] == True:
             if _hbp_data['MODE'] == 'MASTER':
@@ -109,20 +109,27 @@ def build_hblink_table(_config):
                 for _client in _hbp_data['PEERS']:
                     _stats_table['MASTERS'][_hbp]['PEERS'][int_id(_client)] = {}
                     _stats_table['MASTERS'][_hbp]['PEERS'][int_id(_client)]['CALLSIGN'] = _hbp_data['PEERS'][_client]['CALLSIGN']
+                    _stats_table['MASTERS'][_hbp]['PEERS'][int_id(_client)]['TX_FREQ'] = _hbp_data['PEERS'][_client]['TX_FREQ'][:3] + '.' + _hbp_data['PEERS'][_client]['TX_FREQ'][3:6]
+                    _stats_table['MASTERS'][_hbp]['PEERS'][int_id(_client)]['COLORCODE'] = _hbp_data['PEERS'][_client]['COLORCODE']
+                    _stats_table['MASTERS'][_hbp]['PEERS'][int_id(_client)]['SLOTS'] = _hbp_data['PEERS'][_client]['SLOTS'] if (0 < _hbp_data['PEERS'][_client]['SLOTS'] < 3) else 'Both'
+                    _stats_table['MASTERS'][_hbp]['PEERS'][int_id(_client)]['LOCATION'] = _hbp_data['PEERS'][_client]['LOCATION']
                     _stats_table['MASTERS'][_hbp]['PEERS'][int_id(_client)]['CONNECTION'] = _hbp_data['PEERS'][_client]['CONNECTION']
                     _stats_table['MASTERS'][_hbp]['PEERS'][int_id(_client)]['IP'] = _hbp_data['PEERS'][_client]['IP']
                     _stats_table['MASTERS'][_hbp]['PEERS'][int_id(_client)]['PINGS_RECEIVED'] = _hbp_data['PEERS'][_client]['PINGS_RECEIVED']
                     _stats_table['MASTERS'][_hbp]['PEERS'][int_id(_client)]['LAST_PING'] = _hbp_data['PEERS'][_client]['LAST_PING']
                     _stats_table['MASTERS'][_hbp]['PEERS'][int_id(_client)]['PORT'] = _hbp_data['PEERS'][_client]['PORT']
-            elif _hbp_data['MODE'] == 'CLIENT':
+            elif _hbp_data['MODE'] == 'PEER':
                 _stats_table['PEERS'][_hbp] = {}
                 _stats_table['PEERS'][_hbp]['CALLSIGN'] = _hbp_data['CALLSIGN']
                 _stats_table['PEERS'][_hbp]['RADIO_ID'] = int_id(_hbp_data['RADIO_ID'])
                 _stats_table['PEERS'][_hbp]['MASTER_IP'] = _hbp_data['MASTER_IP']
                 _stats_table['PEERS'][_hbp]['STATS'] = _hbp_data['STATS']
-                
+            elif _hbp_data['MODE'] == 'OPENBRIDGE':
+                _stats_table['OPENBRIDGES'][_hbp] = {}
+                _stats_table['OPENBRIDGES'][_hbp]['NETWORK_ID'] = int_id(_hbp_data['NETWORK_ID'])
+                _stats_table['OPENBRIDGES'][_hbp]['TARGET_IP'] = _hbp_data['TARGET_IP']
+                _stats_table['OPENBRIDGES'][_hbp]['TARGET_PORT'] = _hbp_data['TARGET_PORT']
     return(_stats_table)
- 
 
 #
 # CONFBRIDGE TABLE FUNCTIONS
@@ -169,7 +176,6 @@ def build_bridge_table(_bridges):
                 system['OFF'][i] = str(int_id(system['OFF'][i]))
                 
             _stats_table[_bridge][system['SYSTEM']]['TRIG_OFF'] = ', '.join(system['OFF'])
-    
     return _stats_table
 
 #
@@ -217,11 +223,11 @@ def process_message(_message):
         p = _message[1:].split(",")
         if p[0] == 'GROUP VOICE':
             if p[1] == 'END':
-                log_message = '{}: {} {}:   System: {}; IPSC Peer: {} - {}; Subscriber: {} - {}; TS: {}; TGID: {}; Duration: {}s'.format(_now, p[0], p[1], p[2], p[4], alias_string(int(p[4]), peer_ids), p[5], alias_string(int(p[5]), subscriber_ids), p[6], p[7], p[8])
+                log_message = '{}: {} {}:   System: {}; Source: {} - {}; TS: {}; TGID: {}; Origin: {} - {}; Time: {}s'.format(_now, p[0], p[1], p[2], p[4], alias_string(int(p[4]), peer_ids), p[6], p[7], p[5], alias_string(int(p[5]), subscriber_ids), p[8])
             elif p[1] == 'START':
-                log_message = '{}: {} {}: System: {}; IPSC Peer: {} - {}; Subscriber: {} - {}; TS: {}; TGID: {}'.format(_now, p[0], p[1], p[2], p[4], alias_string(int(p[4]), peer_ids), p[5], alias_string(int(p[5]), subscriber_ids), p[6], p[7])
+                log_message = '{}: {} {}: System: {}; Source: {} - {}; TS: {}; TGID: {}; Origin: {} - {}'.format(_now, p[0], p[1], p[2], p[4], alias_string(int(p[4]), peer_ids), p[6], p[7], p[5], alias_string(int(p[5]), subscriber_ids))
             elif p[1] == 'END WITHOUT MATCHING START':
-                log_message = '{}: {} {} on IPSC System {}: IPSC Peer: {} - {}; Subscriber: {} - {}; TS: {}; TGID: {}'.format(_now, p[0], p[1], p[2], p[4], alias_string(int(p[4]), peer_ids), p[5], alias_string(int(p[5]), subscriber_ids), p[6], p[7])
+                log_message = '{}: {} {} on HB System {}: Source: {} - {}; TS: {}; TGID: {}; Origin: {} - {}'.format(_now, p[0], p[1], p[2], p[4], alias_string(int(p[4]), peer_ids), p[6], p[7], p[5], alias_string(int(p[5]), subscriber_ids))
             else:
                 log_message = '{}: UNKNOWN GROUP VOICE LOG MESSAGE'.format(_now)
         else:
@@ -257,7 +263,7 @@ class report(NetstringReceiver):
 
 class reportClientFactory(ReconnectingClientFactory):
     def __init__(self):
-        pass
+        logging.info('reportClient object for connecting to HBlink.py created at: %s', self)
         
     def startedConnecting(self, connector):
         logging.info('Initiating Connection to Server.')
@@ -349,7 +355,7 @@ class web_server(Resource):
 
 
 if __name__ == '__main__':
-    logging.basicConfig(level=logging.INFO,handlers=[logging.FileHandler(PATH + 'logfile.log'),logging.StreamHandler()])
+    logging.basicConfig(level=logging.DEBUG,handlers=[logging.FileHandler(PATH + 'logfile.log'),logging.StreamHandler()])
 
     logging.info('web_tables.py starting up')
     
