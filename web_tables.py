@@ -67,7 +67,7 @@ OPCODE = {
 
 # Global Variables:
 CONFIG      = {}
-CTABLE      = {'MASTERS': {}, 'CLIENTS': {}}
+CTABLE      = {'MASTERS': {}, 'PEERS': {}}
 BRIDGES     = {}
 BTABLE      = {}
 BTABLE['BRIDGES'] = {}
@@ -99,27 +99,27 @@ def alias_string(_id, _dict):
 
 # Build the HBlink connections table
 def build_hblink_table(_config):
-    _stats_table = {'MASTERS': {}, 'CLIENTS': {}}
+    _stats_table = {'MASTERS': {}, 'PEERS': {}}
     for _hbp, _hbp_data in _config.iteritems(): 
         if _hbp_data['ENABLED'] == True:
             if _hbp_data['MODE'] == 'MASTER':
                 _stats_table['MASTERS'][_hbp] = {}
                 _stats_table['MASTERS'][_hbp]['REPEAT'] = _hbp_data['REPEAT']
-                _stats_table['MASTERS'][_hbp]['CLIENTS'] = {}
-                for _client in _hbp_data['CLIENTS']:
-                    _stats_table['MASTERS'][_hbp]['CLIENTS'][int_id(_client)] = {}
-                    _stats_table['MASTERS'][_hbp]['CLIENTS'][int_id(_client)]['CALLSIGN'] = _hbp_data['CLIENTS'][_client]['CALLSIGN']
-                    _stats_table['MASTERS'][_hbp]['CLIENTS'][int_id(_client)]['CONNECTION'] = _hbp_data['CLIENTS'][_client]['CONNECTION']
-                    _stats_table['MASTERS'][_hbp]['CLIENTS'][int_id(_client)]['IP'] = _hbp_data['CLIENTS'][_client]['IP']
-                    _stats_table['MASTERS'][_hbp]['CLIENTS'][int_id(_client)]['PINGS_RECEIVED'] = _hbp_data['CLIENTS'][_client]['PINGS_RECEIVED']
-                    _stats_table['MASTERS'][_hbp]['CLIENTS'][int_id(_client)]['LAST_PING'] = _hbp_data['CLIENTS'][_client]['LAST_PING']
-                    _stats_table['MASTERS'][_hbp]['CLIENTS'][int_id(_client)]['PORT'] = _hbp_data['CLIENTS'][_client]['PORT']
+                _stats_table['MASTERS'][_hbp]['PEERS'] = {}
+                for _client in _hbp_data['PEERS']:
+                    _stats_table['MASTERS'][_hbp]['PEERS'][int_id(_client)] = {}
+                    _stats_table['MASTERS'][_hbp]['PEERS'][int_id(_client)]['CALLSIGN'] = _hbp_data['PEERS'][_client]['CALLSIGN']
+                    _stats_table['MASTERS'][_hbp]['PEERS'][int_id(_client)]['CONNECTION'] = _hbp_data['PEERS'][_client]['CONNECTION']
+                    _stats_table['MASTERS'][_hbp]['PEERS'][int_id(_client)]['IP'] = _hbp_data['PEERS'][_client]['IP']
+                    _stats_table['MASTERS'][_hbp]['PEERS'][int_id(_client)]['PINGS_RECEIVED'] = _hbp_data['PEERS'][_client]['PINGS_RECEIVED']
+                    _stats_table['MASTERS'][_hbp]['PEERS'][int_id(_client)]['LAST_PING'] = _hbp_data['PEERS'][_client]['LAST_PING']
+                    _stats_table['MASTERS'][_hbp]['PEERS'][int_id(_client)]['PORT'] = _hbp_data['PEERS'][_client]['PORT']
             elif _hbp_data['MODE'] == 'CLIENT':
-                _stats_table['CLIENTS'][_hbp] = {}
-                _stats_table['CLIENTS'][_hbp]['CALLSIGN'] = _hbp_data['CALLSIGN']
-                _stats_table['CLIENTS'][_hbp]['RADIO_ID'] = int_id(_hbp_data['RADIO_ID'])
-                _stats_table['CLIENTS'][_hbp]['MASTER_IP'] = _hbp_data['MASTER_IP']
-                _stats_table['CLIENTS'][_hbp]['STATS'] = _hbp_data['STATS']
+                _stats_table['PEERS'][_hbp] = {}
+                _stats_table['PEERS'][_hbp]['CALLSIGN'] = _hbp_data['CALLSIGN']
+                _stats_table['PEERS'][_hbp]['RADIO_ID'] = int_id(_hbp_data['RADIO_ID'])
+                _stats_table['PEERS'][_hbp]['MASTER_IP'] = _hbp_data['MASTER_IP']
+                _stats_table['PEERS'][_hbp]['STATS'] = _hbp_data['STATS']
                 
     return(_stats_table)
  
