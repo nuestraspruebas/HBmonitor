@@ -16,3 +16,7 @@ LOCAL_PEER_FILE = 'local_peer_ids.csv'          # User provided (optional, leave
 FILE_RELOAD     = 7                             # Number of days before we reload DMR-MARC database files
 PEER_URL        = 'https://www.radioid.net/static/rptrs.csv'
 SUBSCRIBER_URL  = 'https://www.radioid.net/static/users.csv'
+
+# Settings for log files
+LOG_PATH        = '/var/log/link/'             # MUST END IN '/'
+LOG_NAME        = 'webtables.log'

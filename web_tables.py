@@ -355,7 +355,7 @@ class web_server(Resource):
 
 
 if __name__ == '__main__':
-    logging.basicConfig(level=logging.DEBUG,handlers=[logging.FileHandler(PATH + 'logfile.log'),logging.StreamHandler()])
+    logging.basicConfig(level=logging.INFO,filename = (LOG_PATH + LOG_NAME), filemode='a')
 
     logging.info('web_tables.py starting up')
     
