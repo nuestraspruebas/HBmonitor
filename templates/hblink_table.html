@@ -23,16 +23,17 @@
         <th>LinkTS</th>
         <th>Location</th>
         <th>Connection</th>
-        <th>Pings</br>Received</th>
+        <th>Pings Received</th>
         <th>IP</th>
         <th>Port</th>
     </tr>
-    
-    {% for _master in _table['MASTERS'] %}
-    
+
+    {% for _master in _table['MASTERS'] %}    
+
     <tr>
-        <td style="font-weight:bold" rowspan="{{ _table['MASTERS'][_master]|length * 2 }}"> {{ _master}} </td>
+        <td style="font-weight:bold" rowspan="{{ _table['MASTERS'][_master]['PEERS']|length }}"> {{ _master}} </td>
         {% for _client, _cdata in _table['MASTERS'][_master]['PEERS'].iteritems() %}
+        
         <td>{{ _client }}</td>
         <td>{{ _cdata['CALLSIGN'] }}</td>
         <td>{{ _cdata['TX_FREQ'] }}</td>
@@ -43,9 +44,10 @@
         <td>{{ _cdata['PINGS_RECEIVED'] }}</td>
         <td>{{ _cdata['IP'] }}</td>
         <td>{{ _cdata['PORT'] }}</td>
+        </tr>    
+        {% endfor %}
     </tr>
-    {% endfor %}
-    {% endfor %}
+{% endfor %}
 </table>
 
 <h4>Client Systems</h4>
