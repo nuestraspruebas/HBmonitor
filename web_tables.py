@@ -20,7 +20,7 @@
 
 from __future__ import print_function
 
-# Standard modules 
+# Standard modules
 import logging
 import sys
 
@@ -111,7 +111,13 @@ def build_hblink_table(_config):
                     _stats_table['MASTERS'][_hbp]['PEERS'][int_id(_client)]['CALLSIGN'] = _hbp_data['PEERS'][_client]['CALLSIGN']
                     _stats_table['MASTERS'][_hbp]['PEERS'][int_id(_client)]['TX_FREQ'] = _hbp_data['PEERS'][_client]['TX_FREQ'][:3] + '.' + _hbp_data['PEERS'][_client]['TX_FREQ'][3:6]
                     _stats_table['MASTERS'][_hbp]['PEERS'][int_id(_client)]['COLORCODE'] = _hbp_data['PEERS'][_client]['COLORCODE']
-                    _stats_table['MASTERS'][_hbp]['PEERS'][int_id(_client)]['SLOTS'] = _hbp_data['PEERS'][_client]['SLOTS'] if (0 < _hbp_data['PEERS'][_client]['SLOTS'] < 3) else 'Both'
+                    _slots = _hbp_data['PEERS'][_client]['SLOTS']
+                    if (_slots <= '2'):
+                        _stats_table['MASTERS'][_hbp]['PEERS'][int_id(_client)]['SLOTS'] = _slots
+                    elif (_slots == '3'):
+                        _stats_table['MASTERS'][_hbp]['PEERS'][int_id(_client)]['SLOTS'] = 'BOTH'
+                    else:
+                        _stats_table['MASTERS'][_hbp]['PEERS'][int_id(_client)]['SLOTS'] = 'DMO'
                     _stats_table['MASTERS'][_hbp]['PEERS'][int_id(_client)]['LOCATION'] = _hbp_data['PEERS'][_client]['LOCATION']
                     _stats_table['MASTERS'][_hbp]['PEERS'][int_id(_client)]['CONNECTION'] = _hbp_data['PEERS'][_client]['CONNECTION']
                     _stats_table['MASTERS'][_hbp]['PEERS'][int_id(_client)]['IP'] = _hbp_data['PEERS'][_client]['IP']
