@@ -8,8 +8,7 @@
         <col style="width: 10%" />
         <col style="width: 5%" />
         <col style="width: 5%" />
-        <col style="width: 10%" />
-        <col style="width: 5%" />
+        <col style="width: 15%" />
         <col style="width: 10%" />
         <col style="width: 10%" />
         <col style="width: 10%" />
@@ -22,7 +21,6 @@
         <th>ColorCode</th>
         <th>LinkTS</th>
         <th>Location</th>
-        <th>Connection</th>
         <th>Pings Received</th>
         <th>IP</th>
         <th>Port</th>
@@ -40,7 +38,6 @@
         <td>{{ _cdata['COLORCODE'] }}</td>
         <td>{{ _cdata['SLOTS'] }}</td>
         <td>{{ _cdata['LOCATION'] }}</td>
-        <td style={{ 'background-color:#00ff00' if _cdata['CONNECTION'] == 'YES' else ';background-color:#ff0000' }}>{{ _cdata['CONNECTION'] }}</td>
         <td>{{ _cdata['PINGS_RECEIVED'] }}</td>
         <td>{{ _cdata['IP'] }}</td>
         <td>{{ _cdata['PORT'] }}</td>
