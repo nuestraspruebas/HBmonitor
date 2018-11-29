@@ -97,6 +97,16 @@ def alias_string(_id, _dict):
     else:
         return alias
 
+def alias_short(_id, _dict):
+    alias = get_alias(_id, _dict, 'CALLSIGN', 'NAME')
+    if type(alias) == list:
+        for x,item in enumerate(alias):
+            if item == None:
+                alias.pop(x)
+        return ', '.join(alias)
+    else:
+        return str(alias)
+
 # Build the HBlink connections table
 def build_hblink_table(_config):
     _stats_table = {'MASTERS': {}, 'PEERS': {}, 'OPENBRIDGES': {}}
@@ -229,11 +239,11 @@ def process_message(_message):
         p = _message[1:].split(",")
         if p[0] == 'GROUP VOICE':
             if p[1] == 'END':
-                log_message = '{}: {} {}:   SYS: {:15.15s}; SRC: {:8.8s} - {:20.20s}; TS: {}; TGID: {:>5s}; SUB: {:8.8s} - {:25.25s}; Time: {}s'.format(_now, p[0], p[1], p[2], p[4], alias_string(int(p[4]), peer_ids), p[6], p[7], p[5], alias_string(int(p[5]), subscriber_ids), p[8])
+                log_message = '{}: {} {}:   SYS: {:15.15s}; SRC: {:8.8s} - {:20.20s}; TS: {}; TGID: {:>5s}; SUB: {:8.8s} - {:25.25s}; Time: {}s'.format(_now, p[0], p[1], p[2], p[4], alias_string(int(p[4]), peer_ids), p[6], p[7], p[5], alias_short(int(p[5]), subscriber_ids), p[8])
             elif p[1] == 'START':
-                log_message = '{}: {} {}: SYS: {:15.15s}; SRC: {:8.8s} - {:20.20s}; TS: {}; TGID: {:>5s}; SUB: {:8.8s} - {:25.25s}'.format(_now, p[0], p[1], p[2], p[4], alias_string(int(p[4]), peer_ids), p[6], p[7], p[5], alias_string(int(p[5]), subscriber_ids))
+                log_message = '{}: {} {}: SYS: {:15.15s}; SRC: {:8.8s} - {:20.20s}; TS: {}; TGID: {:>5s}; SUB: {:8.8s} - {:25.25s}'.format(_now, p[0], p[1], p[2], p[4], alias_string(int(p[4]), peer_ids), p[6], p[7], p[5], alias_short(int(p[5]), subscriber_ids))
             elif p[1] == 'END WITHOUT MATCHING START':
-                log_message = '{}: {} {} on SYSTEM {:15.15s}: SRC: {:8.8s} - {}:20.20s; TS: {}; TGID: {:>5s}; SUB: {:8.8s} - {:25.25s}'.format(_now, p[0], p[1], p[2], p[4], alias_string(int(p[4]), peer_ids), p[6], p[7], p[5], alias_string(int(p[5]), subscriber_ids))
+                log_message = '{}: {} {} on SYSTEM {:15.15s}: SRC: {:8.8s} - {}:20.20s; TS: {}; TGID: {:>5s}; SUB: {:8.8s} - {:25.25s}'.format(_now, p[0], p[1], p[2], p[4], alias_string(int(p[4]), peer_ids), p[6], p[7], p[5], alias_short(int(p[5]), subscriber_ids))
             else:
                 log_message = '{}: UNKNOWN GROUP VOICE LOG MESSAGE'.format(_now)
         else:
