@@ -67,7 +67,7 @@ OPCODE = {
 
 # Global Variables:
 CONFIG      = {}
-CTABLE      = {'MASTERS': {}, 'PEERS': {}}
+CTABLE      = {'MASTERS': {}, 'PEERS': {}, 'OPENBRIDGES': {}}
 BRIDGES     = {}
 BTABLE      = {}
 BTABLE['BRIDGES'] = {}

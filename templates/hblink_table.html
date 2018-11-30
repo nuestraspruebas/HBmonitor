@@ -3,45 +3,27 @@
 <table style="width:100%; font: 10pt arial, sans-serif">
     <colgroup>
         <col style="width: 15%" />
-        <col style="width: 10%" />
-        <col style="width: 10%" />
-        <col style="width: 10%" />
-        <col style="width: 5%" />
-        <col style="width: 5%" />
         <col style="width: 15%" />
         <col style="width: 10%" />
-        <col style="width: 10%" />
-        <col style="width: 10%" />
+        <col style="width: 5%" />
     </colgroup>
     <tr style="width:100%; font: 10pt arial, sans-serif; background-color:#666666; color:white">
         <th>HBP System</th>
-        <th>Client Radio ID</th>
-        <th>Callsign</th>
+        <th>ID/Callsign/Location<br>IP:Port/KeepAlives</th>
         <th>Frequency</th>
-        <th>ColorCode</th>
-        <th>LinkTS</th>
-        <th>Location</th>
-        <th>Pings Received</th>
-        <th>IP</th>
-        <th>Port</th>
+        <th>ColorCode<br>LinkedTS</th>
     </tr>
 
     {% for _master in _table['MASTERS'] %}    
 
     <tr>
-        <td style="font-weight:bold" rowspan="{{ _table['MASTERS'][_master]['PEERS']|length + 1 }}"> {{ _master}} </td>
+        <td style="font-weight:bold" rowspan="{{ _table['MASTERS'][_master]['PEERS']|(length + 1)*2 }}"> {{ _master}} </td>
     </tr>
     {% for _client, _cdata in _table['MASTERS'][_master]['PEERS'].iteritems() %}
     <tr>
-        <td>{{ _client }}</td>
-        <td>{{ _cdata['CALLSIGN'] }}</td>
-        <td>{{ _cdata['TX_FREQ'] }}</td>
-        <td>{{ _cdata['COLORCODE'] }}</td>
-        <td>{{ _cdata['SLOTS'] }}</td>
-        <td>{{ _cdata['LOCATION'] }}</td>
-        <td>{{ _cdata['PINGS_RECEIVED'] }}</td>
-        <td>{{ _cdata['IP'] }}</td>
-        <td>{{ _cdata['PORT'] }}</td>
+        <td rowspan="2">{{ _client }}, {{ _cdata['CALLSIGN'] }}, {{ _cdata['LOCATION'] }}<br><div style="font: 8pt arial, sans-serif">{{ _cdata['IP'] }}:{{ _cdata['PORT'] }} / {{ _cdata['PINGS_RECEIVED'] }}</div></td>
+        <td rowspan="2">TX: {{ _cdata['RX_FREQ'] }}<br>RX: {{ _cdata['TX_FREQ] }}</td>
+        <td rowspan="2">{{ _cdata['COLORCODE'] }}<br>{{ _cdata['SLOTS'] }}</td>
     </tr>    
     {% endfor %}
 {% endfor %}
