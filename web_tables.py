@@ -130,6 +130,7 @@ def build_hblink_table(_config):
                     _stats_table['MASTERS'][_hbp]['PEERS'][int_id(_client)] = {}
                     _stats_table['MASTERS'][_hbp]['PEERS'][int_id(_client)]['CALLSIGN'] = _hbp_data['PEERS'][_client]['CALLSIGN']
                     _stats_table['MASTERS'][_hbp]['PEERS'][int_id(_client)]['TX_FREQ'] = _hbp_data['PEERS'][_client]['TX_FREQ'][:3] + '.' + _hbp_data['PEERS'][_client]['TX_FREQ'][3:7]
+                    _stats_table['MASTERS'][_hbp]['PEERS'][int_id(_client)]['RX_FREQ'] = _hbp_data['PEERS'][_client]['RX_FREQ'][:3] + '.' + _hbp_data['PEERS'][_client]['RX_FREQ'][3:7]
                     _stats_table['MASTERS'][_hbp]['PEERS'][int_id(_client)]['COLORCODE'] = _hbp_data['PEERS'][_client]['COLORCODE']
                     _slots = _hbp_data['PEERS'][_client]['SLOTS']
                     if (_slots <= '2'):
