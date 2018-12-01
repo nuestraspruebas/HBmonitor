@@ -118,8 +118,7 @@ def alias_call(_id, _dict):
         return str(alias)
 
 # Build the HBlink connections table
-def build_hblink_table(_config):
-    _stats_table = {'MASTERS': {}, 'PEERS': {}, 'OPENBRIDGES': {}}
+def build_hblink_table(_config, _stats_table):
     for _hbp, _hbp_data in _config.iteritems(): 
         if _hbp_data['ENABLED'] == True:
             if _hbp_data['MODE'] == 'MASTER':
@@ -169,7 +168,47 @@ def build_hblink_table(_config):
                 _stats_table['OPENBRIDGES'][_hbp]['TARGET_IP'] = _hbp_data['TARGET_IP']
                 _stats_table['OPENBRIDGES'][_hbp]['TARGET_PORT'] = _hbp_data['TARGET_PORT']
     return(_stats_table)
+    
+def update_hblink_table(_config, _stats_table):
+    
+    pprint(_config)
+    print
+    pprint(_stats_table)
+    for _hbp, _hbp_data in _config.iteritems():
+        _stats_peers = _stats_table['MASTERS'][_hbp]['PEERS']
+        
+        # if this peer is the master
+        if _stats_table[_ipsc]['MASTER'] == False:
+            _peer = _config[_ipsc]['MASTER']['RADIO_ID']
+            _config_peer_data = _config[_ipsc]['MASTER']
+            
+            _stats_peers[_peer]['RADIO_ID'] = int_id(_peer)
+            update_peer(_stats_peers, _peer, _config_peer_data)
 
+        # for all of the peers that are not the master... update or add
+        for _peer, _config_peer_data in _config[_ipsc]['PEERS'].iteritems():
+            if _peer != _config[_ipsc]['LOCAL']['RADIO_ID']:
+                _stats_peers = _stats_table[_ipsc]['PEERS']
+            
+                # update the peer if we already have it
+                if _peer in _stats_table[_ipsc]['PEERS']:
+                    update_peer(_stats_peers, _peer, _config_peer_data)
+            
+                # addit if we don't have it
+                if _peer not in _stats_table[_ipsc]['PEERS']:
+                    add_peer(_stats_peers, _peer, _config_peer_data, 'peer')
+
+        # for peers that need to be removed, never the master. This is complicated
+        peers_to_delete = []
+        
+        # find any peers missing in the config update    
+        for _peer, _stats_peer_data in _stats_table[_ipsc]['PEERS'].iteritems():
+            if _peer not in _config[_ipsc]['PEERS'] and _peer != _config[_ipsc]['MASTER']['RADIO_ID']:
+                peers_to_delete.append(_peer)
+        
+        # delte anything identified from the right part of the stats table
+        delete_peers(peers_to_delete, _stats_table[_ipsc]['PEERS'])
+        
 #
 # CONFBRIDGE TABLE FUNCTIONS
 #
@@ -270,7 +309,10 @@ def process_message(_message):
         logging.debug('got CONFIG_SND opcode')
         CONFIG = load_dictionary(_message)
         CONFIG_RX = strftime('%Y-%m-%d %H:%M:%S', localtime(time()))
-        CTABLE = build_hblink_table(CONFIG)
+        if CTABLE:
+            update_hblink_table(CONFIG, CTABLE)
+        else:
+            build_hblink_table(CONFIG, CTABLE)
     
     elif opcode == OPCODE['BRIDGE_SND']:
         logging.debug('got BRIDGE_SND opcode')
