@@ -13,7 +13,11 @@
         <th>ID/Callsign/Location<br>IP:Port/KeepAlives</th>
         <th>Frequency</th>
         <th>ColorCode<br>LinkedTS</th>
-        <th>Realtime Status (to come)</th>
+        <th>Slot</th>
+        <th>Call<br>Type</th>
+        <th>Source<br>Subscriber</th>
+        <th>Source<br>Peer</th>
+        <th>Destination</th>
     </tr>
 
     {% for _master in _table['MASTERS'] %}    
@@ -28,9 +32,16 @@
         <td rowspan="2">{{ _cdata['COLORCODE'] }}<br>{{ _cdata['SLOTS'] }}</td>
 
         <td>TS1</td>
-        
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
         <tr>
         <td>TS2</td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
         </tr>
 
     </tr>    
