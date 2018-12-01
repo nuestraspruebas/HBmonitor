@@ -53,6 +53,8 @@ from dmr_utils.utils import int_id, get_alias, try_download, mk_full_id_dict
 from config import *
 #from ipsc_const import *
 
+from pprint import pprint
+
 # Opcodes for reporting protocol to HBlink
 OPCODE = {
     'CONFIG_REQ': '\x00',
@@ -222,6 +224,15 @@ def build_stats():
             dashboard_server.broadcast(table)
         build_time = now
 
+def table_update(p):
+    system = p[2]
+    timeSlot = p[6]
+    callType = p[0]
+    sourceSub = p[5]
+    sourcePeer = p[4]
+    destination = p[7]
+    pprint(CTABLE)
+
 #
 # PROCESS IN COMING MESSAGES AND TAKE THE CORRECT ACTION DEPENING ON THE OPCODE
 #
@@ -248,6 +259,7 @@ def process_message(_message):
     elif opcode == OPCODE['BRDG_EVENT']:
         logging.info('BRIDGE EVENT: {}'.format(repr(_message[1:])))
         p = _message[1:].split(",")
+        table_update(p)
         if p[0] == 'GROUP VOICE':
             if p[1] == 'END':
                 log_message = '{}: {} {}:   SYS: {:12.12s} SRC: {:8.8s}; {:15.15s} TS: {} TGID: {:>5s} SUB: {:8.8s}; {:30.30s} Time: {}s'.format(_now, p[0], p[1], p[2], p[4], alias_call(int(p[4]), peer_ids), p[6], p[7], p[5], alias_short(int(p[5]), subscriber_ids), p[8])
