@@ -237,26 +237,27 @@ def build_stats():
 def table_update(p):
     action = p[1]
     system = p[2]
-    timeSlot = p[6]
+    timeSlot = int(p[6])
     callType = p[0]
-    sourceSub = p[5]
-    sourcePeer = p[4]
-    destination = p[7]
-    
-    if action == 'START':
-        CTABLE['MASTERS'][system]['PEERS'][sourcePeer][timeSlot]['TS'] = True
-        CTABLE['MASTERS'][system]['PEERS'][sourcePeer][timeSlot]['TYPE'] = callType
-        CTABLE['MASTERS'][system]['PEERS'][sourcePeer][timeSlot]['SUB'] = sourceSub
-        CTABLE['MASTERS'][system]['PEERS'][sourcePeer][timeSlot]['SRC'] = sourcePeer
-        CTABLE['MASTERS'][system]['PEERS'][sourcePeer][timeSlot]['DEST'] = destination
-    if action == 'END':
-        CTABLE['MASTERS'][system]['PEERS'][sourcePeer][timeSlot]['TS'] = False
-        CTABLE['MASTERS'][system]['PEERS'][sourcePeer][timeSlot]['TYPE'] = ''
-        CTABLE['MASTERS'][system]['PEERS'][sourcePeer][timeSlot]['SUB'] = ''
-        CTABLE['MASTERS'][system]['PEERS'][sourcePeer][timeSlot]['SRC'] = ''
-        CTABLE['MASTERS'][system]['PEERS'][sourcePeer][timeSlot]['DEST'] = ''       
-    
-    build_Stats()
+    sourceSub = int(p[5])
+    sourcePeer = int(p[4])
+    destination = int(p[7])
+
+    if system in CTABLE['MASTERS']:
+        if action == 'START':
+            CTABLE['MASTERS'][system]['PEERS'][sourcePeer][timeSlot]['TS'] = True
+            CTABLE['MASTERS'][system]['PEERS'][sourcePeer][timeSlot]['TYPE'] = callType
+            CTABLE['MASTERS'][system]['PEERS'][sourcePeer][timeSlot]['SUB'] = sourceSub
+            CTABLE['MASTERS'][system]['PEERS'][sourcePeer][timeSlot]['SRC'] = sourcePeer
+            CTABLE['MASTERS'][system]['PEERS'][sourcePeer][timeSlot]['DEST'] = destination
+        if action == 'END':
+            CTABLE['MASTERS'][system]['PEERS'][sourcePeer][timeSlot]['TS'] = False
+            CTABLE['MASTERS'][system]['PEERS'][sourcePeer][timeSlot]['TYPE'] = ''
+            CTABLE['MASTERS'][system]['PEERS'][sourcePeer][timeSlot]['SUB'] = ''
+            CTABLE['MASTERS'][system]['PEERS'][sourcePeer][timeSlot]['SRC'] = ''
+            CTABLE['MASTERS'][system]['PEERS'][sourcePeer][timeSlot]['DEST'] = ''       
+
+        build_stats()
 #
 # PROCESS IN COMING MESSAGES AND TAKE THE CORRECT ACTION DEPENING ON THE OPCODE
 #
