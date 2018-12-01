@@ -53,8 +53,6 @@ from dmr_utils.utils import int_id, get_alias, try_download, mk_full_id_dict
 from config import *
 #from ipsc_const import *
 
-from pprint import pprint
-
 # Opcodes for reporting protocol to HBlink
 OPCODE = {
     'CONFIG_REQ': '\x00',
@@ -147,6 +145,18 @@ def build_hblink_table(_config):
                     _stats_table['MASTERS'][_hbp]['PEERS'][int_id(_client)]['PINGS_RECEIVED'] = _hbp_data['PEERS'][_client]['PINGS_RECEIVED']
                     _stats_table['MASTERS'][_hbp]['PEERS'][int_id(_client)]['LAST_PING'] = _hbp_data['PEERS'][_client]['LAST_PING']
                     _stats_table['MASTERS'][_hbp]['PEERS'][int_id(_client)]['PORT'] = _hbp_data['PEERS'][_client]['PORT']
+                    _stats_table['MASTERS'][_hbp]['PEERS'][int_id(_client)][1]= {}
+                    _stats_table['MASTERS'][_hbp]['PEERS'][int_id(_client)][1]['TS'] = ''
+                    _stats_table['MASTERS'][_hbp]['PEERS'][int_id(_client)][1]['TYPE'] = ''
+                    _stats_table['MASTERS'][_hbp]['PEERS'][int_id(_client)][1]['SUB'] = ''
+                    _stats_table['MASTERS'][_hbp]['PEERS'][int_id(_client)][1]['SRC'] = ''
+                    _stats_table['MASTERS'][_hbp]['PEERS'][int_id(_client)][1]['DEST'] = ''
+                    _stats_table['MASTERS'][_hbp]['PEERS'][int_id(_client)][2] = {}
+                    _stats_table['MASTERS'][_hbp]['PEERS'][int_id(_client)][2]['TS'] = ''
+                    _stats_table['MASTERS'][_hbp]['PEERS'][int_id(_client)][2]['SUB'] = ''
+                    _stats_table['MASTERS'][_hbp]['PEERS'][int_id(_client)][2]['TYPE'] = ''
+                    _stats_table['MASTERS'][_hbp]['PEERS'][int_id(_client)][2]['SRC'] = ''
+                    _stats_table['MASTERS'][_hbp]['PEERS'][int_id(_client)][2]['DEST'] = ''
             elif _hbp_data['MODE'] == 'PEER':
                 _stats_table['PEERS'][_hbp] = {}
                 _stats_table['PEERS'][_hbp]['CALLSIGN'] = _hbp_data['CALLSIGN']
@@ -225,14 +235,28 @@ def build_stats():
         build_time = now
 
 def table_update(p):
+    action = p[1]
     system = p[2]
     timeSlot = p[6]
     callType = p[0]
     sourceSub = p[5]
     sourcePeer = p[4]
     destination = p[7]
-    pprint(CTABLE)
-
+    
+    if action == 'START':
+        CTABLE['MASTERS'][system]['PEERS'][sourcePeer][timeSlot]['TS'] = True
+        CTABLE['MASTERS'][system]['PEERS'][sourcePeer][timeSlot]['TYPE'] = callType
+        CTABLE['MASTERS'][system]['PEERS'][sourcePeer][timeSlot]['SUB'] = sourceSub
+        CTABLE['MASTERS'][system]['PEERS'][sourcePeer][timeSlot]['SRC'] = sourcePeer
+        CTABLE['MASTERS'][system]['PEERS'][sourcePeer][timeSlot]['DEST'] = destination
+    if action == 'END':
+        CTABLE['MASTERS'][system]['PEERS'][sourcePeer][timeSlot]['TS'] = False
+        CTABLE['MASTERS'][system]['PEERS'][sourcePeer][timeSlot]['TYPE'] = ''
+        CTABLE['MASTERS'][system]['PEERS'][sourcePeer][timeSlot]['SUB'] = ''
+        CTABLE['MASTERS'][system]['PEERS'][sourcePeer][timeSlot]['SRC'] = ''
+        CTABLE['MASTERS'][system]['PEERS'][sourcePeer][timeSlot]['DEST'] = ''       
+    
+    build_Stats()
 #
 # PROCESS IN COMING MESSAGES AND TAKE THE CORRECT ACTION DEPENING ON THE OPCODE
 #
