@@ -106,7 +106,7 @@ def alias_short(_id, _dict):
         return ', '.join(alias)
     else:
         return str(alias)
-        
+
 def alias_call(_id, _dict):
     alias = get_alias(_id, _dict, 'CALLSIGN')
     if type(alias) == list:
@@ -119,7 +119,7 @@ def alias_call(_id, _dict):
 
 # Build the HBlink connections table
 def build_hblink_table(_config, _stats_table):
-    for _hbp, _hbp_data in _config.iteritems(): 
+    for _hbp, _hbp_data in _config.iteritems():
         if _hbp_data['ENABLED'] == True:
             if _hbp_data['MODE'] == 'MASTER':
                 _stats_table['MASTERS'][_hbp] = {}
@@ -168,20 +168,18 @@ def build_hblink_table(_config, _stats_table):
                 _stats_table['OPENBRIDGES'][_hbp]['TARGET_IP'] = _hbp_data['TARGET_IP']
                 _stats_table['OPENBRIDGES'][_hbp]['TARGET_PORT'] = _hbp_data['TARGET_PORT']
     return(_stats_table)
-    
+
 def update_hblink_table(_config, _stats_table):
-    
-    pprint(_config)
-    print
-    pprint(_stats_table)
+    pass
+    '''
     for _hbp, _hbp_data in _config.iteritems():
         _stats_peers = _stats_table['MASTERS'][_hbp]['PEERS']
-        
+
         # if this peer is the master
         if _stats_table[_ipsc]['MASTER'] == False:
             _peer = _config[_ipsc]['MASTER']['RADIO_ID']
             _config_peer_data = _config[_ipsc]['MASTER']
-            
+
             _stats_peers[_peer]['RADIO_ID'] = int_id(_peer)
             update_peer(_stats_peers, _peer, _config_peer_data)
 
@@ -189,26 +187,26 @@ def update_hblink_table(_config, _stats_table):
         for _peer, _config_peer_data in _config[_ipsc]['PEERS'].iteritems():
             if _peer != _config[_ipsc]['LOCAL']['RADIO_ID']:
                 _stats_peers = _stats_table[_ipsc]['PEERS']
-            
+
                 # update the peer if we already have it
                 if _peer in _stats_table[_ipsc]['PEERS']:
                     update_peer(_stats_peers, _peer, _config_peer_data)
-            
+
                 # addit if we don't have it
                 if _peer not in _stats_table[_ipsc]['PEERS']:
                     add_peer(_stats_peers, _peer, _config_peer_data, 'peer')
 
         # for peers that need to be removed, never the master. This is complicated
         peers_to_delete = []
-        
-        # find any peers missing in the config update    
+
+        # find any peers missing in the config update
         for _peer, _stats_peer_data in _stats_table[_ipsc]['PEERS'].iteritems():
             if _peer not in _config[_ipsc]['PEERS'] and _peer != _config[_ipsc]['MASTER']['RADIO_ID']:
                 peers_to_delete.append(_peer)
-        
+
         # delte anything identified from the right part of the stats table
         delete_peers(peers_to_delete, _stats_table[_ipsc]['PEERS'])
-        
+    '''
 #
 # CONFBRIDGE TABLE FUNCTIONS
 #
@@ -216,7 +214,7 @@ def build_bridge_table(_bridges):
     _stats_table = {}
     _now = time()
     _cnow = strftime('%Y-%m-%d %H:%M:%S', localtime(_now))
-    
+
     for _bridge, _bridge_data in _bridges.iteritems():
         _stats_table[_bridge] = {}
 
@@ -224,7 +222,7 @@ def build_bridge_table(_bridges):
             _stats_table[_bridge][system['SYSTEM']] = {}
             _stats_table[_bridge][system['SYSTEM']]['TS'] = system['TS']
             _stats_table[_bridge][system['SYSTEM']]['TGID'] = int_id(system['TGID'])
-            
+
             if system['TO_TYPE'] == 'ON' or system['TO_TYPE'] == 'OFF':
                 if system['TIMER'] - _now > 0:
                     _stats_table[_bridge][system['SYSTEM']]['EXP_TIME'] = int(system['TIMER'] - _now)
@@ -237,22 +235,22 @@ def build_bridge_table(_bridges):
             else:
                 _stats_table[_bridge][system['SYSTEM']]['EXP_TIME'] = 'N/A'
                 _stats_table[_bridge][system['SYSTEM']]['TO_ACTION'] = 'None'
-            
+
             if system['ACTIVE'] == True:
                 _stats_table[_bridge][system['SYSTEM']]['ACTIVE'] = 'Connected'
                 _stats_table[_bridge][system['SYSTEM']]['COLOR'] = GREEN
             elif system['ACTIVE'] == False:
                 _stats_table[_bridge][system['SYSTEM']]['ACTIVE'] = 'Disconnected'
                 _stats_table[_bridge][system['SYSTEM']]['COLOR'] = RED
-            
+
             for i in range(len(system['ON'])):
                 system['ON'][i] = str(int_id(system['ON'][i]))
-                    
+
             _stats_table[_bridge][system['SYSTEM']]['TRIG_ON'] = ', '.join(system['ON'])
-            
+
             for i in range(len(system['OFF'])):
                 system['OFF'][i] = str(int_id(system['OFF'][i]))
-                
+
             _stats_table[_bridge][system['SYSTEM']]['TRIG_OFF'] = ', '.join(system['OFF'])
     return _stats_table
 
@@ -294,7 +292,7 @@ def table_update(p):
             CTABLE['MASTERS'][system]['PEERS'][sourcePeer][timeSlot]['TYPE'] = ''
             CTABLE['MASTERS'][system]['PEERS'][sourcePeer][timeSlot]['SUB'] = ''
             CTABLE['MASTERS'][system]['PEERS'][sourcePeer][timeSlot]['SRC'] = ''
-            CTABLE['MASTERS'][system]['PEERS'][sourcePeer][timeSlot]['DEST'] = ''       
+            CTABLE['MASTERS'][system]['PEERS'][sourcePeer][timeSlot]['DEST'] = ''
 
         build_stats()
 #
@@ -304,25 +302,25 @@ def process_message(_message):
     global CTABLE, CONFIG, BRIDGES, CONFIG_RX, BRIDGES_RX
     opcode = _message[:1]
     _now = strftime('%Y-%m-%d %H:%M:%S %Z', localtime(time()))
-    
+
     if opcode == OPCODE['CONFIG_SND']:
         logging.debug('got CONFIG_SND opcode')
         CONFIG = load_dictionary(_message)
         CONFIG_RX = strftime('%Y-%m-%d %H:%M:%S', localtime(time()))
-        if CTABLE:
+        if False: #CTABLE:
             update_hblink_table(CONFIG, CTABLE)
         else:
             build_hblink_table(CONFIG, CTABLE)
-    
+
     elif opcode == OPCODE['BRIDGE_SND']:
         logging.debug('got BRIDGE_SND opcode')
         BRIDGES = load_dictionary(_message)
         BRIDGES_RX = strftime('%Y-%m-%d %H:%M:%S', localtime(time()))
         BTABLE['BRIDGES'] = build_bridge_table(BRIDGES)
-        
+
     elif opcode == OPCODE['LINK_EVENT']:
         logging.info('LINK_EVENT Received: {}'.format(repr(_message[1:])))
-        
+
     elif opcode == OPCODE['BRDG_EVENT']:
         logging.info('BRIDGE EVENT: {}'.format(repr(_message[1:])))
         p = _message[1:].split(",")
@@ -338,7 +336,7 @@ def process_message(_message):
                 log_message = '{}: UNKNOWN GROUP VOICE LOG MESSAGE'.format(_now)
         else:
             log_message = '{}: UNKNOWN LOG MESSAGE'.format(_now)
-            
+
         dashboard_server.broadcast('l' + log_message)
         LOGBUF.append(log_message)
     else:
@@ -362,7 +360,7 @@ class report(NetstringReceiver):
 
     def connectionLost(self, reason):
         pass
-        
+
     def stringReceived(self, data):
         process_message(data)
 
@@ -370,7 +368,7 @@ class report(NetstringReceiver):
 class reportClientFactory(ReconnectingClientFactory):
     def __init__(self):
         logging.info('reportClient object for connecting to HBlink.py created at: %s', self)
-        
+
     def startedConnecting(self, connector):
         logging.info('Initiating Connection to Server.')
         if 'dashboard_server' in locals() or 'dashboard_server' in globals():
@@ -396,7 +394,7 @@ class reportClientFactory(ReconnectingClientFactory):
 # WEBSOCKET COMMUNICATION WITH THE DASHBOARD CLIENT
 #
 class dashboard(WebSocketServerProtocol):
-        
+
     def onConnect(self, request):
         logging.info('Client connecting: %s', request.peer)
 
@@ -444,7 +442,7 @@ class dashboardFactory(WebSocketServerFactory):
         for c in self.clients:
             c.sendMessage(msg.encode('utf8'))
             logging.debug('message sent to %s', c.peer)
-            
+
 #
 # STATIC WEBSERVER
 #
@@ -464,37 +462,37 @@ if __name__ == '__main__':
     logging.basicConfig(level=logging.INFO,filename = (LOG_PATH + LOG_NAME), filemode='a')
 
     logging.info('web_tables.py starting up')
-    
+
     # Download alias files
     result = try_download(PATH, 'peer_ids.csv', PEER_URL, (FILE_RELOAD * 86400))
     logging.info(result)
-   
+
     result = try_download(PATH, 'subscriber_ids.csv', SUBSCRIBER_URL, (FILE_RELOAD * 86400))
     logging.info(result)
-    
+
     # Make Alias Dictionaries
     peer_ids = mk_full_id_dict(PATH, PEER_FILE, 'peer')
     if peer_ids:
         logging.info('ID ALIAS MAPPER: peer_ids dictionary is available')
-        
+
     subscriber_ids = mk_full_id_dict(PATH, SUBSCRIBER_FILE, 'subscriber')
     if subscriber_ids:
         logging.info('ID ALIAS MAPPER: subscriber_ids dictionary is available')
-    
+
     talkgroup_ids = mk_full_id_dict(PATH, TGID_FILE, 'tgid')
     if talkgroup_ids:
         logging.info('ID ALIAS MAPPER: talkgroup_ids dictionary is available')
-    
+
     local_subscriber_ids = mk_full_id_dict(PATH, LOCAL_SUB_FILE, 'subscriber')
     if local_subscriber_ids:
         logging.info('ID ALIAS MAPPER: local_subscriber_ids added to subscriber_ids dictionary')
         subscriber_ids.update(local_subscriber_ids)
-        
+
     local_peer_ids = mk_full_id_dict(PATH, LOCAL_PEER_FILE, 'peer')
     if local_peer_ids:
         logging.info('ID ALIAS MAPPER: local_peer_ids added peer_ids dictionary')
         peer_ids.update(local_peer_ids)
-    
+
     # Jinja2 Stuff
     env = Environment(
         loader=PackageLoader('web_tables', 'templates'),
@@ -503,18 +501,18 @@ if __name__ == '__main__':
 
     dtemplate = env.get_template('hblink_table.html')
     btemplate = env.get_template('bridge_table.html')
-    
+
     # Create Static Website index file
     index_html = get_template(PATH + 'index_template.html')
     index_html = index_html.replace('<<<system_name>>>', REPORT_NAME)
-    
+
     # Start update loop
     update_stats = task.LoopingCall(build_stats)
     update_stats.start(FREQUENCY)
-    
+
     # Connect to HBlink
     reactor.connectTCP(HBLINK_IP, HBLINK_PORT, reportClientFactory())
-    
+
     # Create websocket server to push content to clients
     dashboard_server = dashboardFactory('ws://*:9000')
     dashboard_server.protocol = dashboard
