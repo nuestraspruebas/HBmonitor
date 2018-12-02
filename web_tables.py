@@ -42,6 +42,7 @@ from cPickle import loads
 from binascii import b2a_hex as h
 from os.path import getmtime
 from collections import deque
+from time import time
 
 # Web templating environment
 from jinja2 import Environment, PackageLoader, select_autoescape
@@ -198,9 +199,9 @@ def update_hblink_table(_config, _stats_table):
     for _hbp in _config:
         add_list = []
         if _config[_hbp]['MODE'] == 'MASTER':
-            for _peer in _config[_hbp]['PEERS']:            
+            for _peer in _config[_hbp]['PEERS']:         
                 if int_id(_peer) not in _stats_table['MASTERS'][_hbp]['PEERS']:
-                    logger.info('config peer not in CTABLE and needs added %s', int_id(_peer))
+                    logger.info('Adding peer to CTABLE that has registerred: %s', int_id(_peer))
                     add_hb_peer(_config[_hbp]['PEERS'][_peer], _stats_table['MASTERS'][_hbp]['PEERS'], _peer)
                     
     
@@ -211,9 +212,17 @@ def update_hblink_table(_config, _stats_table):
             for _peer in _stats_table['MASTERS'][_hbp]['PEERS']:
                 if hex_str_4(_peer) not in _config[_hbp]['PEERS']:
                     remove_list.append(_peer)
+
             for _peer in remove_list:
-                logger.info('stat peer not in CONFIG and needs deleted %s', _peer)
+                logger.info('Deleting stats peer not in hblink config: %s', _peer)
                 del (_stats_table['MASTERS'][_hbp]['PEERS'][_peer])
+                
+    # Update the pings        
+    for _hbp in _stats_table['MASTERS']:
+        if _config[_hbp]['MODE'] == 'MASTER':
+            for _peer in _stats_table['MASTERS'][_hbp]['PEERS']:
+                if hex_str_4(_peer) in _config[_hbp]['PEERS']:
+                    _stats_table['MASTERS'][_hbp]['PEERS'][_peer]['PINGS_RECEIVED'] = _config[_hbp]['PEERS'][hex_str_4(_peer)]['PINGS_RECEIVED'] 
     
     build_stats()
 
@@ -281,7 +290,7 @@ def build_stats():
             dashboard_server.broadcast(table)
         build_time = now
 
-def table_update(p):
+def rts_update(p):
     action = p[1]
     system = p[2]
     timeSlot = int(p[6])
@@ -339,7 +348,7 @@ def process_message(_message):
     elif opcode == OPCODE['BRDG_EVENT']:
         logging.info('BRIDGE EVENT: {}'.format(repr(_message[1:])))
         p = _message[1:].split(",")
-        table_update(p)
+        rts_update(p)
         if p[0] == 'GROUP VOICE':
             if p[1] == 'END':
                 log_message = '{}: {} {}:   SYS: {:12.12s} SRC: {:8.8s}; {:15.15s} TS: {} TGID: {:>5s} SUB: {:8.8s}; {:30.30s} Time: {}s'.format(_now, p[0], p[1], p[2], p[4], alias_call(int(p[4]), peer_ids), p[6], p[7], p[5], alias_short(int(p[5]), subscriber_ids), p[8])
