@@ -47,7 +47,7 @@ from collections import deque
 from jinja2 import Environment, PackageLoader, select_autoescape
 
 # Utilities from K0USY Group sister project
-from dmr_utils.utils import int_id, get_alias, try_download, mk_full_id_dict
+from dmr_utils.utils import int_id, get_alias, try_download, mk_full_id_dict, hex_str_4
 
 # Configuration variables and IPSC constants
 from config import *
@@ -117,51 +117,74 @@ def alias_call(_id, _dict):
     else:
         return str(alias)
 
+def add_hb_peer(_peer_conf, _ctable_loc, _peer):
+    _ctable_loc[int_id(_peer)] = {}
+    _ctable_peer = _ctable_loc[int_id(_peer)]
+    
+    # if the Frequency is 000.xxx assume it's not an RF peer, otherwise format the text fields
+    if _peer_conf['TX_FREQ'][:3] == '000' or _peer_conf['RX_FREQ'][:3] == '000':
+        _ctable_peer['TX_FREQ'] = 'N/A'
+        _ctable_peer['RX_FREQ'] = ''
+    else:
+        _ctable_peer['TX_FREQ'] = 'TX: ' + _peer_conf['TX_FREQ'][:3] + '.' + _peer_conf['TX_FREQ'][3:7]
+        _ctable_peer['RX_FREQ'] = 'RX: ' + _peer_conf['RX_FREQ'][:3] + '.' + _peer_conf['RX_FREQ'][3:7]
+    
+    # timeslots are kinda complicated too. 0 = none, 1 or 2 mean that one slot, 3 is both, and anythign else it considered DMO
+    if (_peer_conf['SLOTS'] == '0'):
+        _ctable_peer['SLOTS'] = 'NONE'
+    if (_peer_conf['SLOTS'] <= '2'):
+        _ctable_peer['SLOTS'] = _peer_conf['SLOTS']
+    elif (_peer_conf['SLOTS'] == '3'):
+        _ctable_peer['SLOTS'] = 'BOTH'
+    else:
+        _ctable_peer['SLOTS'] = 'DMO'
+    
+    # Simple translation items
+    _ctable_peer['COLORCODE'] = _peer_conf['COLORCODE']
+    _ctable_peer['CALLSIGN'] = _peer_conf['CALLSIGN']
+    _ctable_peer['LOCATION'] = _peer_conf['LOCATION']
+    _ctable_peer['CONNECTION'] = _peer_conf['CONNECTION']
+    _ctable_peer['IP'] = _peer_conf['IP']
+    _ctable_peer['PINGS_RECEIVED'] = _peer_conf['PINGS_RECEIVED']
+    _ctable_peer['LAST_PING'] = _peer_conf['LAST_PING']
+    _ctable_peer['PORT'] = _peer_conf['PORT']
+    
+    # SLOT 1&2 - for real-time montior: make the structure for later use
+    for ts in range(1,3):
+        _ctable_peer[ts]= {}
+        _ctable_peer[ts]['COLOR'] = ''
+        _ctable_peer[ts]['TS'] = ''
+        _ctable_peer[ts]['TYPE'] = ''
+        _ctable_peer[ts]['SUB'] = ''
+        _ctable_peer[ts]['SRC'] = ''
+        _ctable_peer[ts]['DEST'] = ''
+    
+
 # Build the HBlink connections table
 def build_hblink_table(_config, _stats_table):
     for _hbp, _hbp_data in _config.iteritems():
         if _hbp_data['ENABLED'] == True:
+            
+            # Process Master Systems
             if _hbp_data['MODE'] == 'MASTER':
                 _stats_table['MASTERS'][_hbp] = {}
-                _stats_table['MASTERS'][_hbp]['REPEAT'] = _hbp_data['REPEAT']
+                if _hbp_data['REPEAT']:
+                    _stats_table['MASTERS'][_hbp]['REPEAT'] = "repeat"
+                else:
+                    _stats_table['MASTERS'][_hbp]['REPEAT'] = "isolate"
                 _stats_table['MASTERS'][_hbp]['PEERS'] = {}
-                for _client in _hbp_data['PEERS']:
-                    _stats_table['MASTERS'][_hbp]['PEERS'][int_id(_client)] = {}
-                    _stats_table['MASTERS'][_hbp]['PEERS'][int_id(_client)]['CALLSIGN'] = _hbp_data['PEERS'][_client]['CALLSIGN']
-                    _stats_table['MASTERS'][_hbp]['PEERS'][int_id(_client)]['TX_FREQ'] = _hbp_data['PEERS'][_client]['TX_FREQ'][:3] + '.' + _hbp_data['PEERS'][_client]['TX_FREQ'][3:7]
-                    _stats_table['MASTERS'][_hbp]['PEERS'][int_id(_client)]['RX_FREQ'] = _hbp_data['PEERS'][_client]['RX_FREQ'][:3] + '.' + _hbp_data['PEERS'][_client]['RX_FREQ'][3:7]
-                    _stats_table['MASTERS'][_hbp]['PEERS'][int_id(_client)]['COLORCODE'] = _hbp_data['PEERS'][_client]['COLORCODE']
-                    _slots = _hbp_data['PEERS'][_client]['SLOTS']
-                    if (_slots <= '2'):
-                        _stats_table['MASTERS'][_hbp]['PEERS'][int_id(_client)]['SLOTS'] = _slots
-                    elif (_slots == '3'):
-                        _stats_table['MASTERS'][_hbp]['PEERS'][int_id(_client)]['SLOTS'] = 'BOTH'
-                    else:
-                        _stats_table['MASTERS'][_hbp]['PEERS'][int_id(_client)]['SLOTS'] = 'DMO'
-                    _stats_table['MASTERS'][_hbp]['PEERS'][int_id(_client)]['LOCATION'] = _hbp_data['PEERS'][_client]['LOCATION']
-                    _stats_table['MASTERS'][_hbp]['PEERS'][int_id(_client)]['CONNECTION'] = _hbp_data['PEERS'][_client]['CONNECTION']
-                    _stats_table['MASTERS'][_hbp]['PEERS'][int_id(_client)]['IP'] = _hbp_data['PEERS'][_client]['IP']
-                    _stats_table['MASTERS'][_hbp]['PEERS'][int_id(_client)]['PINGS_RECEIVED'] = _hbp_data['PEERS'][_client]['PINGS_RECEIVED']
-                    _stats_table['MASTERS'][_hbp]['PEERS'][int_id(_client)]['LAST_PING'] = _hbp_data['PEERS'][_client]['LAST_PING']
-                    _stats_table['MASTERS'][_hbp]['PEERS'][int_id(_client)]['PORT'] = _hbp_data['PEERS'][_client]['PORT']
-                    _stats_table['MASTERS'][_hbp]['PEERS'][int_id(_client)][1]= {}
-                    _stats_table['MASTERS'][_hbp]['PEERS'][int_id(_client)][1]['TS'] = ''
-                    _stats_table['MASTERS'][_hbp]['PEERS'][int_id(_client)][1]['TYPE'] = ''
-                    _stats_table['MASTERS'][_hbp]['PEERS'][int_id(_client)][1]['SUB'] = ''
-                    _stats_table['MASTERS'][_hbp]['PEERS'][int_id(_client)][1]['SRC'] = ''
-                    _stats_table['MASTERS'][_hbp]['PEERS'][int_id(_client)][1]['DEST'] = ''
-                    _stats_table['MASTERS'][_hbp]['PEERS'][int_id(_client)][2] = {}
-                    _stats_table['MASTERS'][_hbp]['PEERS'][int_id(_client)][2]['TS'] = ''
-                    _stats_table['MASTERS'][_hbp]['PEERS'][int_id(_client)][2]['SUB'] = ''
-                    _stats_table['MASTERS'][_hbp]['PEERS'][int_id(_client)][2]['TYPE'] = ''
-                    _stats_table['MASTERS'][_hbp]['PEERS'][int_id(_client)][2]['SRC'] = ''
-                    _stats_table['MASTERS'][_hbp]['PEERS'][int_id(_client)][2]['DEST'] = ''
+                for _peer in _hbp_data['PEERS']:
+                    add_hb_peer(_hbp_data['PEERS'][_peer], _stats_table['MASTERS'][_hbp]['PEERS'], _peer)
+            
+            # Proccess Peer Systems
             elif _hbp_data['MODE'] == 'PEER':
                 _stats_table['PEERS'][_hbp] = {}
                 _stats_table['PEERS'][_hbp]['CALLSIGN'] = _hbp_data['CALLSIGN']
                 _stats_table['PEERS'][_hbp]['RADIO_ID'] = int_id(_hbp_data['RADIO_ID'])
                 _stats_table['PEERS'][_hbp]['MASTER_IP'] = _hbp_data['MASTER_IP']
                 _stats_table['PEERS'][_hbp]['STATS'] = _hbp_data['STATS']
+            
+            # Process OpenBridge systems
             elif _hbp_data['MODE'] == 'OPENBRIDGE':
                 _stats_table['OPENBRIDGES'][_hbp] = {}
                 _stats_table['OPENBRIDGES'][_hbp]['NETWORK_ID'] = int_id(_hbp_data['NETWORK_ID'])
@@ -170,43 +193,30 @@ def build_hblink_table(_config, _stats_table):
     return(_stats_table)
 
 def update_hblink_table(_config, _stats_table):
-    pass
-    '''
-    for _hbp, _hbp_data in _config.iteritems():
-        _stats_peers = _stats_table['MASTERS'][_hbp]['PEERS']
+    logger.info('running update table')
+    # Is there a system in HBlink's config monitor doesn't know about?
+    for _hbp in _config:
+        add_list = []
+        if _config[_hbp]['MODE'] == 'MASTER':
+            for _peer in _config[_hbp]['PEERS']:            
+                if int_id(_peer) not in _stats_table['MASTERS'][_hbp]['PEERS']:
+                    logger.info('config peer not in CTABLE and needs added %s', int_id(_peer))
+                    add_hb_peer(_config[_hbp]['PEERS'][_peer], _stats_table['MASTERS'][_hbp]['PEERS'], _peer)
+                    
+    
+    # Is there a system in monitor that's been removed from HBlink's config?        
+    for _hbp in _stats_table['MASTERS']:
+        remove_list = []
+        if _config[_hbp]['MODE'] == 'MASTER':
+            for _peer in _stats_table['MASTERS'][_hbp]['PEERS']:
+                if hex_str_4(_peer) not in _config[_hbp]['PEERS']:
+                    remove_list.append(_peer)
+            for _peer in remove_list:
+                logger.info('stat peer not in CONFIG and needs deleted %s', _peer)
+                del (_stats_table['MASTERS'][_hbp]['PEERS'][_peer])
+    
+    build_stats()
 
-        # if this peer is the master
-        if _stats_table[_ipsc]['MASTER'] == False:
-            _peer = _config[_ipsc]['MASTER']['RADIO_ID']
-            _config_peer_data = _config[_ipsc]['MASTER']
-
-            _stats_peers[_peer]['RADIO_ID'] = int_id(_peer)
-            update_peer(_stats_peers, _peer, _config_peer_data)
-
-        # for all of the peers that are not the master... update or add
-        for _peer, _config_peer_data in _config[_ipsc]['PEERS'].iteritems():
-            if _peer != _config[_ipsc]['LOCAL']['RADIO_ID']:
-                _stats_peers = _stats_table[_ipsc]['PEERS']
-
-                # update the peer if we already have it
-                if _peer in _stats_table[_ipsc]['PEERS']:
-                    update_peer(_stats_peers, _peer, _config_peer_data)
-
-                # addit if we don't have it
-                if _peer not in _stats_table[_ipsc]['PEERS']:
-                    add_peer(_stats_peers, _peer, _config_peer_data, 'peer')
-
-        # for peers that need to be removed, never the master. This is complicated
-        peers_to_delete = []
-
-        # find any peers missing in the config update
-        for _peer, _stats_peer_data in _stats_table[_ipsc]['PEERS'].iteritems():
-            if _peer not in _config[_ipsc]['PEERS'] and _peer != _config[_ipsc]['MASTER']['RADIO_ID']:
-                peers_to_delete.append(_peer)
-
-        # delte anything identified from the right part of the stats table
-        delete_peers(peers_to_delete, _stats_table[_ipsc]['PEERS'])
-    '''
 #
 # CONFBRIDGE TABLE FUNCTIONS
 #
@@ -281,20 +291,25 @@ def table_update(p):
     destination = int(p[7])
 
     if system in CTABLE['MASTERS']:
-        if action == 'START':
-            CTABLE['MASTERS'][system]['PEERS'][sourcePeer][timeSlot]['TS'] = True
-            CTABLE['MASTERS'][system]['PEERS'][sourcePeer][timeSlot]['TYPE'] = callType
-            CTABLE['MASTERS'][system]['PEERS'][sourcePeer][timeSlot]['SUB'] = sourceSub
-            CTABLE['MASTERS'][system]['PEERS'][sourcePeer][timeSlot]['SRC'] = sourcePeer
-            CTABLE['MASTERS'][system]['PEERS'][sourcePeer][timeSlot]['DEST'] = destination
-        if action == 'END':
-            CTABLE['MASTERS'][system]['PEERS'][sourcePeer][timeSlot]['TS'] = False
-            CTABLE['MASTERS'][system]['PEERS'][sourcePeer][timeSlot]['TYPE'] = ''
-            CTABLE['MASTERS'][system]['PEERS'][sourcePeer][timeSlot]['SUB'] = ''
-            CTABLE['MASTERS'][system]['PEERS'][sourcePeer][timeSlot]['SRC'] = ''
-            CTABLE['MASTERS'][system]['PEERS'][sourcePeer][timeSlot]['DEST'] = ''
+        if sourcePeer in CTABLE['MASTERS'][system]['PEERS']:
+            if action == 'START':
+                CTABLE['MASTERS'][system]['PEERS'][sourcePeer][timeSlot]['TS'] = True
+                CTABLE['MASTERS'][system]['PEERS'][sourcePeer][timeSlot]['COLOR'] = '00ff00'
+                CTABLE['MASTERS'][system]['PEERS'][sourcePeer][timeSlot]['TYPE'] = callType
+                CTABLE['MASTERS'][system]['PEERS'][sourcePeer][timeSlot]['SUB'] = sourceSub
+                CTABLE['MASTERS'][system]['PEERS'][sourcePeer][timeSlot]['SRC'] = sourcePeer
+                CTABLE['MASTERS'][system]['PEERS'][sourcePeer][timeSlot]['DEST'] = destination
+            if action == 'END':
+                CTABLE['MASTERS'][system]['PEERS'][sourcePeer][timeSlot]['TS'] = False
+                CTABLE['MASTERS'][system]['PEERS'][sourcePeer][timeSlot]['COLOR'] = 'ffffff'
+                CTABLE['MASTERS'][system]['PEERS'][sourcePeer][timeSlot]['TYPE'] = ''
+                CTABLE['MASTERS'][system]['PEERS'][sourcePeer][timeSlot]['SUB'] = ''
+                CTABLE['MASTERS'][system]['PEERS'][sourcePeer][timeSlot]['SRC'] = ''
+                CTABLE['MASTERS'][system]['PEERS'][sourcePeer][timeSlot]['DEST'] = ''
 
-        build_stats()
+            build_stats()
+        else:
+            logger.warning('tried to update a tranmission for a peer not yet listed')
 #
 # PROCESS IN COMING MESSAGES AND TAKE THE CORRECT ACTION DEPENING ON THE OPCODE
 #
@@ -307,7 +322,7 @@ def process_message(_message):
         logging.debug('got CONFIG_SND opcode')
         CONFIG = load_dictionary(_message)
         CONFIG_RX = strftime('%Y-%m-%d %H:%M:%S', localtime(time()))
-        if False: #CTABLE:
+        if CTABLE['MASTERS']:
             update_hblink_table(CONFIG, CTABLE)
         else:
             build_hblink_table(CONFIG, CTABLE)
@@ -459,7 +474,15 @@ class web_server(Resource):
 
 
 if __name__ == '__main__':
-    logging.basicConfig(level=logging.INFO,filename = (LOG_PATH + LOG_NAME), filemode='a')
+    logging.basicConfig(
+        level=logging.INFO,
+        filename = (LOG_PATH + LOG_NAME),
+        filemode='a'
+    )
+    console = logging.StreamHandler()
+    console.setLevel(logging.INFO)
+    logging.getLogger('').addHandler(console)
+    logger = logging.getLogger(__name__)
 
     logging.info('web_tables.py starting up')
 
