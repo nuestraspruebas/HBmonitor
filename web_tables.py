@@ -201,8 +201,12 @@ def build_hblink_table(_config, _stats_table):
             elif _hbp_data['MODE'] == 'PEER':
                 _stats_table['PEERS'][_hbp] = {}
                 _stats_table['PEERS'][_hbp]['CALLSIGN'] = _hbp_data['CALLSIGN']
+                _stats_table['PEERS'][_hbp]['LOCATION'] = _hbp_data['LOCATION']
                 _stats_table['PEERS'][_hbp]['RADIO_ID'] = int_id(_hbp_data['RADIO_ID'])
                 _stats_table['PEERS'][_hbp]['MASTER_IP'] = _hbp_data['MASTER_IP']
+                _stats_table['PEERS'][_hbp]['MASTER_PORT'] = _hbp_data['MASTER_PORT']
+                _stats_table['PEERS'][_hbp]['CONNECTION'] = 'YES' #_hbp_data['CONNECTION']
+                _stats_table['PEERS'][_hbp]['CONNECTED'] = 'now' #since(_hbp_data['CONNECTED'])
                 _stats_table['PEERS'][_hbp]['STATS'] = _hbp_data['STATS']
             
             # Process OpenBridge systems
@@ -323,15 +327,6 @@ def rts_update(p):
     timeSlot = int(p[7])
     destination = int(p[8])
     
-    '''
-    if trx == 'RX':
-        color = '00ff00'
-    elif trx == 'TX':
-        color = 'ff0000'
-    else:
-        color = '0000ff'
-    '''
-    
     if system in CTABLE['MASTERS']:
         for peer in CTABLE['MASTERS'][system]['PEERS']:
             if sourcePeer == peer:
@@ -358,9 +353,17 @@ def rts_update(p):
                 CTABLE['MASTERS'][system]['PEERS'][peer][timeSlot]['SRC'] = ''
                 CTABLE['MASTERS'][system]['PEERS'][peer][timeSlot]['DEST'] = ''
 
+        else:
+            logger.warning('tried to update a tranmission for a peer not yet listed: system %s, action %s, callType %s, tx/rx %s, streamid %s, sourcePeer %s, sourceSub %s, timeSlot %s, destination %s ', system, action, callType, trx, streamId, sourcePeer, sourceSub, timeSlot, destination)
+
+        if system in CTABLE['OPENBRIDGES']:
+            pass
+            
+        if system in CTABLE['PEERS']:
+            pass
+
         build_stats()
-    else:
-        logger.warning('tried to update a tranmission for a peer not yet listed')
+
 #
 # PROCESS IN COMING MESSAGES AND TAKE THE CORRECT ACTION DEPENING ON THE OPCODE
 #
