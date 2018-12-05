@@ -76,6 +76,7 @@ BRIDGES_RX  = ''
 CONFIG_RX   = ''
 LOGBUF      = deque(100*[''], 100)
 RED         = '#ff0000'
+BLACK       = '#000000'
 GREEN       = '#00ff00'
 BLUE        = '#0000ff'
 ORANGE      = '#ff8000'
@@ -172,6 +173,7 @@ def add_hb_peer(_peer_conf, _ctable_loc, _peer):
     for ts in range(1,3):
         _ctable_peer[ts]= {}
         _ctable_peer[ts]['COLOR'] = ''
+        _ctable_peer[ts]['BGCOLOR'] = ''
         _ctable_peer[ts]['TS'] = ''
         _ctable_peer[ts]['TYPE'] = ''
         _ctable_peer[ts]['SUB'] = ''
@@ -276,9 +278,11 @@ def build_bridge_table(_bridges):
             if system['ACTIVE'] == True:
                 _stats_table[_bridge][system['SYSTEM']]['ACTIVE'] = 'Connected'
                 _stats_table[_bridge][system['SYSTEM']]['COLOR'] = GREEN
+                _stats_table[_bridge][system['SYSTEM']]['BGCOLOR'] = BLACK
             elif system['ACTIVE'] == False:
                 _stats_table[_bridge][system['SYSTEM']]['ACTIVE'] = 'Disconnected'
                 _stats_table[_bridge][system['SYSTEM']]['COLOR'] = RED
+                _stats_table[_bridge][system['SYSTEM']]['BGCOLOR'] = WHITE
 
             for i in range(len(system['ON'])):
                 system['ON'][i] = str(int_id(system['ON'][i]))
@@ -309,34 +313,54 @@ def build_stats():
         build_time = now
 
 def rts_update(p):
-    action = p[1]
-    system = p[2]
-    timeSlot = int(p[6])
     callType = p[0]
-    sourceSub = int(p[5])
-    sourcePeer = int(p[4])
-    destination = int(p[7])
-
+    action = p[1]
+    trx = p[2]
+    system = p[3]
+    streamId = p[4]
+    sourcePeer = int(p[5])
+    sourceSub = int(p[6])
+    timeSlot = int(p[7])
+    destination = int(p[8])
+    
+    '''
+    if trx == 'RX':
+        color = '00ff00'
+    elif trx == 'TX':
+        color = 'ff0000'
+    else:
+        color = '0000ff'
+    '''
+    
     if system in CTABLE['MASTERS']:
-        if sourcePeer in CTABLE['MASTERS'][system]['PEERS']:
+        for peer in CTABLE['MASTERS'][system]['PEERS']:
+            if sourcePeer == peer:
+                color = '00ff00'
+                bgcolor = '000000'
+            else:
+                color = 'ff0000'
+                bgcolor = 'ffffff'
+            #color, bgcolor = '00ff00', '000000' if sourcePeer == peer else 'ff0000', '000000'
             if action == 'START':
-                CTABLE['MASTERS'][system]['PEERS'][sourcePeer][timeSlot]['TS'] = True
-                CTABLE['MASTERS'][system]['PEERS'][sourcePeer][timeSlot]['COLOR'] = '00ff00'
-                CTABLE['MASTERS'][system]['PEERS'][sourcePeer][timeSlot]['TYPE'] = callType
-                CTABLE['MASTERS'][system]['PEERS'][sourcePeer][timeSlot]['SUB'] = sourceSub
-                CTABLE['MASTERS'][system]['PEERS'][sourcePeer][timeSlot]['SRC'] = sourcePeer
-                CTABLE['MASTERS'][system]['PEERS'][sourcePeer][timeSlot]['DEST'] = destination
+                CTABLE['MASTERS'][system]['PEERS'][peer][timeSlot]['TS'] = True
+                CTABLE['MASTERS'][system]['PEERS'][peer][timeSlot]['COLOR'] = color
+                CTABLE['MASTERS'][system]['PEERS'][peer][timeSlot]['BGCOLOR'] = bgcolor
+                CTABLE['MASTERS'][system]['PEERS'][peer][timeSlot]['TYPE'] = callType
+                CTABLE['MASTERS'][system]['PEERS'][peer][timeSlot]['SUB'] = sourceSub
+                CTABLE['MASTERS'][system]['PEERS'][peer][timeSlot]['SRC'] = peer
+                CTABLE['MASTERS'][system]['PEERS'][peer][timeSlot]['DEST'] = destination
             if action == 'END':
-                CTABLE['MASTERS'][system]['PEERS'][sourcePeer][timeSlot]['TS'] = False
-                CTABLE['MASTERS'][system]['PEERS'][sourcePeer][timeSlot]['COLOR'] = 'ffffff'
-                CTABLE['MASTERS'][system]['PEERS'][sourcePeer][timeSlot]['TYPE'] = ''
-                CTABLE['MASTERS'][system]['PEERS'][sourcePeer][timeSlot]['SUB'] = ''
-                CTABLE['MASTERS'][system]['PEERS'][sourcePeer][timeSlot]['SRC'] = ''
-                CTABLE['MASTERS'][system]['PEERS'][sourcePeer][timeSlot]['DEST'] = ''
+                CTABLE['MASTERS'][system]['PEERS'][peer][timeSlot]['TS'] = False
+                CTABLE['MASTERS'][system]['PEERS'][peer][timeSlot]['COLOR'] = 'ffffff'
+                CTABLE['MASTERS'][system]['PEERS'][peer][timeSlot]['BGCOLOR'] = '000000'
+                CTABLE['MASTERS'][system]['PEERS'][peer][timeSlot]['TYPE'] = ''
+                CTABLE['MASTERS'][system]['PEERS'][peer][timeSlot]['SUB'] = ''
+                CTABLE['MASTERS'][system]['PEERS'][peer][timeSlot]['SRC'] = ''
+                CTABLE['MASTERS'][system]['PEERS'][peer][timeSlot]['DEST'] = ''
 
-            build_stats()
-        else:
-            logger.warning('tried to update a tranmission for a peer not yet listed')
+        build_stats()
+    else:
+        logger.warning('tried to update a tranmission for a peer not yet listed')
 #
 # PROCESS IN COMING MESSAGES AND TAKE THE CORRECT ACTION DEPENING ON THE OPCODE
 #
@@ -367,23 +391,24 @@ def process_message(_message):
         logging.info('BRIDGE EVENT: {}'.format(repr(_message[1:])))
         p = _message[1:].split(",")
         rts_update(p)
-        if p[0] == 'GROUP VOICE':
+        if p[0] == 'GROUP VOICE' and p[2] != 'TX':
             if p[1] == 'END':
-                log_message = '{}: {} {}:   SYS: {:12.12s} SRC: {:8.8s}; {:15.15s} TS: {} TGID: {:>5s} SUB: {:8.8s}; {:30.30s} Time: {}s'.format(_now, p[0], p[1], p[2], p[4], alias_call(int(p[4]), peer_ids), p[6], p[7], p[5], alias_short(int(p[5]), subscriber_ids), p[8])
+                log_message = '{}: {} {}:   SYS: {:12.12s} SRC: {:8.8s}; {:15.15s} TS: {} TGID: {:>5s} SUB: {:8.8s}; {:30.30s} Time: {}s'.format(_now, p[0], p[1], p[3], p[5], alias_call(int(p[5]), peer_ids), p[7], p[8], p[6], alias_short(int(p[6]), subscriber_ids), p[9])
             elif p[1] == 'START':
-                log_message = '{}: {} {}: SYS: {:12.12s} SRC: {:8.8s}; {:15.15s} TS: {} TGID: {:>5s} SUB: {:8.8s}; {:30.30s}'.format(_now, p[0], p[1], p[2], p[4], alias_call(int(p[4]), peer_ids), p[6], p[7], p[5], alias_short(int(p[5]), subscriber_ids))
+                log_message = '{}: {} {}: SYS: {:12.12s} SRC: {:8.8s}; {:15.15s} TS: {} TGID: {:>5s} SUB: {:8.8s}; {:30.30s}'.format(_now, p[0], p[1], p[3], p[5], alias_call(int(p[5]), peer_ids), p[7], p[8], p[6], alias_short(int(p[6]), subscriber_ids))
             elif p[1] == 'END WITHOUT MATCHING START':
-                log_message = '{}: {} {} on SYSTEM {:12.12s}: SRC: {:8.8s}; {}:15.15s TS: {} TGID: {:>5s} SUB: {:8.8s}; {:30.30s}'.format(_now, p[0], p[1], p[2], p[4], alias_call(int(p[4]), peer_ids), p[6], p[7], p[5], alias_short(int(p[5]), subscriber_ids))
+                log_message = '{}: {} {} on SYSTEM {:12.12s}: SRC: {:8.8s}; {}:15.15s TS: {} TGID: {:>5s} SUB: {:8.8s}; {:30.30s}'.format(_now, p[0], p[1], p[3], p[5], alias_call(int(p[5]), peer_ids), p[7], p[8], p[6], alias_short(int(p[6]), subscriber_ids))
             else:
                 log_message = '{}: UNKNOWN GROUP VOICE LOG MESSAGE'.format(_now)
-        else:
-            log_message = '{}: UNKNOWN LOG MESSAGE'.format(_now)
 
-        dashboard_server.broadcast('l' + log_message)
-        LOGBUF.append(log_message)
+            dashboard_server.broadcast('l' + log_message)
+            LOGBUF.append(log_message)
+            
+        else:
+            logging.debug('{}: UNKNOWN LOG MESSAGE'.format(_now))
+ 
     else:
         logging.debug('got unknown opcode: {}, message: {}'.format(repr(opcode), repr(_message[1:])))
-
 
 def load_dictionary(_message):
     data = _message[1:]
