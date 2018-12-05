@@ -117,6 +117,24 @@ def alias_call(_id, _dict):
         return ', '.join(alias)
     else:
         return str(alias)
+        
+# Return friendly elpasted time from time in seconds.
+def since(_time):
+    now = int(time())
+    _time = now - int(_time)
+    seconds = _time % 60
+    minutes = (_time/60) % 60
+    hours = (_time/60/60) % 24
+    days = (_time/60/60/24) 
+    if days:
+        return '{}d {}h'.format(days, hours)
+    elif hours:
+        return '{}h {}m'.format(hours, minutes)
+    elif minutes:
+        return '{}m {}s'.format(minutes, seconds)
+    else:
+        return '{}s'.format(seconds)
+
 
 def add_hb_peer(_peer_conf, _ctable_loc, _peer):
     _ctable_loc[int_id(_peer)] = {}
@@ -145,10 +163,10 @@ def add_hb_peer(_peer_conf, _ctable_loc, _peer):
     _ctable_peer['CALLSIGN'] = _peer_conf['CALLSIGN']
     _ctable_peer['LOCATION'] = _peer_conf['LOCATION']
     _ctable_peer['CONNECTION'] = _peer_conf['CONNECTION']
+    _ctable_peer['CONNECTED'] = since(_peer_conf['CONNECTED'])
     _ctable_peer['IP'] = _peer_conf['IP']
-    _ctable_peer['PINGS_RECEIVED'] = _peer_conf['PINGS_RECEIVED']
-    _ctable_peer['LAST_PING'] = _peer_conf['LAST_PING']
     _ctable_peer['PORT'] = _peer_conf['PORT']
+    #_ctable_peer['LAST_PING'] = _peer_conf['LAST_PING']
     
     # SLOT 1&2 - for real-time montior: make the structure for later use
     for ts in range(1,3):
@@ -217,12 +235,12 @@ def update_hblink_table(_config, _stats_table):
                 logger.info('Deleting stats peer not in hblink config: %s', _peer)
                 del (_stats_table['MASTERS'][_hbp]['PEERS'][_peer])
                 
-    # Update the pings        
+    # Update connection time        
     for _hbp in _stats_table['MASTERS']:
         if _config[_hbp]['MODE'] == 'MASTER':
             for _peer in _stats_table['MASTERS'][_hbp]['PEERS']:
                 if hex_str_4(_peer) in _config[_hbp]['PEERS']:
-                    _stats_table['MASTERS'][_hbp]['PEERS'][_peer]['PINGS_RECEIVED'] = _config[_hbp]['PEERS'][hex_str_4(_peer)]['PINGS_RECEIVED'] 
+                    _stats_table['MASTERS'][_hbp]['PEERS'][_peer]['CONNECTED'] = since(_config[_hbp]['PEERS'][hex_str_4(_peer)]['CONNECTED'])
     
     build_stats()
 
@@ -494,6 +512,7 @@ if __name__ == '__main__':
     logger = logging.getLogger(__name__)
 
     logging.info('web_tables.py starting up')
+    logger.info('\n\nCopyright (c) 2017, 2018\n\tThe Founding Members of the K0USY Group. All rights reserved.\n')
 
     # Download alias files
     result = try_download(PATH, 'peer_ids.csv', PEER_URL, (FILE_RELOAD * 86400))

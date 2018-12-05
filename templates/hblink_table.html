@@ -14,7 +14,7 @@
     </colgroup>
     <tr style="width:100%; font: 10pt arial, sans-serif; background-color:#666666; color:white">
         <th>HBP System</th>
-        <th>ID/Callsign/Location<br>IP:Port/KeepAlives</th>
+        <th>ID/Callsign/Location<br>IP:Port/Time Connected</th>
         <th>Frequency</th>
         <th>ColorCode<br>LinkedTS</th>
         <th>Slot</th>
@@ -31,7 +31,7 @@
     </tr>
     {% for _client, _cdata in _table['MASTERS'][_master]['PEERS'].iteritems() %}
     <tr>
-        <td rowspan="2">{{ _client }}, {{ _cdata['CALLSIGN'] }}, {{ _cdata['LOCATION'] }}<br><div style="font: 8pt arial, sans-serif">{{ _cdata['IP'] }}:{{ _cdata['PORT'] }} / {{ _cdata['PINGS_RECEIVED'] }}</div></td>
+        <td rowspan="2">{{ _client }}, {{ _cdata['CALLSIGN'] }}, {{ _cdata['LOCATION'] }}<br><div style="font: 8pt arial, sans-serif">{{ _cdata['IP'] }}:{{ _cdata['PORT'] }} / {{ _cdata['CONNECTED'] }}</div></td>
         <td rowspan="2">{{ _cdata['RX_FREQ'] }}<br>{{ _cdata['TX_FREQ'] }}</td>
         <td rowspan="2">{{ _cdata['COLORCODE'] }}<br>{{ _cdata['SLOTS'] }}</td>
 
