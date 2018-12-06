@@ -199,21 +199,22 @@ def build_hblink_table(_config, _stats_table):
             
             # Proccess Peer Systems
             elif _hbp_data['MODE'] == 'PEER':
+                pprint(_hbp_data)
                 _stats_table['PEERS'][_hbp] = {}
                 _stats_table['PEERS'][_hbp]['CALLSIGN'] = _hbp_data['CALLSIGN']
                 _stats_table['PEERS'][_hbp]['LOCATION'] = _hbp_data['LOCATION']
                 _stats_table['PEERS'][_hbp]['RADIO_ID'] = int_id(_hbp_data['RADIO_ID'])
                 _stats_table['PEERS'][_hbp]['MASTER_IP'] = _hbp_data['MASTER_IP']
                 _stats_table['PEERS'][_hbp]['MASTER_PORT'] = _hbp_data['MASTER_PORT']
-                _stats_table['PEERS'][_hbp]['CONNECTION'] = 'yes' #_hbp_data['CONNECTION']
-                _stats_table['PEERS'][_hbp]['CONNECTED'] = time() #since(_hbp_data['CONNECTED'])
                 _stats_table['PEERS'][_hbp]['STATS'] = _hbp_data['STATS']
+                _stats_table['PEERS'][_hbp]['STATS']['CONNECTION'] = _hbp_data['STATS']['CONNECTION']
+                _stats_table['PEERS'][_hbp]['STATS']['CONNECTED'] = since(_hbp_data['STATS']['CONNECTED'])
                 if _hbp_data['SLOTS'] == 0:
-                    _stats_table['SLOTS'][_hbp]['SLOTS'] = 'NONE'
+                    _stats_table['PEERS'][_hbp]['SLOTS'] = 'NONE'
                 elif _hbp_data['SLOTS']  <= '2':
-                    _stats_table['SLOTS'][_hbp]['SLOTS'] = _hbp_data['SLOTS']
+                    _stats_table['PEERS'][_hbp]['SLOTS'] = _hbp_data['SLOTS']
                 elif _hbp_data['SLOTS']  == '3':
-                    _stats_table['SLOTS'][_hbp]['SLOTS'] = 'BOTH'
+                    _stats_table['PEERS'][_hbp]['SLOTS'] = 'BOTH'
                 else:
                     _stats_table['SLOTS'][_hbp]['SLOTS'] = 'DMO'
                 
