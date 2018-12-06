@@ -205,8 +205,8 @@ def build_hblink_table(_config, _stats_table):
                 _stats_table['PEERS'][_hbp]['RADIO_ID'] = int_id(_hbp_data['RADIO_ID'])
                 _stats_table['PEERS'][_hbp]['MASTER_IP'] = _hbp_data['MASTER_IP']
                 _stats_table['PEERS'][_hbp]['MASTER_PORT'] = _hbp_data['MASTER_PORT']
-                _stats_table['PEERS'][_hbp]['CONNECTION'] = _hbp_data['CONNECTION']
-                _stats_table['PEERS'][_hbp]['CONNECTED'] = since(_hbp_data['CONNECTED'])
+                _stats_table['PEERS'][_hbp]['CONNECTION'] = 'yes' #_hbp_data['CONNECTION']
+                _stats_table['PEERS'][_hbp]['CONNECTED'] = time() #since(_hbp_data['CONNECTED'])
                 _stats_table['PEERS'][_hbp]['STATS'] = _hbp_data['STATS']
                 if _hbp_data['SLOTS'] == 0:
                     _stats_table['SLOTS'][_hbp]['SLOTS'] = 'NONE'
