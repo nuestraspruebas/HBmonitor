@@ -152,7 +152,7 @@ def add_hb_peer(_peer_conf, _ctable_loc, _peer):
     # timeslots are kinda complicated too. 0 = none, 1 or 2 mean that one slot, 3 is both, and anythign else it considered DMO
     if (_peer_conf['SLOTS'] == '0'):
         _ctable_peer['SLOTS'] = 'NONE'
-    if (_peer_conf['SLOTS'] <= '2'):
+    elif (_peer_conf['SLOTS'] <= '2'):
         _ctable_peer['SLOTS'] = _peer_conf['SLOTS']
     elif (_peer_conf['SLOTS'] == '3'):
         _ctable_peer['SLOTS'] = 'BOTH'
@@ -205,9 +205,18 @@ def build_hblink_table(_config, _stats_table):
                 _stats_table['PEERS'][_hbp]['RADIO_ID'] = int_id(_hbp_data['RADIO_ID'])
                 _stats_table['PEERS'][_hbp]['MASTER_IP'] = _hbp_data['MASTER_IP']
                 _stats_table['PEERS'][_hbp]['MASTER_PORT'] = _hbp_data['MASTER_PORT']
-                _stats_table['PEERS'][_hbp]['CONNECTION'] = 'YES' #_hbp_data['CONNECTION']
-                _stats_table['PEERS'][_hbp]['CONNECTED'] = 'now' #since(_hbp_data['CONNECTED'])
+                _stats_table['PEERS'][_hbp]['CONNECTION'] = _hbp_data['CONNECTION']
+                _stats_table['PEERS'][_hbp]['CONNECTED'] = since(_hbp_data['CONNECTED'])
                 _stats_table['PEERS'][_hbp]['STATS'] = _hbp_data['STATS']
+                if _hbp_data['SLOTS'] == 0:
+                    _stats_table['SLOTS'][_hbp]['SLOTS'] = 'NONE'
+                elif _hbp_data['SLOTS']  <= '2':
+                    _stats_table['SLOTS'][_hbp]['SLOTS'] = _hbp_data['SLOTS']
+                elif _hbp_data['SLOTS']  == '3':
+                    _stats_table['SLOTS'][_hbp]['SLOTS'] = 'BOTH'
+                else:
+                    _stats_table['SLOTS'][_hbp]['SLOTS'] = 'DMO'
+                
             
             # Process OpenBridge systems
             elif _hbp_data['MODE'] == 'OPENBRIDGE':
