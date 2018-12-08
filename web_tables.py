@@ -75,12 +75,12 @@ BTABLE['BRIDGES'] = {}
 BRIDGES_RX  = ''
 CONFIG_RX   = ''
 LOGBUF      = deque(100*[''], 100)
-RED         = '#ff0000'
-BLACK       = '#000000'
-GREEN       = '#00ff00'
-BLUE        = '#0000ff'
-ORANGE      = '#ff8000'
-WHITE       = '#ffffff'
+RED         = 'ff0000'
+BLACK       = '000000'
+GREEN       = '00ff00'
+BLUE        = '0000ff'
+ORANGE      = 'ff8000'
+WHITE       = 'ffffff'
 
 
 # For importing HTML templates
@@ -118,7 +118,7 @@ def alias_call(_id, _dict):
         return ', '.join(alias)
     else:
         return str(alias)
-        
+
 # Return friendly elpasted time from time in seconds.
 def since(_time):
     now = int(time())
@@ -140,7 +140,7 @@ def since(_time):
 def add_hb_peer(_peer_conf, _ctable_loc, _peer):
     _ctable_loc[int_id(_peer)] = {}
     _ctable_peer = _ctable_loc[int_id(_peer)]
-    
+
     # if the Frequency is 000.xxx assume it's not an RF peer, otherwise format the text fields
     if _peer_conf['TX_FREQ'][:3] == '000' or _peer_conf['RX_FREQ'][:3] == '000':
         _ctable_peer['TX_FREQ'] = 'N/A'
@@ -148,7 +148,7 @@ def add_hb_peer(_peer_conf, _ctable_loc, _peer):
     else:
         _ctable_peer['TX_FREQ'] = 'TX: ' + _peer_conf['TX_FREQ'][:3] + '.' + _peer_conf['TX_FREQ'][3:7]
         _ctable_peer['RX_FREQ'] = 'RX: ' + _peer_conf['RX_FREQ'][:3] + '.' + _peer_conf['RX_FREQ'][3:7]
-    
+
     # timeslots are kinda complicated too. 0 = none, 1 or 2 mean that one slot, 3 is both, and anythign else it considered DMO
     if (_peer_conf['SLOTS'] == '0'):
         _ctable_peer['SLOTS'] = 'NONE'
@@ -158,7 +158,7 @@ def add_hb_peer(_peer_conf, _ctable_loc, _peer):
         _ctable_peer['SLOTS'] = 'BOTH'
     else:
         _ctable_peer['SLOTS'] = 'DMO'
-    
+
     # Simple translation items
     _ctable_peer['COLORCODE'] = _peer_conf['COLORCODE']
     _ctable_peer['CALLSIGN'] = _peer_conf['CALLSIGN']
@@ -168,7 +168,7 @@ def add_hb_peer(_peer_conf, _ctable_loc, _peer):
     _ctable_peer['IP'] = _peer_conf['IP']
     _ctable_peer['PORT'] = _peer_conf['PORT']
     #_ctable_peer['LAST_PING'] = _peer_conf['LAST_PING']
-    
+
     # SLOT 1&2 - for real-time montior: make the structure for later use
     for ts in range(1,3):
         _ctable_peer[ts]= {}
@@ -179,13 +179,13 @@ def add_hb_peer(_peer_conf, _ctable_loc, _peer):
         _ctable_peer[ts]['SUB'] = ''
         _ctable_peer[ts]['SRC'] = ''
         _ctable_peer[ts]['DEST'] = ''
-    
+
 
 # Build the HBlink connections table
 def build_hblink_table(_config, _stats_table):
     for _hbp, _hbp_data in _config.iteritems():
         if _hbp_data['ENABLED'] == True:
-            
+
             # Process Master Systems
             if _hbp_data['MODE'] == 'MASTER':
                 _stats_table['MASTERS'][_hbp] = {}
@@ -196,19 +196,20 @@ def build_hblink_table(_config, _stats_table):
                 _stats_table['MASTERS'][_hbp]['PEERS'] = {}
                 for _peer in _hbp_data['PEERS']:
                     add_hb_peer(_hbp_data['PEERS'][_peer], _stats_table['MASTERS'][_hbp]['PEERS'], _peer)
-            
+
             # Proccess Peer Systems
             elif _hbp_data['MODE'] == 'PEER':
-                pprint(_hbp_data)
                 _stats_table['PEERS'][_hbp] = {}
                 _stats_table['PEERS'][_hbp]['CALLSIGN'] = _hbp_data['CALLSIGN']
                 _stats_table['PEERS'][_hbp]['LOCATION'] = _hbp_data['LOCATION']
                 _stats_table['PEERS'][_hbp]['RADIO_ID'] = int_id(_hbp_data['RADIO_ID'])
                 _stats_table['PEERS'][_hbp]['MASTER_IP'] = _hbp_data['MASTER_IP']
                 _stats_table['PEERS'][_hbp]['MASTER_PORT'] = _hbp_data['MASTER_PORT']
-                _stats_table['PEERS'][_hbp]['STATS'] = _hbp_data['STATS']
+                _stats_table['PEERS'][_hbp]['STATS'] = {}
                 _stats_table['PEERS'][_hbp]['STATS']['CONNECTION'] = _hbp_data['STATS']['CONNECTION']
                 _stats_table['PEERS'][_hbp]['STATS']['CONNECTED'] = since(_hbp_data['STATS']['CONNECTED'])
+                _stats_table['PEERS'][_hbp]['STATS']['PINGS_SENT'] = _hbp_data['STATS']['PINGS_SENT']
+                _stats_table['PEERS'][_hbp]['STATS']['PINGS_ACKD'] = _hbp_data['STATS']['PINGS_ACKD']
                 if _hbp_data['SLOTS'] == 0:
                     _stats_table['PEERS'][_hbp]['SLOTS'] = 'NONE'
                 elif _hbp_data['SLOTS']  <= '2':
@@ -217,29 +218,40 @@ def build_hblink_table(_config, _stats_table):
                     _stats_table['PEERS'][_hbp]['SLOTS'] = 'BOTH'
                 else:
                     _stats_table['SLOTS'][_hbp]['SLOTS'] = 'DMO'
-                
-            
+                   # SLOT 1&2 - for real-time montior: make the structure for later use
+
+                for ts in range(1,3):
+                    _stats_table['PEERS'][_hbp][ts]= {}
+                    _stats_table['PEERS'][_hbp][ts]['COLOR'] = ''
+                    _stats_table['PEERS'][_hbp][ts]['BGCOLOR'] = ''
+                    _stats_table['PEERS'][_hbp][ts]['TS'] = ''
+                    _stats_table['PEERS'][_hbp][ts]['TYPE'] = ''
+                    _stats_table['PEERS'][_hbp][ts]['SUB'] = ''
+                    _stats_table['PEERS'][_hbp][ts]['SRC'] = ''
+                    _stats_table['PEERS'][_hbp][ts]['DEST'] = ''
+
+
             # Process OpenBridge systems
             elif _hbp_data['MODE'] == 'OPENBRIDGE':
                 _stats_table['OPENBRIDGES'][_hbp] = {}
                 _stats_table['OPENBRIDGES'][_hbp]['NETWORK_ID'] = int_id(_hbp_data['NETWORK_ID'])
                 _stats_table['OPENBRIDGES'][_hbp]['TARGET_IP'] = _hbp_data['TARGET_IP']
                 _stats_table['OPENBRIDGES'][_hbp]['TARGET_PORT'] = _hbp_data['TARGET_PORT']
-    return(_stats_table)
+                _stats_table['OPENBRIDGES'][_hbp]['STREAMS'] = {}
+
+    #return(_stats_table)
 
 def update_hblink_table(_config, _stats_table):
-    logger.info('running update table')
     # Is there a system in HBlink's config monitor doesn't know about?
     for _hbp in _config:
         add_list = []
         if _config[_hbp]['MODE'] == 'MASTER':
-            for _peer in _config[_hbp]['PEERS']:         
+            for _peer in _config[_hbp]['PEERS']:
                 if int_id(_peer) not in _stats_table['MASTERS'][_hbp]['PEERS']:
                     logger.info('Adding peer to CTABLE that has registerred: %s', int_id(_peer))
                     add_hb_peer(_config[_hbp]['PEERS'][_peer], _stats_table['MASTERS'][_hbp]['PEERS'], _peer)
-                    
-    
-    # Is there a system in monitor that's been removed from HBlink's config?        
+
+    # Is there a system in monitor that's been removed from HBlink's config?
     for _hbp in _stats_table['MASTERS']:
         remove_list = []
         if _config[_hbp]['MODE'] == 'MASTER':
@@ -250,14 +262,18 @@ def update_hblink_table(_config, _stats_table):
             for _peer in remove_list:
                 logger.info('Deleting stats peer not in hblink config: %s', _peer)
                 del (_stats_table['MASTERS'][_hbp]['PEERS'][_peer])
-                
-    # Update connection time        
+
+    # Update connection time
     for _hbp in _stats_table['MASTERS']:
-        if _config[_hbp]['MODE'] == 'MASTER':
-            for _peer in _stats_table['MASTERS'][_hbp]['PEERS']:
-                if hex_str_4(_peer) in _config[_hbp]['PEERS']:
-                    _stats_table['MASTERS'][_hbp]['PEERS'][_peer]['CONNECTED'] = since(_config[_hbp]['PEERS'][hex_str_4(_peer)]['CONNECTED'])
-    
+        for _peer in _stats_table['MASTERS'][_hbp]['PEERS']:
+            if hex_str_4(_peer) in _config[_hbp]['PEERS']:
+                _stats_table['MASTERS'][_hbp]['PEERS'][_peer]['CONNECTED'] = since(_config[_hbp]['PEERS'][hex_str_4(_peer)]['CONNECTED'])
+
+    for _hbp in _stats_table['PEERS']:
+        _stats_table['PEERS'][_hbp]['STATS']['CONNECTED'] = since(_config[_hbp]['STATS']['CONNECTED'])
+        _stats_table['PEERS'][_hbp]['STATS']['PINGS_SENT'] = _config[_hbp]['STATS']['PINGS_SENT']
+        _stats_table['PEERS'][_hbp]['STATS']['PINGS_ACKD'] = _config[_hbp]['STATS']['PINGS_ACKD']
+
     build_stats()
 
 #
@@ -291,12 +307,12 @@ def build_bridge_table(_bridges):
 
             if system['ACTIVE'] == True:
                 _stats_table[_bridge][system['SYSTEM']]['ACTIVE'] = 'Connected'
-                _stats_table[_bridge][system['SYSTEM']]['COLOR'] = GREEN
-                _stats_table[_bridge][system['SYSTEM']]['BGCOLOR'] = BLACK
+                _stats_table[_bridge][system['SYSTEM']]['COLOR'] = BLACK
+                _stats_table[_bridge][system['SYSTEM']]['BGCOLOR'] = GREEN
             elif system['ACTIVE'] == False:
                 _stats_table[_bridge][system['SYSTEM']]['ACTIVE'] = 'Disconnected'
-                _stats_table[_bridge][system['SYSTEM']]['COLOR'] = RED
-                _stats_table[_bridge][system['SYSTEM']]['BGCOLOR'] = WHITE
+                _stats_table[_bridge][system['SYSTEM']]['COLOR'] = WHITE
+                _stats_table[_bridge][system['SYSTEM']]['BGCOLOR'] = RED
 
             for i in range(len(system['ON'])):
                 system['ON'][i] = str(int_id(system['ON'][i]))
@@ -336,16 +352,16 @@ def rts_update(p):
     sourceSub = int(p[6])
     timeSlot = int(p[7])
     destination = int(p[8])
-    
+
     if system in CTABLE['MASTERS']:
         for peer in CTABLE['MASTERS'][system]['PEERS']:
             if sourcePeer == peer:
-                color = '00ff00'
-                bgcolor = '000000'
+                bgcolor = GREEN
+                color = BLACK
             else:
-                color = 'ff0000'
-                bgcolor = 'ffffff'
-            #color, bgcolor = '00ff00', '000000' if sourcePeer == peer else 'ff0000', '000000'
+                bgcolor = RED
+                color = WHITE
+
             if action == 'START':
                 CTABLE['MASTERS'][system]['PEERS'][peer][timeSlot]['TS'] = True
                 CTABLE['MASTERS'][system]['PEERS'][peer][timeSlot]['COLOR'] = color
@@ -356,8 +372,8 @@ def rts_update(p):
                 CTABLE['MASTERS'][system]['PEERS'][peer][timeSlot]['DEST'] = destination
             if action == 'END':
                 CTABLE['MASTERS'][system]['PEERS'][peer][timeSlot]['TS'] = False
-                CTABLE['MASTERS'][system]['PEERS'][peer][timeSlot]['COLOR'] = 'ffffff'
-                CTABLE['MASTERS'][system]['PEERS'][peer][timeSlot]['BGCOLOR'] = '000000'
+                CTABLE['MASTERS'][system]['PEERS'][peer][timeSlot]['COLOR'] = BLACK
+                CTABLE['MASTERS'][system]['PEERS'][peer][timeSlot]['BGCOLOR'] = WHITE
                 CTABLE['MASTERS'][system]['PEERS'][peer][timeSlot]['TYPE'] = ''
                 CTABLE['MASTERS'][system]['PEERS'][peer][timeSlot]['SUB'] = ''
                 CTABLE['MASTERS'][system]['PEERS'][peer][timeSlot]['SRC'] = ''
@@ -366,13 +382,34 @@ def rts_update(p):
         else:
             logger.warning('tried to update a tranmission for a peer not yet listed: system %s, action %s, callType %s, tx/rx %s, streamid %s, sourcePeer %s, sourceSub %s, timeSlot %s, destination %s ', system, action, callType, trx, streamId, sourcePeer, sourceSub, timeSlot, destination)
 
-        if system in CTABLE['OPENBRIDGES']:
-            pass
-            
-        if system in CTABLE['PEERS']:
-            pass
+    if system in CTABLE['OPENBRIDGES']:
+        if action == 'START':
+            CTABLE['OPENBRIDGES'][system]['STREAMS'][streamId] = (alias_call(sourceSub, subscriber_ids), destination)
+        if action == 'END':
+            if streamId in CTABLE['OPENBRIDGES'][system]['STREAMS']:
+                del CTABLE['OPENBRIDGES'][system]['STREAMS'][streamId]
 
-        build_stats()
+    if system in CTABLE['PEERS']:
+        bgcolor = GREEN
+
+        if action == 'START':
+            CTABLE['PEERS'][system][timeSlot]['TS'] = True
+            CTABLE['PEERS'][system][timeSlot]['COLOR'] = BLACK
+            CTABLE['PEERS'][system][timeSlot]['BGCOLOR'] = bgcolor
+            CTABLE['PEERS'][system][timeSlot]['TYPE'] = callType
+            CTABLE['PEERS'][system][timeSlot]['SUB'] = sourceSub
+            CTABLE['PEERS'][system][timeSlot]['SRC'] = sourcePeer
+            CTABLE['PEERS'][system][timeSlot]['DEST'] = destination
+        if action == 'END':
+            CTABLE['PEERS'][system][timeSlot]['TS'] = False
+            CTABLE['PEERS'][system][timeSlot]['COLOR'] = BLACK
+            CTABLE['PEERS'][system][timeSlot]['BGCOLOR'] = WHITE
+            CTABLE['PEERS'][system][timeSlot]['TYPE'] = ''
+            CTABLE['PEERS'][system][timeSlot]['SUB'] = ''
+            CTABLE['PEERS'][system][timeSlot]['SRC'] = ''
+            CTABLE['PEERS'][system][timeSlot]['DEST'] = ''
+
+    build_stats()
 
 #
 # PROCESS IN COMING MESSAGES AND TAKE THE CORRECT ACTION DEPENING ON THE OPCODE
@@ -416,10 +453,10 @@ def process_message(_message):
 
             dashboard_server.broadcast('l' + log_message)
             LOGBUF.append(log_message)
-            
+
         else:
             logging.debug('{}: UNKNOWN LOG MESSAGE'.format(_now))
- 
+
     else:
         logging.debug('got unknown opcode: {}, message: {}'.format(repr(opcode), repr(_message[1:])))
 
