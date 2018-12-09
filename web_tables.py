@@ -391,10 +391,16 @@ def rts_update(p):
 
     if system in CTABLE['PEERS']:
         bgcolor = GREEN
+        if trx == 'RX':
+            bgcolor = GREEN
+            color = BLACK
+        else:
+            bgcolor = RED
+            color = WHITE
 
         if action == 'START':
             CTABLE['PEERS'][system][timeSlot]['TS'] = True
-            CTABLE['PEERS'][system][timeSlot]['COLOR'] = BLACK
+            CTABLE['PEERS'][system][timeSlot]['COLOR'] = color
             CTABLE['PEERS'][system][timeSlot]['BGCOLOR'] = bgcolor
             CTABLE['PEERS'][system][timeSlot]['TYPE'] = callType
             CTABLE['PEERS'][system][timeSlot]['SUB'] = sourceSub
