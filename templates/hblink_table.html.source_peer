@@ -1,14 +1,15 @@
 <h3>HBlink Status Tables:</h3>
 <table style="width:100%; font: 10pt arial, sans-serif">
     <colgroup>
-        <col style="width: 15%" />
-        <col style="width: 30%" />
         <col style="width: 10%" />
-        <col style="width: 4%" />
-        <col style="width: 4%" />
-        <col style="width: 12%" />
-        <col style="width: 15%" />
+        <col style="width: 20%" />
         <col style="width: 10%" />
+        <col style="width: 3%" />
+        <col style="width: 3%" />
+        <col style="width: 9%" />
+        <col style="width: 15%" />
+        <col style="width: 15%" />
+        <col style="width: 15%" />
     </colgroup>
     <tr style="width:100%; font: 10pt arial, sans-serif; background-color:#666666; color:white">
         <th>Homebrew Protocol<br>Master Systems</th>
@@ -18,6 +19,7 @@
         <th>Slot</th>
         <th>Call<br>Type</th>
         <th>Source<br>Subscriber</th>
+        <th>Source<br>Peer</th>
         <th>Destination</th>
     </tr>
 
@@ -35,11 +37,13 @@
         <td style="background-color:#{{ _cdata[1]['BGCOLOR'] }}; color:#{{ _cdata[1]['COLOR'] }}">TS1</td>
         <td style="background-color:#{{ _cdata[1]['BGCOLOR'] }}; color:#{{ _cdata[1]['COLOR'] }}">{{ _cdata[1]['TYPE'] }}</td>
         <td style="background-color:#{{ _cdata[1]['BGCOLOR'] }}; color:#{{ _cdata[1]['COLOR'] }}">{{ _cdata[1]['SUB'] }}</td>
+        <td style="background-color:#{{ _cdata[1]['BGCOLOR'] }}; color:#{{ _cdata[1]['COLOR'] }}">{{ _cdata[1]['SRC'] }}</td>
         <td style="background-color:#{{ _cdata[1]['BGCOLOR'] }}; color:#{{ _cdata[1]['COLOR'] }}">{{ _cdata[1]['DEST'] }}</td>
         <tr>
         <td style="background-color:#{{ _cdata[2]['BGCOLOR'] }}; color:#{{ _cdata[2]['COLOR'] }}">TS2</td>
         <td style="background-color:#{{ _cdata[2]['BGCOLOR'] }}; color:#{{ _cdata[2]['COLOR'] }}">{{ _cdata[2]['TYPE'] }}</td>
         <td style="background-color:#{{ _cdata[2]['BGCOLOR'] }}; color:#{{ _cdata[2]['COLOR'] }}">{{ _cdata[2]['SUB'] }}</td>
+        <td style="background-color:#{{ _cdata[2]['BGCOLOR'] }}; color:#{{ _cdata[2]['COLOR'] }}">{{ _cdata[2]['SRC'] }}</td>
         <td style="background-color:#{{ _cdata[2]['BGCOLOR'] }}; color:#{{ _cdata[2]['COLOR'] }}">{{ _cdata[2]['DEST'] }}</td>
         </tr>
 
@@ -50,23 +54,25 @@
 <br>
 <table style="width:100%; font: 10pt arial, sans-serif">
     <colgroup>
-        <col style="width: 15%" />
-        <col style="width: 30%" />
         <col style="width: 10%" />
-        <col style="width: 4%" />
-        <col style="width: 4%" />
-        <col style="width: 12%" />
-        <col style="width: 15%" />
+        <col style="width: 20%" />
         <col style="width: 10%" />
+        <col style="width: 3%" />
+        <col style="width: 3%" />
+        <col style="width: 9%" />
+        <col style="width: 15%" />
+        <col style="width: 15%" />
+        <col style="width: 15%" />
     </colgroup>
     <tr style="width:100%; font: 10pt arial, sans-serif; background-color:#666666; color:white">
         <th>Homebrew Protocol<br>Peer Systems</th>
         <th>ID/Callsign/Location<br>Master IP:Port</th>
-        <th>Connected<br>TX/RX/Lost</th>
+        <th>Connected<br>Sent/Ack/Missed</th>
         <th>LinkedTS</th>
         <th>Slot</th>
         <th>Call<br>Type</th>
         <th>Source<br>Subscriber</th>
+        <th>Source<br>Peer</th>
         <th>Destination</th>
     </tr>
     
@@ -80,11 +86,13 @@
         <td style="background-color:#{{ _pdata[1]['BGCOLOR'] }}; color:#{{ _pdata[1]['COLOR'] }}">TS1</td>
         <td style="background-color:#{{ _pdata[1]['BGCOLOR'] }}; color:#{{ _pdata[1]['COLOR'] }}">{{ _pdata[1]['TYPE'] }}</td>
         <td style="background-color:#{{ _pdata[1]['BGCOLOR'] }}; color:#{{ _pdata[1]['COLOR'] }}">{{ _pdata[1]['SUB'] }}</td>
+        <td style="background-color:#{{ _pdata[1]['BGCOLOR'] }}; color:#{{ _pdata[1]['COLOR'] }}">{{ _pdata[1]['SRC'] }}</td>
         <td style="background-color:#{{ _pdata[1]['BGCOLOR'] }}; color:#{{ _pdata[1]['COLOR'] }}">{{ _pdata[1]['DEST'] }}</td>
         <tr>
         <td style="background-color:#{{ _pdata[2]['BGCOLOR'] }}; color:#{{ _pdata[2]['COLOR'] }}">TS2</td>
         <td style="background-color:#{{ _pdata[2]['BGCOLOR'] }}; color:#{{ _pdata[2]['COLOR'] }}">{{ _pdata[2]['TYPE'] }}</td>
         <td style="background-color:#{{ _pdata[2]['BGCOLOR'] }}; color:#{{ _pdata[2]['COLOR'] }}">{{ _pdata[2]['SUB'] }}</td>
+        <td style="background-color:#{{ _pdata[2]['BGCOLOR'] }}; color:#{{ _pdata[2]['COLOR'] }}">{{ _pdata[2]['SRC'] }}</td>
         <td style="background-color:#{{ _pdata[2]['BGCOLOR'] }}; color:#{{ _pdata[2]['COLOR'] }}">{{ _pdata[2]['DEST'] }}</td>
         </tr>
     </tr>
