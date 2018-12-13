@@ -366,7 +366,7 @@ def rts_update(p):
                 CTABLE['MASTERS'][system]['PEERS'][peer][timeSlot]['COLOR'] = color
                 CTABLE['MASTERS'][system]['PEERS'][peer][timeSlot]['BGCOLOR'] = bgcolor
                 CTABLE['MASTERS'][system]['PEERS'][peer][timeSlot]['TYPE'] = callType
-                CTABLE['MASTERS'][system]['PEERS'][peer][timeSlot]['SUB'] = '{} ({})'.format(alias_call(sourceSub, subscriber_ids), sourceSub)
+                CTABLE['MASTERS'][system]['PEERS'][peer][timeSlot]['SUB'] = '{} ({})'.format(alias_short(sourceSub, subscriber_ids), sourceSub)
                 CTABLE['MASTERS'][system]['PEERS'][peer][timeSlot]['SRC'] = peer
                 CTABLE['MASTERS'][system]['PEERS'][peer][timeSlot]['DEST'] = destination
             if action == 'END':
@@ -399,7 +399,7 @@ def rts_update(p):
             CTABLE['PEERS'][system][timeSlot]['COLOR'] = color
             CTABLE['PEERS'][system][timeSlot]['BGCOLOR'] = bgcolor
             CTABLE['PEERS'][system][timeSlot]['TYPE'] = callType
-            CTABLE['PEERS'][system][timeSlot]['SUB'] = '{} ({})'.format(alias_call(sourceSub, subscriber_ids), sourceSub)
+            CTABLE['PEERS'][system][timeSlot]['SUB'] = '{} ({})'.format(alias_short(sourceSub, subscriber_ids), sourceSub)
             CTABLE['PEERS'][system][timeSlot]['SRC'] = sourcePeer
             CTABLE['PEERS'][system][timeSlot]['DEST'] = destination
         if action == 'END':
