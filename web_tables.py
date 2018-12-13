@@ -244,10 +244,9 @@ def build_hblink_table(_config, _stats_table):
 def update_hblink_table(_config, _stats_table):
     # Is there a system in HBlink's config monitor doesn't know about?
     for _hbp in _config:
-        add_list = []
         if _config[_hbp]['MODE'] == 'MASTER':
             for _peer in _config[_hbp]['PEERS']:
-                if int_id(_peer) not in _stats_table['MASTERS'][_hbp]['PEERS']:
+                if int_id(_peer) not in _stats_table['MASTERS'][_hbp]['PEERS'] and _config[_hbp]['PEERS'][_peer]['CONNECTION'] == 'YES':
                     logger.info('Adding peer to CTABLE that has registerred: %s', int_id(_peer))
                     add_hb_peer(_config[_hbp]['PEERS'][_peer], _stats_table['MASTERS'][_hbp]['PEERS'], _peer)
 
@@ -378,9 +377,6 @@ def rts_update(p):
                 CTABLE['MASTERS'][system]['PEERS'][peer][timeSlot]['SUB'] = ''
                 CTABLE['MASTERS'][system]['PEERS'][peer][timeSlot]['SRC'] = ''
                 CTABLE['MASTERS'][system]['PEERS'][peer][timeSlot]['DEST'] = ''
-
-        else:
-            logger.warning('tried to update a tranmission for a peer not yet listed: system %s, action %s, callType %s, tx/rx %s, streamid %s, sourcePeer %s, sourceSub %s, timeSlot %s, destination %s ', system, action, callType, trx, streamId, sourcePeer, sourceSub, timeSlot, destination)
 
     if system in CTABLE['OPENBRIDGES']:
         if action == 'START':
