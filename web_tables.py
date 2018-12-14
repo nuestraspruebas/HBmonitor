@@ -605,7 +605,7 @@ if __name__ == '__main__':
 
     subscriber_ids = mk_full_id_dict(PATH, SUBSCRIBER_FILE, 'subscriber')
     if subscriber_ids:
-        logging.info('ID ALIAS MAPPER: subscriber_ids dictionary loaded: {:,} Bytes', sys.getsizeof(subscriber_ids, 'N/A'))
+        logging.info('ID ALIAS MAPPER: subscriber_ids dictionary loaded: %s Bytes', sys.getsizeof(subscriber_ids, 'N/A'))
 
     talkgroup_ids = mk_full_id_dict(PATH, TGID_FILE, 'tgid')
     if talkgroup_ids:
