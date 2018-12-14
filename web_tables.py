@@ -29,14 +29,14 @@ from twisted.internet.protocol import ReconnectingClientFactory, Protocol
 from twisted.protocols.basic import NetstringReceiver
 from twisted.internet import reactor, task
 from twisted.web.server import Site
-from twisted.web.static import File
+#from twisted.web.static import File
 from twisted.web.resource import Resource
 
 # Autobahn provides websocket service under Twisted
 from autobahn.twisted.websocket import WebSocketServerProtocol, WebSocketServerFactory
 
 # Specific functions to import from standard modules
-from pprint import pprint
+#from pprint import pprint
 from time import time, strftime, localtime
 from cPickle import loads
 from binascii import b2a_hex as h
@@ -601,11 +601,11 @@ if __name__ == '__main__':
     # Make Alias Dictionaries
     peer_ids = mk_full_id_dict(PATH, PEER_FILE, 'peer')
     if peer_ids:
-        logging.info('ID ALIAS MAPPER: peer_ids dictionary is available')
+        logging.info('ID ALIAS MAPPER: peer_ids dictionary loaded: %s KBytes', sys.getsizeof(peer_ids, 'N/A'))
 
     subscriber_ids = mk_full_id_dict(PATH, SUBSCRIBER_FILE, 'subscriber')
     if subscriber_ids:
-        logging.info('ID ALIAS MAPPER: subscriber_ids dictionary is available')
+        logging.info('ID ALIAS MAPPER: subscriber_ids dictionary loaded: %s KBytes', sys.getsizeof(subscriber_ids, 'N/A'))
 
     talkgroup_ids = mk_full_id_dict(PATH, TGID_FILE, 'tgid')
     if talkgroup_ids:
