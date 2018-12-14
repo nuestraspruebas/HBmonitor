@@ -601,11 +601,11 @@ if __name__ == '__main__':
     # Make Alias Dictionaries
     peer_ids = mk_full_id_dict(PATH, PEER_FILE, 'peer')
     if peer_ids:
-        logging.info('ID ALIAS MAPPER: peer_ids dictionary loaded: %s Bytes', sys.getsizeof(peer_ids, 'N/A'))
+        logging.info('ID ALIAS MAPPER: peer_ids dictionary is available')
 
     subscriber_ids = mk_full_id_dict(PATH, SUBSCRIBER_FILE, 'subscriber')
     if subscriber_ids:
-        logging.info('ID ALIAS MAPPER: subscriber_ids dictionary loaded: %s Bytes', sys.getsizeof(subscriber_ids, 'N/A'))
+        logging.info('ID ALIAS MAPPER: subscriber_ids dictionary is available')
 
     talkgroup_ids = mk_full_id_dict(PATH, TGID_FILE, 'tgid')
     if talkgroup_ids:
