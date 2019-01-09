@@ -380,7 +380,7 @@ def rts_update(p):
 
     if system in CTABLE['OPENBRIDGES']:
         if action == 'START':
-            CTABLE['OPENBRIDGES'][system]['STREAMS'][streamId] = (alias_call(sourceSub, subscriber_ids), destination)
+            CTABLE['OPENBRIDGES'][system]['STREAMS'][streamId] = (trx, alias_call(sourceSub, subscriber_ids), destination)
         if action == 'END':
             if streamId in CTABLE['OPENBRIDGES'][system]['STREAMS']:
                 del CTABLE['OPENBRIDGES'][system]['STREAMS'][streamId]
