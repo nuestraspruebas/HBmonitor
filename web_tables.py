@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 #
 ###############################################################################
-#   Copyright (C) 2016  Cortney T. Buffington, N0MJS <n0mjs@me.com>
+#   Copyright (C) 2016-2019  Cortney T. Buffington, N0MJS <n0mjs@me.com>
 #
 #   This program is free software; you can redistribute it and/or modify
 #   it under the terms of the GNU General Public License as published by
@@ -50,9 +50,8 @@ from jinja2 import Environment, PackageLoader, select_autoescape
 # Utilities from K0USY Group sister project
 from dmr_utils.utils import int_id, get_alias, try_download, mk_full_id_dict, hex_str_4
 
-# Configuration variables and IPSC constants
+# Configuration variables and constants
 from config import *
-#from ipsc_const import *
 
 # Opcodes for reporting protocol to HBlink
 OPCODE = {
@@ -341,6 +340,21 @@ def build_stats():
             dashboard_server.broadcast(table)
         build_time = now
 
+
+def timeout_clients():
+    now = time()
+    try:
+        for client in dashboard_server.clients:
+            if dashboard_server.clients[client] + CLIENT_TIMEOUT < now:
+                logger.info('TIMEOUT: disconnecting client %s', dashboard_server.clients[client])
+                try:
+                    dashboard.sendClose(client)
+                except Exception as e:
+                    logger.error('Exception caught parsing client timeout %s', e)
+    except:
+        logger.info('CLIENT TIMEOUT: List does not exist, skipping. If this message persists, contact the developer')
+
+
 def rts_update(p):
     callType = p[0]
     action = p[1]
@@ -539,22 +553,21 @@ class dashboard(WebSocketServerProtocol):
     def onClose(self, wasClean, code, reason):
         logging.info('WebSocket connection closed: %s', reason)
 
-
 class dashboardFactory(WebSocketServerFactory):
 
     def __init__(self, url):
         WebSocketServerFactory.__init__(self, url)
-        self.clients = []
+        self.clients = {}
 
     def register(self, client):
         if client not in self.clients:
             logging.info('registered client %s', client.peer)
-            self.clients.append(client)
+            self.clients[client] = time()
 
     def unregister(self, client):
         if client in self.clients:
             logging.info('unregistered client %s', client.peer)
-            self.clients.remove(client)
+            del self.clients[client]
 
     def broadcast(self, msg):
         logging.debug('broadcasting message to: %s', self.clients)
@@ -581,15 +594,19 @@ if __name__ == '__main__':
     logging.basicConfig(
         level=logging.INFO,
         filename = (LOG_PATH + LOG_NAME),
-        filemode='a'
+        filemode='a',
+        format='%(asctime)s %(levelname)s %(message)s',
+        datefmt='%Y-%m-%d %H:%M:%S'
     )
     console = logging.StreamHandler()
     console.setLevel(logging.INFO)
+    formatter = logging.Formatter('%(asctime)s %(levelname)s %(message)s')
+    console.setFormatter(formatter)
     logging.getLogger('').addHandler(console)
     logger = logging.getLogger(__name__)
 
     logging.info('web_tables.py starting up')
-    logger.info('\n\nCopyright (c) 2017, 2018\n\tThe Founding Members of the K0USY Group. All rights reserved.\n')
+    logger.info('\n\nCopyright (c) 2016, 2017, 2018, 2019\n\tThe Regents of the K0USY Group. All rights reserved.\n')
 
     # Download alias files
     result = try_download(PATH, 'peer_ids.csv', PEER_URL, (FILE_RELOAD * 86400))
@@ -633,10 +650,18 @@ if __name__ == '__main__':
     # Create Static Website index file
     index_html = get_template(PATH + 'index_template.html')
     index_html = index_html.replace('<<<system_name>>>', REPORT_NAME)
+    if CLIENT_TIMEOUT > 0:
+        index_html = index_html.replace('<<<timeout_warning>>>', 'Continuous connections not allowed. Connections time out in {} seconds'.format(CLIENT_TIMEOUT))
+    else:
+        index_html = index_html.replace('<<<timeout_warning>>>', '')
 
     # Start update loop
     update_stats = task.LoopingCall(build_stats)
     update_stats.start(FREQUENCY)
+
+    # Start a timout loop
+    timeout = task.LoopingCall(timeout_clients)
+    timeout.start(10)
 
     # Connect to HBlink
     reactor.connectTCP(HBLINK_IP, HBLINK_PORT, reportClientFactory())
