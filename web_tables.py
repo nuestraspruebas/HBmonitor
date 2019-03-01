@@ -609,10 +609,10 @@ if __name__ == '__main__':
     logger.info('\n\nCopyright (c) 2016, 2017, 2018, 2019\n\tThe Regents of the K0USY Group. All rights reserved.\n')
 
     # Download alias files
-    result = try_download(PATH, 'peer_ids.csv', PEER_URL, (FILE_RELOAD * 86400))
+    result = try_download(PATH, PEER_FILE, PEER_URL, (FILE_RELOAD * 86400))
     logging.info(result)
 
-    result = try_download(PATH, 'subscriber_ids.csv', SUBSCRIBER_URL, (FILE_RELOAD * 86400))
+    result = try_download(PATH, SUBSCRIBER_FILE, SUBSCRIBER_URL, (FILE_RELOAD * 86400))
     logging.info(result)
 
     # Make Alias Dictionaries
