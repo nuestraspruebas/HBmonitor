@@ -1,10 +1,11 @@
 REPORT_NAME     = 'system.domain.name'  # Name of the monitored HBlink system
 CONFIG_INC      = True                  # Include HBlink stats
 BRIDGES_INC     = True                  # Include Bridge stats (confbrige.py)
-HBLINK_IP      = '127.0.0.1'           # HBlink's IP Address
-HBLINK_PORT    = 4321                  # HBlink's TCP reporting socket
+HBLINK_IP       = '127.0.0.1'           # HBlink's IP Address
+HBLINK_PORT     = 4321                  # HBlink's TCP reporting socket
 FREQUENCY       = 10                    # Frequency to push updates to web clients
 WEB_SERVER_PORT = 8080                  # Has to be above 1024 if you're not running as root
+CLIENT_TIMEOUT  = 300                   # Clients are timed out after this many seconds, 0 to disable
 
 # Files and stuff for loading alias files for mapping numbers to names
 PATH            = './'                          # MUST END IN '/'
