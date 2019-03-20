@@ -660,8 +660,9 @@ if __name__ == '__main__':
     update_stats.start(FREQUENCY)
 
     # Start a timout loop
-    timeout = task.LoopingCall(timeout_clients)
-    timeout.start(10)
+    if CLIENT_TIMEOUT > 0:
+        timeout = task.LoopingCall(timeout_clients)
+        timeout.start(10)
 
     # Connect to HBlink
     reactor.connectTCP(HBLINK_IP, HBLINK_PORT, reportClientFactory())
