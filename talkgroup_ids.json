@@ -1,16 +1,19 @@
 {
   "results": [
     {
+      "tgid": 3120,
+      "name": "Kansas Statewide",
       "id": "3120",
-      "callsign": "Kansas Statewide"
     },
     {
+      "tgid": 31201,
+      "name": "BYRG",
       "id": "31201",
-      "callsign": "BYRG"
     },
     {
+      "tgid": 310,
+      "name": "Kerchunk 310",
       "id": "310",
-      "callsign": "Kerchunk 310"
     }
   ]
 }
