@@ -1,0 +1,59 @@
+{
+  "results": [
+    {
+      "tgid": 260,
+      "callsign": "Poland CQ CQ",
+      "id": "260"
+    },
+    {
+      "tgid": 2602122,
+      "callsign": "Grupa Torunska",
+      "id": "2602122"
+    },
+    {
+      "tgid": 26023,
+      "callsign": "DMR Kujawiak",
+      "id": "26023"
+    },
+    {
+      "tgid": 260014,
+      "callsign": "Grupa Techniczna",
+      "id": "260014"
+    },
+    {
+      "tgid": 2602,
+      "callsign": "Grupa Reg. SP2",
+      "id": "2602"
+    },
+    {
+      "tgid": 260080,
+      "callsign": "Cafe DMR",
+      "id": "260080"
+    },
+    {
+      "tgid": 260019,
+      "callsign": "Grupa Testowa",
+      "id": "260019"
+    },
+    {
+      "tgid": 260042,
+      "callsign": "YSF/WiresX Polska",
+      "id": "260042"
+    },
+    {
+      "tgid": 7000,
+      "callsign": "YSF/WiresX Polska",
+      "id": "7000"
+    },
+    {
+      "tgid": 9,
+      "callsign": "Grupa Lokalna",
+      "id": "9"
+    },
+    {
+      "tgid": 8,
+      "callsign": "Cluster OPB",
+      "id": "8"
+    }
+  ]
+}
