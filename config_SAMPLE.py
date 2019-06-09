@@ -19,5 +19,5 @@ PEER_URL        = 'https://www.radioid.net/static/rptrs.json'
 SUBSCRIBER_URL  = 'https://www.radioid.net/static/users.json'
 
 # Settings for log files
-LOG_PATH        = '/var/log/link/'             # MUST END IN '/'
+LOG_PATH        = '/var/log/'             # MUST END IN '/'
 LOG_NAME        = 'webtables.log'
