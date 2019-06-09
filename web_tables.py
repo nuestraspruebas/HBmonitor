@@ -431,6 +431,8 @@ def rts_update(p):
 	    CTABLE['OPENBRIDGES'][system]['BGCOLOR'] = YELLOW
 	    CTABLE['OPENBRIDGES'][system]['COLOR'] = BLACK
         if action == 'END':
+	    CTABLE['OPENBRIDGES'][system]['BGCOLOR'] = WHITE
+	    CTABLE['OPENBRIDGES'][system]['COLOR'] = BLACK
             if streamId in CTABLE['OPENBRIDGES'][system]['STREAMS']:
                 del CTABLE['OPENBRIDGES'][system]['STREAMS'][streamId]
 
