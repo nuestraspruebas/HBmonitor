@@ -80,7 +80,7 @@ GREEN       = '90EE90'
 BLUE        = '0000ff'
 ORANGE      = 'ff8000'
 WHITE       = 'ffffff'
-YELLOW      = 'ffff88'
+YELLOW      = 'fffebd'
 
 # For importing HTML templates
 def get_template(_file):
