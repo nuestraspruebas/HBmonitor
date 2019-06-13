@@ -6,9 +6,9 @@
         <th style='width: 100px;'>Frequency</th>
         <th style='width: 70px;'>CC<br>LinkedTS</th>
         <th style='width: 45px;'>Slot</th>
-        <th style='width: 20%;'>Call<br>Type</th>
-        <th style='width: 60%;'>Source<br>Subscriber</th>
-        <th style='width: 20%;'>Destination</th>
+        <th style='width: 15%;'>Call<br>Type</th>
+        <th style='width: 50%;'>Source<br>Subscriber</th>
+        <th style='width: 35%;'>Destination</th>
     </tr>
 
     {% for _master in _table['MASTERS'] %}    
@@ -45,9 +45,9 @@
         <th style='width: 100px;'>Connected<br>TX/RX/Lost</th>
         <th style='width: 70px;'>LinkedTS</th>
         <th style='width: 45px;'>Slot</th>
-        <th style='width: 20%;'>Call<br>Type</th>
-        <th style='width: 60%;'>Source<br>Subscriber</th>
-        <th style='width: 20%;'>Destination</th>
+        <th style='width: 15%;'>Call<br>Type</th>
+        <th style='width: 50%;'>Source<br>Subscriber</th>
+        <th style='width: 35%;'>Destination</th>
     </tr>
     
     {% for _peer, _pdata  in _table['PEERS'].iteritems() %}
