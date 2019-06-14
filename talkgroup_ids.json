@@ -10,6 +10,11 @@
       "callsign": "Grupa Torunska",
       "id": "2602122"
     },
+        {
+      "tgid": 26078,
+      "callsign": "DMR Kutno",
+      "id": "26078"
+    },
     {
       "tgid": 26023,
       "callsign": "DMR Kujawiak",
