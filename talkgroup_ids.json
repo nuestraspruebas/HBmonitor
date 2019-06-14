@@ -1,5 +1,15 @@
 {
   "results": [
+        {
+      "tgid": 7,
+      "callsign": "Grupa Lokalna",
+      "id": "7"
+    },
+    {
+      "tgid": 8,
+      "callsign": "HB Cluster",
+      "id": "8"
+    },
     {
       "tgid": 260,
       "callsign": "Poland CQ CQ",
@@ -44,16 +54,7 @@
       "tgid": 260042,
       "callsign": "WiresX Polska",
       "id": "260042"
-    },
-    {
-      "tgid": 7,
-      "callsign": "Grupa Lokalna",
-      "id": "7"
-    },
-    {
-      "tgid": 8,
-      "callsign": "HB Cluster",
-      "id": "8"
     }
+
   ]
 }
