@@ -421,20 +421,10 @@ def rts_update(p):
                 CTABLE['MASTERS'][system]['PEERS'][peer][timeSlot]['SRC'] = ''
                 CTABLE['MASTERS'][system]['PEERS'][peer][timeSlot]['DEST'] = ''
 
-    if system in CTABLE['OPENBRIDGES']:
-	if not CTABLE['OPENBRIDGES'][system]['STREAMS']:
-	    CTABLE['OPENBRIDGES'][system]['BGCOLOR'] = WHITE
-	    CTABLE['OPENBRIDGES'][system]['COLOR'] = BLACK
-	else:
-	    CTABLE['OPENBRIDGES'][system]['BGCOLOR'] = YELLOW
-	    CTABLE['OPENBRIDGES'][system]['COLOR'] = BLACK	
+    if system in CTABLE['OPENBRIDGES']:	
         if action == 'START':
             CTABLE['OPENBRIDGES'][system]['STREAMS'][streamId] = (trx, alias_call(sourceSub, subscriber_ids),'TG{}'.format(destination))
-	    CTABLE['OPENBRIDGES'][system]['BGCOLOR'] = YELLOW
-	    CTABLE['OPENBRIDGES'][system]['COLOR'] = BLACK
         if action == 'END':
-	    CTABLE['OPENBRIDGES'][system]['BGCOLOR'] = WHITE
-	    CTABLE['OPENBRIDGES'][system]['COLOR'] = BLACK
             if streamId in CTABLE['OPENBRIDGES'][system]['STREAMS']:
                 del CTABLE['OPENBRIDGES'][system]['STREAMS'][streamId]
 
