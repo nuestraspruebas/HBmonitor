@@ -2,7 +2,7 @@
 <table style="table-layout:fixed;width:100%; font: 10pt arial, sans-serif">
     <tr style="font: 10pt arial, sans-serif; background-color:#996633; color:white">
         <th style='width: 150px;'>Homebrew Protocol<br>Master Systems</th>
-        <th style='width: 250px;'>ID/Callsign/Location<br>IP:Port/Time Connected</th>
+        <th style='width: 250px;'>ID/Callsign/Location<br>Port/Time Connected</th>
         <th style='width: 100px;'>Frequency</th>
         <th style='width: 70px;'>CC<br>LinkedTS</th>
         <th style='width: 45px;'>Slot</th>
@@ -74,7 +74,7 @@
 <table style="table-layout:fixed;width:100%; font: 10pt arial, sans-serif">
     <tr style="width:100%; font: 10pt arial, sans-serif; background-color:#cc6600; color:white">
         <th style='width: 150px;'>OpenBridge Systems</th>
-        <th style='width: 250px;'>Network ID<br>Target IP:Port</th>
+        <th style='width: 250px;'>Network ID<br>Target Port</th>
         <th style='width: 100%;'>Active Calls</th>
     </tr>
 
@@ -82,7 +82,7 @@
 
     <tr>
         <td style="font-weight:bold"> {{ _openbridge}} </td>
-        <td>{{ _table['OPENBRIDGES'][_openbridge]['NETWORK_ID'] }}<br><div style="font: 8pt arial, sans-serif"><span style="font: 9pt arial, sans-serif;font-weight:bold;color:brown;">Internet</span> src port: {{ _table['OPENBRIDGES'][_openbridge]['TARGET_PORT'] }}</div></td>
+        <td>{{ _table['OPENBRIDGES'][_openbridge]['NETWORK_ID'] }}<br><div style="font: 8pt arial, sans-serif">Port: {{ _table['OPENBRIDGES'][_openbridge]['TARGET_PORT'] }}</div></td>
         <td style="background-color:#{{ _table['OPENBRIDGES'][_openbridge]['BGCOLOR'] }}; color:#{{_table['OPENBRIDGES'][_openbridge]['COLOR'] }}">{% for entry in _table['OPENBRIDGES'][_openbridge]['STREAMS']  %}({{ _table['OPENBRIDGES'][_openbridge]['STREAMS'][entry][0] }} | {{ _table['OPENBRIDGES'][_openbridge]['STREAMS'][entry][1] }} >> {{ _table['OPENBRIDGES'][_openbridge]['STREAMS'][entry][2] }}) {% endfor %}</td>
 
     </tr>
