@@ -492,11 +492,6 @@ def process_message(_message):
         if p[0] == 'GROUP VOICE' and p[2] != 'TX':
             if p[1] == 'END':
                 log_message = '{}: {} {}:   SYS: {:8.8s} SRC: {:9.9s}; {:9.9s} TS: {} TGID: {:7.7s} {:17.17s} SUB: {:9.9s}; {:18.18s} Time: {}s'.format(_now, p[0], p[1], p[3], p[5], alias_call(int(p[5]), subscriber_ids), p[7],p[8],alias_tgid(int(p[8]),talkgroup_ids), p[6], alias_short(int(p[6]), subscriber_ids), p[9])
-		if int(float(p[9])) > 2: # log only if transmission longer as 2 sec
-                    log_lh_message = '{},{},{},{},{},{},{},TS{},TG{},{},{}'.format(_now, p[9], p[0], p[1], p[3], p[5], alias_call(int(p[5]), peer_ids), p[7], p[8], p[6], alias_short(int(p[6]), subscriber_ids))
-                    lh_logfile = open('/var/www/html/lastheard.log', "a")
-                    lh_logfile.write(log_lh_message + '\n')
-                    lh_logfile.close()
             elif p[1] == 'START':
                 log_message = '{}: {} {}: SYS: {:8.8s} SRC: {:9.9s}; {:9.9s} TS: {} TGID: {:7.7s} {:17.17s} SUB: {:9.9s}; {:18.18s}'.format(_now, p[0], p[1], p[3], p[5], alias_call(int(p[5]), subscriber_ids), p[7],p[8], alias_tgid(int(p[8]),talkgroup_ids), p[6], alias_short(int(p[6]), subscriber_ids))
             elif p[1] == 'END WITHOUT MATCHING START':
