@@ -361,10 +361,10 @@ def build_stats():
     global build_time
     now = time()
     if True: #now > build_time + 1:
-        if CONFIG:
+        if CONFIG and CONFIG_INC:
             table = 'd' + dtemplate.render(_table=CTABLE)
             dashboard_server.broadcast(table)
-        if BRIDGES:
+        if BRIDGES and BRIDGES_INC:
             table = 'b' + btemplate.render(_table=BTABLE['BRIDGES'])
             dashboard_server.broadcast(table)
         build_time = now
