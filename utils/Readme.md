@@ -4,7 +4,7 @@ Requirements:
 
  
 
-Modifikation/Extension of hbmonitor (red lines need to add in script web_tables.py) – we log if a call is ended (I think it’s better as start) Please check permissions for writing the logfile in target folder !
+Modifikation/Extension of hbmonitor  – we log if a call is ended (I think it’s better as start) Please check permissions for writing the logfile in target folder !
 
 
         if p[0] == 'GROUP VOICE' and p[2] != 'TX':
@@ -28,13 +28,13 @@ we can skip show in last heard for exmaple from MASTER with name OPB-Link
     if p[3] != 'OPB-Link' and int(float(p[9])) > 2:
 
 
-I recommed to shorten the lastheard.log from time to time (I cut every day to 550 lines, longer values maybe extend the load time and parsing) with this script lh_shorten.sh:
+I recommed to shorten the lastheard.log from time to time (I cut every day to 550 lines, longer values maybe extend the load time and parsing) with this script lastheard.sh:
 
- #!/bin/bash
- mv /var/www/html/lastheard.log /var/www/html/lastheard.log.save
- /usr/bin/tail -550 /var/www/html/lastheard.log.save > /var/www/html/lastheard.log
- mv /var/www/html/lastheard.log /var/www/html/lastheard.log.save
- /usr/bin/tail -550 /var/www/html/lastheard.log.save > /var/www/html/lastheard.log
+    #!/bin/bash
+    mv /var/www/html/lastheard.log /var/www/html/lastheard.log.save
+    /usr/bin/tail -550 /var/www/html/lastheard.log.save > /var/www/html/lastheard.log
+    mv /var/www/html/lastheard.log /var/www/html/lastheard.log.save
+    /usr/bin/tail -550 /var/www/html/lastheard.log.save > /var/www/html/lastheard.log
 
 
 Call this script with crontab for everyday use.
