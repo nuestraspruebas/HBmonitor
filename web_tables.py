@@ -80,6 +80,7 @@ LOGBUF      = deque(100*[''], 100)
 RED         = 'ff6347'
 BLACK       = '000000'
 GREEN       = '90EE90'
+GREEN2      = '008000'
 BLUE        = '0000ff'
 ORANGE      = 'ff8000'
 WHITE       = 'ffffff'
@@ -425,6 +426,10 @@ def rts_update(p):
                 CTABLE['MASTERS'][system]['PEERS'][peer][timeSlot]['DEST'] = ''
 
     if system in CTABLE['OPENBRIDGES']:	
+	if trx == 'RX':
+	    CTABLE['OPENBRIDGES'][system]['COLOR'] = GREEN2
+        if trx == 'TX':
+            CTABLE['OPENBRIDGES'][system]['COLOR'] = RED
         if action == 'START':
             CTABLE['OPENBRIDGES'][system]['STREAMS'][streamId] = (trx, alias_call(sourceSub, subscriber_ids),'TG{}'.format(destination))
         if action == 'END':
