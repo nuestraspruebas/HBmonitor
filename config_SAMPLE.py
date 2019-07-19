@@ -1,5 +1,6 @@
 REPORT_NAME     = 'system.domain.name'  # Name of the monitored HBlink system
 CONFIG_INC      = True                  # Include HBlink stats
+HOMEBREW_INC    = True                  # Include HomeBrew Peers stats
 BRIDGES_INC     = True                  # Include Bridge stats (confbrige.py)
 HBLINK_IP       = '127.0.0.1'           # HBlink's IP Address
 HBLINK_PORT     = 4321                  # HBlink's TCP reporting socket
