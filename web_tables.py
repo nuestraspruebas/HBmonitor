@@ -227,7 +227,7 @@ def build_hblink_table(_config, _stats_table):
                     add_hb_peer(_hbp_data['PEERS'][_peer], _stats_table['MASTERS'][_hbp]['PEERS'], _peer)
 
             # Proccess Peer Systems
-            elif _hbp_data['MODE'] == 'PEER':
+            elif _hbp_data['MODE'] == 'PEER' and HOMEBREW_INC:
                 _stats_table['PEERS'][_hbp] = {}
                 _stats_table['PEERS'][_hbp]['CALLSIGN'] = _hbp_data['CALLSIGN']
                 _stats_table['PEERS'][_hbp]['LOCATION'] = _hbp_data['LOCATION']
