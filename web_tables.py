@@ -228,18 +228,25 @@ def build_hblink_table(_config, _stats_table):
                     add_hb_peer(_hbp_data['PEERS'][_peer], _stats_table['MASTERS'][_hbp]['PEERS'], _peer)
 
             # Proccess Peer Systems
-            elif _hbp_data['MODE'] == 'PEER' and HOMEBREW_INC:
+            elif (_hbp_data['MODE'] == 'XLXPEER' or _hbp_data['MODE'] == 'PEER') and HOMEBREW_INC:
                 _stats_table['PEERS'][_hbp] = {}
+		_stats_table['PEERS'][_hbp]['MODE'] = _hbp_data['MODE']
                 _stats_table['PEERS'][_hbp]['CALLSIGN'] = _hbp_data['CALLSIGN']
                 _stats_table['PEERS'][_hbp]['LOCATION'] = _hbp_data['LOCATION']
                 _stats_table['PEERS'][_hbp]['RADIO_ID'] = int_id(_hbp_data['RADIO_ID'])
                 _stats_table['PEERS'][_hbp]['MASTER_IP'] = _hbp_data['MASTER_IP']
                 _stats_table['PEERS'][_hbp]['MASTER_PORT'] = _hbp_data['MASTER_PORT']
                 _stats_table['PEERS'][_hbp]['STATS'] = {}
-                _stats_table['PEERS'][_hbp]['STATS']['CONNECTION'] = _hbp_data['STATS']['CONNECTION']
-                _stats_table['PEERS'][_hbp]['STATS']['CONNECTED'] = since(_hbp_data['STATS']['CONNECTED'])
-                _stats_table['PEERS'][_hbp]['STATS']['PINGS_SENT'] = _hbp_data['STATS']['PINGS_SENT']
-                _stats_table['PEERS'][_hbp]['STATS']['PINGS_ACKD'] = _hbp_data['STATS']['PINGS_ACKD']
+		if _stats_table['PEERS'][_hbp]['MODE'] == 'XLXPEER':
+	            _stats_table['PEERS'][_hbp]['STATS']['CONNECTION'] = _hbp_data['XLXSTATS']['CONNECTION']
+	            _stats_table['PEERS'][_hbp]['STATS']['CONNECTED'] = since(_hbp_data['XLXSTATS']['CONNECTED'])
+    	            _stats_table['PEERS'][_hbp]['STATS']['PINGS_SENT'] = _hbp_data['XLXSTATS']['PINGS_SENT']
+        	    _stats_table['PEERS'][_hbp]['STATS']['PINGS_ACKD'] = _hbp_data['XLXSTATS']['PINGS_ACKD']	
+		else:
+                    _stats_table['PEERS'][_hbp]['STATS']['CONNECTION'] = _hbp_data['STATS']['CONNECTION']
+                    _stats_table['PEERS'][_hbp]['STATS']['CONNECTED'] = since(_hbp_data['STATS']['CONNECTED'])
+                    _stats_table['PEERS'][_hbp]['STATS']['PINGS_SENT'] = _hbp_data['STATS']['PINGS_SENT']
+                    _stats_table['PEERS'][_hbp]['STATS']['PINGS_ACKD'] = _hbp_data['STATS']['PINGS_ACKD']
                 if _hbp_data['SLOTS'] == 0:
                     _stats_table['PEERS'][_hbp]['SLOTS'] = 'NONE'
                 elif _hbp_data['SLOTS']  <= '2':
@@ -301,10 +308,14 @@ def update_hblink_table(_config, _stats_table):
                 _stats_table['MASTERS'][_hbp]['PEERS'][_peer]['CONNECTED'] = since(_config[_hbp]['PEERS'][hex_str_4(_peer)]['CONNECTED'])
 
     for _hbp in _stats_table['PEERS']:
-        _stats_table['PEERS'][_hbp]['STATS']['CONNECTED'] = since(_config[_hbp]['STATS']['CONNECTED'])
-        _stats_table['PEERS'][_hbp]['STATS']['PINGS_SENT'] = _config[_hbp]['STATS']['PINGS_SENT']
-        _stats_table['PEERS'][_hbp]['STATS']['PINGS_ACKD'] = _config[_hbp]['STATS']['PINGS_ACKD']
-
+	if _stats_table['PEERS'][_hbp]['MODE'] == 'XLXPEER':
+    	    _stats_table['PEERS'][_hbp]['STATS']['CONNECTED'] = since(_config[_hbp]['XLXSTATS']['CONNECTED'])
+    	    _stats_table['PEERS'][_hbp]['STATS']['PINGS_SENT'] = _config[_hbp]['XLXSTATS']['PINGS_SENT']
+    	    _stats_table['PEERS'][_hbp]['STATS']['PINGS_ACKD'] = _config[_hbp]['XLXSTATS']['PINGS_ACKD']
+	else:
+            _stats_table['PEERS'][_hbp]['STATS']['CONNECTED'] = since(_config[_hbp]['STATS']['CONNECTED'])
+            _stats_table['PEERS'][_hbp]['STATS']['PINGS_SENT'] = _config[_hbp]['STATS']['PINGS_SENT']
+            _stats_table['PEERS'][_hbp]['STATS']['PINGS_ACKD'] = _config[_hbp]['STATS']['PINGS_ACKD']
     build_stats()
 
 #
@@ -501,6 +512,12 @@ def process_message(_message):
         if p[0] == 'GROUP VOICE' and p[2] != 'TX':
             if p[1] == 'END':
                 log_message = '{}: {} {}:   SYS: {:8.8s} SRC: {:9.9s}; {:9.9s} TS: {} TGID: {:7.7s} {:17.17s} SUB: {:9.9s}; {:18.18s} Time: {}s'.format(_now[11:], p[0][6:], p[1], p[3], p[5], alias_call(int(p[5]), subscriber_ids), p[7],p[8],alias_tgid(int(p[8]),talkgroup_ids), p[6], alias_short(int(p[6]), subscriber_ids), int(float(p[9])))
+		## log only to file if system is NOT OpenBridge event (not logging open bridge system, name depends on your OB definitions) AND transmit time is LONGER as 2sec (make sense for very short transmits)
+		#if int(float(p[9])) > 2: 
+                #    log_lh_message = '{},{},{},{},{},{},{},TS{},TG{},{},{},{}'.format(_now, p[9], p[0], p[1], p[3], p[5], alias_call(int(p[5]), subscriber_ids), p[7], p[8],alias_tgid(int(p[8]),talkgroup_ids),p[6], alias_short(int(p[6]), subscriber_ids))
+                #    lh_logfile = open('/var/www/html/lastheard.log', "a")
+                #    lh_logfile.write(log_lh_message + '\n')
+                #    lh_logfile.close()
             elif p[1] == 'START':
                 log_message = '{}: {} {}: SYS: {:8.8s} SRC: {:9.9s}; {:9.9s} TS: {} TGID: {:7.7s} {:17.17s} SUB: {:9.9s}; {:18.18s}'.format(_now[11:], p[0][6:], p[1], p[3], p[5], alias_call(int(p[5]), subscriber_ids), p[7],p[8], alias_tgid(int(p[8]),talkgroup_ids), p[6], alias_short(int(p[6]), subscriber_ids))
             elif p[1] == 'END WITHOUT MATCHING START':
