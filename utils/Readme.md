@@ -6,7 +6,7 @@ Requirements:
 
 Extension of hbmonitor  – we log if a call is ended (I think it’s better as start) Please check permissions for writing the logfile in target folder !
 
-Please remove in web_tables.py coment # in lines 516 - 520 
+Please remove comment char # in lines 516 - 520 
 
 https://github.com/sp2ong/HBmonitor/blob/master/web_tables.py#L516
 
