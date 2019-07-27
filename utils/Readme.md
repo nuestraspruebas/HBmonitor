@@ -4,20 +4,11 @@ Requirements:
 
  
 
-Modifikation/Extension of hbmonitor  – we log if a call is ended (I think it’s better as start) Please check permissions for writing the logfile in target folder !
+Extension of hbmonitor  – we log if a call is ended (I think it’s better as start) Please check permissions for writing the logfile in target folder !
 
+Please remove in web_tables.py coment # in lines 516 - 520 
 
-        if p[0] == 'GROUP VOICE' and p[2] != 'TX':
-            if p[1] == 'END':
-                log_message = '{}: {} {}:   SYS: {:12.12s} SRC: {:8.8s}; {:15.15s} TS: {} TGID: {:>5s} SUB: {:8.8s}; {:30.30s} Time: {}s'.format(_now, p[0], p[1], p[3], p[5], alias_call(int(p[5]), peer_ids), p[7], p[8], p[6], alias_short
-                # log only to file if system is NOT OpenBridge event (not logging open bridge system, name depends on your OB definitions) AND transmit time is LONGER as 2sec (make sense for very short transmits)
-                if int(float(p[9])) > 2:
-                    log_lh_message = '{},{},{},{},{},{},{},TS{},TG{},{},{}'.format(_now, p[9], p[0], p[1], p[3], p[5], alias_call(int(p[5]), peer_ids), p[7], p[8], p[6], alias_short(int(p[6]), subscriber_ids))
-                    lh_logfile = open('/var/www/html/lastheard.log', "a")
-                    lh_logfile.write(log_lh_message + '\n')
-                    lh_logfile.close()
-            elif p[1] == 'START':
-
+https://github.com/sp2ong/HBmonitor/blob/master/web_tables.py#L516
 
 The line: 
 
@@ -45,11 +36,9 @@ Put this file in /etc/cron.daily/
 Call the website with http://[YOUR_HOST/log.php it runs with a refresh/reload time of 30sec, change the script for other timeset.
 
 
-Heiko, DL1BZ
 
+Thank you, Heiko DL1BZ, who shared the lastheard code.
 
-PS 
-Thank you, Heiko, who shared the lastheard code
 The version of web_tables.py in my fork contains the display in the column of group names.
 
 73 Waldek SP2ONG
