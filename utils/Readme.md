@@ -13,7 +13,7 @@ Modifikation/Extension of hbmonitor  â€“ we log if a call is ended (I think itâ€
                 # log only to file if system is NOT OpenBridge event (not logging open bridge system, name depends on your OB definitions) AND transmit time is LONGER as 2sec (make sense for very short transmits)
                 if int(float(p[9])) > 2:
                     log_lh_message = '{},{},{},{},{},{},{},TS{},TG{},{},{}'.format(_now, p[9], p[0], p[1], p[3], p[5], alias_call(int(p[5]), peer_ids), p[7], p[8], p[6], alias_short(int(p[6]), subscriber_ids))
-                    lh_logfile = open('/var/www/vhosts/dmr.bzsax.de/public_html/lastheard.log', "a")
+                    lh_logfile = open('/var/www/html/lastheard.log', "a")
                     lh_logfile.write(log_lh_message + '\n')
                     lh_logfile.close()
             elif p[1] == 'START':
