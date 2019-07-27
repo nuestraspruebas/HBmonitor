@@ -50,7 +50,7 @@ Heiko, DL1BZ
 
 PS 
 Thank you, Heiko, who shared the lastheard code
-The attached version of web_tables.py contains the display in the column of group names
+The version of web_tables.py in my fork contains the display in the column of group names.
 
 73 Waldek SP2ONG
 
