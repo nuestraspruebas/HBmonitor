@@ -39,7 +39,7 @@ I recommed to shorten the lastheard.log from time to time (I cut every day to 55
 
 Call this script with crontab for everyday use.
 
-Put this file in /etc/cron.d/daily
+Put this file in /etc/cron.daily/
 
 
 Call the website with http://[YOUR_HOST/log.php it runs with a refresh/reload time of 30sec, change the script for other timeset.
