@@ -182,12 +182,10 @@ def add_hb_peer(_peer_conf, _ctable_loc, _peer):
     cip = int(lip[0])
     if cip == 44:
 	addressIP="HamNET"
-        _ctable_peer['SCOLOR'] = "green"
-	
+        _ctable_peer['SCOLOR'] = "green"	
     else:
 	addressIP="Internet"
         _ctable_peer['SCOLOR'] = "brown"
-
     # Simple translation items
     _ctable_peer['COLORCODE'] = int(_peer_conf['COLORCODE'])
     _ctable_peer['CALLSIGN'] = _peer_conf['CALLSIGN']
@@ -241,7 +239,7 @@ def build_hblink_table(_config, _stats_table):
 	            _stats_table['PEERS'][_hbp]['STATS']['CONNECTION'] = _hbp_data['XLXSTATS']['CONNECTION']
 	            _stats_table['PEERS'][_hbp]['STATS']['CONNECTED'] = since(_hbp_data['XLXSTATS']['CONNECTED'])
     	            _stats_table['PEERS'][_hbp]['STATS']['PINGS_SENT'] = _hbp_data['XLXSTATS']['PINGS_SENT']
-        	    _stats_table['PEERS'][_hbp]['STATS']['PINGS_ACKD'] = _hbp_data['XLXSTATS']['PINGS_ACKD']	
+        	    _stats_table['PEERS'][_hbp]['STATS']['PINGS_ACKD'] = _hbp_data['XLXSTATS']['PINGS_ACKD']
 		else:
                     _stats_table['PEERS'][_hbp]['STATS']['CONNECTION'] = _hbp_data['STATS']['CONNECTION']
                     _stats_table['PEERS'][_hbp]['STATS']['CONNECTED'] = since(_hbp_data['STATS']['CONNECTED'])
@@ -439,16 +437,13 @@ def rts_update(p):
     if system in CTABLE['OPENBRIDGES']:	
 	if trx == 'RX':
 	    CTABLE['OPENBRIDGES'][system]['COLOR'] = GREEN2
-        if trx == 'TX':
+        else:
             CTABLE['OPENBRIDGES'][system]['COLOR'] = RED
         if action == 'START':
             CTABLE['OPENBRIDGES'][system]['STREAMS'][streamId] = (trx, alias_call(sourceSub, subscriber_ids),'TG{}'.format(destination))
         if action == 'END':
             if streamId in CTABLE['OPENBRIDGES'][system]['STREAMS']:
                 del CTABLE['OPENBRIDGES'][system]['STREAMS'][streamId]
-
-
-
 
     if system in CTABLE['PEERS']:
         bgcolor = GREEN
