@@ -1,6 +1,4 @@
 ---
-### COMPLETELY UNSUPPORTED SOFTWARE - DO NOT ASK FOR SUPPORT OR FEATURES ###
----
 
 **Socket-Based Reporting for HBlink**
 
