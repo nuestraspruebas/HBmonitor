@@ -11,13 +11,23 @@
       "tgid": "TG2"
    },
    {
+      "id": 6,
+      "callsign": "HB Reflector",
+      "tgid": "TG6"
+   },
+       {
+      "id": 7,
+      "callsign": "HB Local",
+      "tgid": "TG7"
+   },
+   {
       "id": 8,
-      "callsign": "REGIONAL TG8",
+      "callsign": "HB Cluster",
       "tgid": "TG8"
    },
    {
       "id": 9,
-      "callsign": "LOCAL OR REFLECTOR TG9",
+      "callsign": "TG LOCAL",
       "tgid": "TG9"
    },
    {
