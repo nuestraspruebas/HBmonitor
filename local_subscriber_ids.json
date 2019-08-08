@@ -32,16 +32,6 @@
       "surname": ""
     },
     {
-      "callsign": "SP2SWR", 
-      "city": "", 
-      "country": "Poland", 
-      "fname": "", 
-      "id": 260214410, 
-      "remarks": "", 
-      "state": "", 
-      "surname": ""
-    },
-    {
       "callsign": "SR2TO", 
       "city": "", 
       "country": "Poland", 
@@ -71,26 +61,6 @@
       "state": "", 
       "surname": ""
     },
-    {
-      "callsign": "SP2RXY", 
-      "city": "", 
-      "country": "Poland", 
-      "fname": "", 
-      "id": 260214310, 
-      "remarks": "", 
-      "state": "", 
-      "surname": ""
-    },
-    {
-      "callsign": "OE1KDA", 
-      "city": "", 
-      "country": "Poland", 
-      "fname": "Krzysztof", 
-      "id": 2321025, 
-      "remarks": "", 
-      "state": "", 
-      "surname": ""
-    }, 
     {
       "callsign": "OPBLink", 
       "city": "", 
@@ -160,16 +130,6 @@
       "remarks": "", 
       "state": "", 
       "surname": ""
-    },
-    {
-      "callsign": "F8VOO", 
-      "city": "", 
-      "country": "", 
-      "fname": "Anatol", 
-      "id": 2080254, 
-      "remarks": "", 
-      "state": "", 
-      "surname": ""
-    } 
+    }
   ]
 }
