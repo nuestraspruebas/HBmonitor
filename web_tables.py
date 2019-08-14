@@ -84,6 +84,7 @@ GREEN2      = '008000'
 BLUE        = '0000ff'
 ORANGE      = 'ff8000'
 WHITE       = 'ffffff'
+WHITE2       = 'fffff0'
 YELLOW      = 'fffebd'
 
 # For importing HTML templates
@@ -428,7 +429,7 @@ def rts_update(p):
             if action == 'END':
                 CTABLE['MASTERS'][system]['PEERS'][peer][timeSlot]['TS'] = False
                 CTABLE['MASTERS'][system]['PEERS'][peer][timeSlot]['COLOR'] = BLACK
-                CTABLE['MASTERS'][system]['PEERS'][peer][timeSlot]['BGCOLOR'] = WHITE
+                CTABLE['MASTERS'][system]['PEERS'][peer][timeSlot]['BGCOLOR'] = WHITE2
                 CTABLE['MASTERS'][system]['PEERS'][peer][timeSlot]['TYPE'] = ''
                 CTABLE['MASTERS'][system]['PEERS'][peer][timeSlot]['SUB'] = ''
                 CTABLE['MASTERS'][system]['PEERS'][peer][timeSlot]['SRC'] = ''
@@ -465,7 +466,7 @@ def rts_update(p):
         if action == 'END':
             CTABLE['PEERS'][system][timeSlot]['TS'] = False
             CTABLE['PEERS'][system][timeSlot]['COLOR'] = BLACK
-            CTABLE['PEERS'][system][timeSlot]['BGCOLOR'] = WHITE
+            CTABLE['PEERS'][system][timeSlot]['BGCOLOR'] = WHITE2
             CTABLE['PEERS'][system][timeSlot]['TYPE'] = ''
             CTABLE['PEERS'][system][timeSlot]['SUB'] = ''
             CTABLE['PEERS'][system][timeSlot]['SRC'] = ''
