@@ -13,7 +13,7 @@
 
     {% for _master in _table['MASTERS'] %}    
 
-    <tr>
+    <tr style="background-color:#fffff0;">
         <td style="font-weight:bold" rowspan="{{ (_table['MASTERS'][_master]['PEERS']|length * 2) +1 }}"> {{_master}}<br><div style="font: 8pt arial, sans-serif">{{_table['MASTERS'][_master]['REPEAT']}}</div></td>
     </tr>
     {% for _client, _cdata in _table['MASTERS'][_master]['PEERS'].iteritems() %}
@@ -26,7 +26,7 @@
         <td style="background-color:#{{ _cdata[1]['BGCOLOR'] }}; color:#{{ _cdata[1]['COLOR'] }}">{{ _cdata[1]['TYPE'] }}</td>
         <td style="background-color:#{{ _cdata[1]['BGCOLOR'] }}; color:#{{ _cdata[1]['COLOR'] }}">{{ _cdata[1]['SUB'] }}</td>
         <td style="background-color:#{{ _cdata[1]['BGCOLOR'] }}; color:#{{ _cdata[1]['COLOR'] }}">{{ _cdata[1]['DEST'] }}</td>
-        <tr>
+        <tr style="background-color:#fffff0;">
         <td style="background-color:#{{ _cdata[2]['BGCOLOR'] }}; color:#{{ _cdata[2]['COLOR'] }}">TS2</td>
         <td style="background-color:#{{ _cdata[2]['BGCOLOR'] }}; color:#{{ _cdata[2]['COLOR'] }}">{{ _cdata[2]['TYPE'] }}</td>
         <td style="background-color:#{{ _cdata[2]['BGCOLOR'] }}; color:#{{ _cdata[2]['COLOR'] }}">{{ _cdata[2]['SUB'] }}</td>
@@ -51,7 +51,7 @@
     </tr>
     
     {% for _peer, _pdata  in _table['PEERS'].iteritems() %}
-    <tr>
+    <tr style="background-color:#fffff0;">
         <td style="font-weight:bold" rowspan="2"> {{ _peer}}<br><span style="font-weight:normal; font: 7pt arial, sans-serif;">Mode: {{ _table['PEERS'][_peer]['MODE'] }}</span></td>
         <td rowspan="2">{{ _table['PEERS'][_peer]['RADIO_ID'] }}, <b><font color=blue>{{_table['PEERS'][_peer]['CALLSIGN']}}</font></b>, {{_table['PEERS'][_peer]['LOCATION']}}<br><div style="font: 8pt arial, sans-serif">Master: {{ _table['PEERS'][_peer]['MASTER_IP'] }}:{{ _table['PEERS'][_peer]['MASTER_PORT'] }}</div></td>
         <td rowspan="2"; style={{ 'background-color:#98FB98' if _table['PEERS'][_peer]['STATS']['CONNECTION'] == 'YES' else ';background-color:#ff704d' }}>{{ _table['PEERS'][_peer]['STATS']['CONNECTED'] }}<br><div style="font: 8pt arial, sans-serif">{{ _table['PEERS'][_peer]['STATS']['PINGS_SENT'] }} / {{ _table['PEERS'][_peer]['STATS']['PINGS_ACKD'] }} / {{ _table['PEERS'][_peer]['STATS']['PINGS_SENT'] - _table['PEERS'][_peer]['STATS']['PINGS_ACKD'] }}</div></td>
@@ -61,7 +61,7 @@
         <td style="background-color:#{{ _pdata[1]['BGCOLOR'] }}; color:#{{ _pdata[1]['COLOR'] }}">{{ _pdata[1]['TYPE'] }}</td>
         <td style="background-color:#{{ _pdata[1]['BGCOLOR'] }}; color:#{{ _pdata[1]['COLOR'] }}">{{ _pdata[1]['SUB'] }}</td>
         <td style="background-color:#{{ _pdata[1]['BGCOLOR'] }}; color:#{{ _pdata[1]['COLOR'] }}">{{ _pdata[1]['DEST'] }}</td>
-        <tr>
+        <trstyle="background-color:#fffff0;">
         <td style="background-color:#{{ _pdata[2]['BGCOLOR'] }}; color:#{{ _pdata[2]['COLOR'] }}">TS2</td>
         <td style="background-color:#{{ _pdata[2]['BGCOLOR'] }}; color:#{{ _pdata[2]['COLOR'] }}">{{ _pdata[2]['TYPE'] }}</td>
         <td style="background-color:#{{ _pdata[2]['BGCOLOR'] }}; color:#{{ _pdata[2]['COLOR'] }}">{{ _pdata[2]['SUB'] }}</td>
@@ -80,7 +80,7 @@
 
     {% for _openbridge in _table['OPENBRIDGES'] %}
 
-    <tr>
+    <tr style="background-color:#fffff0;">
         <td style="font-weight:bold"> {{ _openbridge}} </td>
         <td><div style="margin-top:3px;margin-bottom:3px;">ID: <span style="font-weight:bold;">{{ _table['OPENBRIDGES'][_openbridge]['NETWORK_ID'] }}</span> (span style="font: 8pt arial, sans-serif">Port: {{ _table['OPENBRIDGES'][_openbridge]['TARGET_PORT'] }}</span></div></td>
         <td style="background-color:white; font-weight: 600; color:#{{ _table['OPENBRIDGES'][_openbridge]['COLOR'] }}">{% for entry in _table['OPENBRIDGES'][_openbridge]['STREAMS']  %}({{ _table['OPENBRIDGES'][_openbridge]['STREAMS'][entry][0] }} | {{ _table['OPENBRIDGES'][_openbridge]['STREAMS'][entry][1] }} >> {{ _table['OPENBRIDGES'][_openbridge]['STREAMS'][entry][2] }}) {% endfor %}</td>
