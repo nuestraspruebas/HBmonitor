@@ -82,7 +82,7 @@
 
     <tr style="background-color:#fffff0;">
         <td style="font-weight:bold"> {{ _openbridge}} </td>
-        <td><div style="margin-top:3px;margin-bottom:3px;">ID: <span style="font-weight:bold;">{{ _table['OPENBRIDGES'][_openbridge]['NETWORK_ID'] }}</span> (span style="font: 8pt arial, sans-serif">Port: {{ _table['OPENBRIDGES'][_openbridge]['TARGET_PORT'] }}</span></div></td>
+        <td><div style="margin-top:3px;margin-bottom:3px;">Net ID: <span style="font-weight:bold;">{{ _table['OPENBRIDGES'][_openbridge]['NETWORK_ID'] }}</span> (span style="font: 8pt arial, sans-serif">Port: {{ _table['OPENBRIDGES'][_openbridge]['TARGET_PORT'] }}</span></div></td>
         <td style="background-color:#fffff0; font: 8pt arial, sans-serif; font-weight: 600;color:#{{ _table['OPENBRIDGES'][_openbridge]['COLOR'] }}">{% for entry in _table['OPENBRIDGES'][_openbridge]['STREAMS']  %}({{ _table['OPENBRIDGES'][_openbridge]['STREAMS'][entry][0] }} | {{ _table['OPENBRIDGES'][_openbridge]['STREAMS'][entry][1] }} >> {{ _table['OPENBRIDGES'][_openbridge]['STREAMS'][entry][2] }}) {% endfor %}</td>
 
     </tr>
