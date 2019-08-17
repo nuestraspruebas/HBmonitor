@@ -17,7 +17,7 @@
         <td style="font-weight:bold" rowspan="{{ (_table['MASTERS'][_master]['PEERS']|length * 2) +1 }}"> {{_master}}<br><div style="font: 8pt arial, sans-serif">{{_table['MASTERS'][_master]['REPEAT']}}</div></td>
     </tr>
     {% for _client, _cdata in _table['MASTERS'][_master]['PEERS'].iteritems() %}
-    <tr>
+    <tr style="background-color:#fffff0;">
         <td rowspan="2">{{ _client }}, <b><font color=blue>{{ _cdata['CALLSIGN'] }}</font></b>, {{ _cdata['LOCATION'] }}<br><div style="font: 8pt arial,sans-serif"><span style="font: 9pt arial, sans-serif;font-weight:bold;color:{{ _cdata['SCOLOR'] }};">{{ _cdata['IP'] }}</span> src port: {{ _cdata['PORT'] }} / connected since <b>{{ _cdata['CONNECTED'] }}</b></div></td>
         <td rowspan="2">{{ _cdata['RX_FREQ'] }}<br>{{ _cdata['TX_FREQ'] }}</td>
         <td rowspan="2">CC: {{ _cdata['COLORCODE'] }}<br>{{ _cdata['SLOTS'] }}</td>
