@@ -39,7 +39,7 @@ echo "<TR><TH>Date<TH>Time (local)<TH>Slot<TH>TG<TH>TG Name<TH>Callsign (DMR-Id)
 
 // define location and name of logfile
 // best practise is write logfile in the directory where this php script is saved because some php installations have problems to read files outside the webserver directories
-$handle = fopen("lastheard.log","r");
+$handle = fopen("/opt/HBmonitor/lastheard.log","r");
 
 // import to array
 while (($data = fgetcsv ($handle)) !==false)
