@@ -22,10 +22,10 @@ we can skip show in last heard for exmaple from MASTER with name OPB-Link
 I recommed to shorten the lastheard.log from time to time (I cut every day to 550 lines, longer values maybe extend the load time and parsing) with this script lastheard:
 
     #!/bin/bash
-    mv /var/www/html/lastheard.log /var/www/html/lastheard.log.save
-    /usr/bin/tail -550 /var/www/html/lastheard.log.save > /var/www/html/lastheard.log
-    mv /var/www/html/lastheard.log /var/www/html/lastheard.log.save
-    /usr/bin/tail -550 /var/www/html/lastheard.log.save > /var/www/html/lastheard.log
+    mv /opt/HBmonitor/lastheard.log /opt/HBmonitor/lastheard.log.save
+    /usr/bin/tail -150 /opt/HBmonitor/lastheard.log.save > /opt/HBmonitor/lastheard.log
+    mv /opt/HBmonitor/lastheard.log /opt/HBmonitor/lastheard.log.save
+    /usr/bin/tail -150 /opt/HBmonitor/lastheard.log.save > /var/www/html/lastheard.log
 
 
 Call this script with crontab for everyday use.
