@@ -238,12 +238,18 @@ def build_hblink_table(_config, _stats_table):
                 _stats_table['PEERS'][_hbp]['STATS'] = {}
 		if _stats_table['PEERS'][_hbp]['MODE'] == 'XLXPEER':
 	            _stats_table['PEERS'][_hbp]['STATS']['CONNECTION'] = _hbp_data['XLXSTATS']['CONNECTION']
-	            _stats_table['PEERS'][_hbp]['STATS']['CONNECTED'] = since(_hbp_data['XLXSTATS']['CONNECTED'])
+		    if _hbp_data['XLXSTATS']['CONNECTION'] == "YES":
+	            	_stats_table['PEERS'][_hbp]['STATS']['CONNECTED'] = since(_hbp_data['XLXSTATS']['CONNECTED'])
+		    else:
+	            	_stats_table['PEERS'][_hbp]['STATS']['CONNECTED'] = "--   --"
     	            _stats_table['PEERS'][_hbp]['STATS']['PINGS_SENT'] = _hbp_data['XLXSTATS']['PINGS_SENT']
         	    _stats_table['PEERS'][_hbp]['STATS']['PINGS_ACKD'] = _hbp_data['XLXSTATS']['PINGS_ACKD']
 		else:
                     _stats_table['PEERS'][_hbp]['STATS']['CONNECTION'] = _hbp_data['STATS']['CONNECTION']
-                    _stats_table['PEERS'][_hbp]['STATS']['CONNECTED'] = since(_hbp_data['STATS']['CONNECTED'])
+		    if _hbp_data['STATS']['CONNECTION'] == "YES":
+		    	_stats_table['PEERS'][_hbp]['STATS']['CONNECTED'] = since(_hbp_data['STATS']['CONNECTED'])
+		    else:
+		    	_stats_table['PEERS'][_hbp]['STATS']['CONNECTED'] = "--   --"
                     _stats_table['PEERS'][_hbp]['STATS']['PINGS_SENT'] = _hbp_data['STATS']['PINGS_SENT']
                     _stats_table['PEERS'][_hbp]['STATS']['PINGS_ACKD'] = _hbp_data['STATS']['PINGS_ACKD']
                 if _hbp_data['SLOTS'] == 0:
@@ -308,11 +314,19 @@ def update_hblink_table(_config, _stats_table):
 
     for _hbp in _stats_table['PEERS']:
 	if _stats_table['PEERS'][_hbp]['MODE'] == 'XLXPEER':
-    	    _stats_table['PEERS'][_hbp]['STATS']['CONNECTED'] = since(_config[_hbp]['XLXSTATS']['CONNECTED'])
+	    if _config[_hbp]['XLXSTATS']['CONNECTION'] == "YES":
+    		_stats_table['PEERS'][_hbp]['STATS']['CONNECTED'] = since(_config[_hbp]['XLXSTATS']['CONNECTED'])
+	    else:
+    		_stats_table['PEERS'][_hbp]['STATS']['CONNECTED'] = "--   --"
+            _stats_table['PEERS'][_hbp]['STATS']['CONNECTION'] = _config[_hbp]['XLXSTATS']['CONNECTION']
     	    _stats_table['PEERS'][_hbp]['STATS']['PINGS_SENT'] = _config[_hbp]['XLXSTATS']['PINGS_SENT']
     	    _stats_table['PEERS'][_hbp]['STATS']['PINGS_ACKD'] = _config[_hbp]['XLXSTATS']['PINGS_ACKD']
 	else:
-            _stats_table['PEERS'][_hbp]['STATS']['CONNECTED'] = since(_config[_hbp]['STATS']['CONNECTED'])
+	    if _config[_hbp]['STATS']['CONNECTION'] == "YES":
+    		_stats_table['PEERS'][_hbp]['STATS']['CONNECTED'] = since(_config[_hbp]['STATS']['CONNECTED'])
+	    else:
+    		_stats_table['PEERS'][_hbp]['STATS']['CONNECTED'] = "--   --"
+            _stats_table['PEERS'][_hbp]['STATS']['CONNECTION'] = _config[_hbp]['STATS']['CONNECTION']
             _stats_table['PEERS'][_hbp]['STATS']['PINGS_SENT'] = _config[_hbp]['STATS']['PINGS_SENT']
             _stats_table['PEERS'][_hbp]['STATS']['PINGS_ACKD'] = _config[_hbp]['STATS']['PINGS_ACKD']
     build_stats()
