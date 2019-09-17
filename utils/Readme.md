@@ -6,9 +6,7 @@ Requirements:
 
 Extension of hbmonitor  – we log if a call is ended (I think it’s better as start) Please check permissions for writing the logfile in target folder !
 
-Please remove comment char # in lines 516 - 520 
 
-https://github.com/sp2ong/HBmonitor/blob/master/web_tables.py#L516
 
 The line: 
 
@@ -41,7 +39,6 @@ Call the website with http://[YOUR_HOST/log.php it runs with a refresh/reload ti
 
 Thank you, Heiko DL1BZ, who shared the lastheard code.
 
-The version of web_tables.py in my fork contains the display in the column of group names.
 
 73 Waldek SP2ONG
 
