@@ -1,0 +1,25 @@
+{
+  "count": 2, 
+  "results": [
+    {
+      "callsign": "N0CALL", 
+      "city": "", 
+      "country": "", 
+      "fname": "N0CALL", 
+      "id": 1234567, 
+      "remarks": "", 
+      "state": "", 
+      "surname": ""
+    },
+    {
+      "callsign": "SP2ABC", 
+      "city": "", 
+      "country": "", 
+      "fname": "Jan", 
+      "id": 26032254, 
+      "remarks": "", 
+      "state": "", 
+      "surname": ""
+    } 
+  ]
+}
