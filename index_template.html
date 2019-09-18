@@ -5,10 +5,12 @@
 <title>HBLink monitor</title>
       <script type="text/javascript">
          var sock = null;
+         var ellog = null;
          
          window.onload = function() {
             var wsuri;
             
+            ellog = document.getElementById('log');
             hblink_table = document.getElementById('hblink');
             confbridge_table = document.getElementById('bridge');
             
@@ -62,10 +64,11 @@
          };
          
          function log(_msg) {
+            ellog.innerHTML += _msg + '\n';
+            ellog.scrollTop = ellog.scrollHeight;
          };
          
       </script>
-
 <style>
 a:link {
   color: brown;
