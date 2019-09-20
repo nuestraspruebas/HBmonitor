@@ -549,18 +549,18 @@ def process_message(_bmessage):
                       f.write("<br><fieldset style=\"border-radius: 8px; background-color:#e0e0e0e0; text-algin: lef; margin-left:15px;margin-right:15px;font-size:14px;border-top-left-radius: 10px; border-top-right-radius: 10px;border-bottom-left-radius: 10px; border-bottom-right-radius: 10px;\">\n")
                       f.write("<legend><b><font color=\"#000\">&nbsp;.: Lastheard (10) :.&nbsp;</font></b></legend>\n")
                       f.write("<table style=\"width:100%; font: 10pt arial, sans-serif\">\n")
-                      f.write("<TR style=\" height: 32px;font: 10pt arial, sans-serif; background-color:#7e6959; color:white\"><TH>Date<TH>Time<TH>Slot<TH>TG#<TH>TG Name<TH>Callsign (DMR-Id)<TH>Name<TH>Dur TX (s)<TH>Source ID<TH>System</TR>\n")
+                      f.write("<TR style=\" height: 32px;font: 10pt arial, sans-serif; background-color:#7e6959; color:white\"><TH>Date</TH><TH>Time</TH><TH>Slot</TH><TH>TG#</TH><TH>TG Name<TH>Callsign (DMR-Id)</TH><TH>Name</TH><TH>Dur TX (s)</TH><TH>Source ID<TH>System</TH></TR>\n")
                       with open(curDir+"/log/lastheard.log", "r") as textfile:
                           for row in islice(reversed(list(csv.reader(textfile))),100):
                             duration=row[1]
                             dur=str(int(float(duration.strip())))
                             if row[10] not in my_list:
                                if len(row) < 13:
-                                   hline="<TR style=\"background-color:#f9f9f9f9;\"><TD>"+row[0][:10]+"<TD>"+row[0][11:16]+"<TD>"+row[7][2:]+"<TD><font color=#996633><b>"+row[8][2:]+"</b></font><TD><font color=#356244><b>"+row[9]+"</b></font><TD><font color=brown><b><a target=\"_blank\" href=https://qrz.com/db/"+row[11]+">"+row[11]+"</a></b></font><span style=\"font: 7pt arial,sans-serif\"> ("+row[10]+")</span><TD><font color=#002d62><b></b></font><TD>"+dur+"<TD>"+row[5]+"<TD>"+row[4]+"</TR>"
+                                   hline="<TR style=\"background-color:#f9f9f9f9;\"><TD>"+row[0][:10]+"</TD><TD>"+row[0][11:16]+"</TD><TD>"+row[7][2:]+"</TD><TD><font color=#996633><b>"+row[8][2:]+"</b></font></TD><TD><font color=#356244><b>"+row[9]+"</b></font></TD><TD><font color=brown><b><a target=\"_blank\" href=https://qrz.com/db/"+row[11]+">"+row[11]+"</a></b></font><span style=\"font: 7pt arial,sans-serif\"> ("+row[10]+")</span></TD><TD><font color=#002d62><b></b></font></TD><TD>"+dur+"</TD><TD>"+row[5]+"</TD><TD>"+row[4]+"</TD></TR>"
                                    my_list.append(row[10])
                                    n += 1
                                else:
-                                   hline="<TR style=\"background-color:#f9f9f9f9;\"><TD>"+row[0][:10]+"<TD>"+row[0][11:16]+"<TD>"+row[7][2:]+"<TD><font color=#996633><b>"+row[8][2:]+"</b></font><TD><font color=#356244><b>"+row[9]+"</b></font><TD><font color=brown><b><a target=\"_blank\" href=https://qrz.com/db/"+row[11]+">"+row[11]+"</a></b></font><span style=\"font: 7pt arial,sans-serif\"> ("+row[10]+")</span><TD><font color=#002d62><b>"+row[12]+"</b></font><TD>"+dur+"<TD>"+row[5]+"<TD>"+row[4]+"</TR>"
+                                   hline="<TR style=\"background-color:#f9f9f9f9;\"><TD>"+row[0][:10]+"</TD><TD>"+row[0][11:16]+"</TD><TD>"+row[7][2:]+"</TD><TD><font color=#996633><b>"+row[8][2:]+"</b></font></TD><TD><font color=#356244><b>"+row[9]+"</b></font></TD><TD><font color=brown><b><a target=\"_blank\" href=https://qrz.com/db/"+row[11]+">"+row[11]+"</a></b></font><span style=\"font: 7pt arial,sans-serif\"> ("+row[10]+")</span></TD><TD><font color=#002d62><b>"+row[12]+"</b></font></TD><TD>"+dur+"</TD><TD>"+row[5]+"</TD><TD>"+row[4]+"</TD></TR>"
                                    my_list.append(row[10])
                                    n += 1
                                f.write(hline+"\n")
