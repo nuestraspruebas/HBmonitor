@@ -11,6 +11,16 @@
       "state": "", 
       "surname": ""
     },
+       {
+      "callsign": "------", 
+      "city": "", 
+      "country": "", 
+      "fname": "------", 
+      "id": 0, 
+      "remarks": "", 
+      "state": "", 
+      "surname": ""
+    },
     {
       "callsign": "SP2ABC", 
       "city": "", 
