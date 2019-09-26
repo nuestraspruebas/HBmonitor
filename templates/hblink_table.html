@@ -7,8 +7,8 @@
         <th style='width: 160px;'>Callsign (DMR Id)<br>Location</th>
         <th style='width: 90px;'>Time Connected</th>
         <th style='width: 40px;'>Slot</th>
-        <th style='width: 55%;'>Source Subscriber</th>
-        <th style='width: 35%;'>Destination</th>
+        <th style='width: 50%;'>Source Subscriber</th>
+        <th style='width: 40%;'>Destination</th>
     </tr>
 
     {% for _master in _table['MASTERS'] %}    
@@ -47,8 +47,8 @@
         <th style='width: 160px;'>Callsign (DMR Id)<br>Master IP:Port</th>
         <th style='width: 90px;'>Connected<br>TX/RX/Lost</th>
         <th style='width: 42px;'>Slot</th>
-        <th style='width: 55%;'>Source Subscriber</th>
-        <th style='width: 35%;'>Destination</th>
+        <th style='width: 50%;'>Source Subscriber</th>
+        <th style='width: 40%;'>Destination</th>
     </tr>
     {% for _peer, _pdata  in _table['PEERS'].items() %}
     <tr style="background-color:#f9f9f9f9;">
