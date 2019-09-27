@@ -1,4 +1,4 @@
-REPORT_NAME     = 'Dashboard local of DMR Network'           # Name of the monitored HBlink system
+REPORT_NAME     = 'Dashboard of local DMR network'           # Name of the monitored HBlink system
 CONFIG_INC      = True                           # Include HBlink stats
 LASTHEARD_INC   = True                           # Include Lastheard (10)
 HOMEBREW_INC    = True                           # Include Homebrew Peers 
