@@ -556,11 +556,11 @@ def process_message(_bmessage):
                             dur=str(int(float(duration.strip())))
                             if row[10] not in my_list:
                                if len(row) < 13:
-                                   hline="<TR style=\"background-color:#f9f9f9f9;\"><TD>"+row[0][:10]+"</TD><TD>"+row[0][11:16]+"</TD><TD>"+row[7][2:]+"</TD><TD><font color=#996633><b>"+row[8][2:]+"</b></font></TD><TD><font color=#356244><b>"+row[9]+"</b></font></TD><TD><font color=brown><b><a target=\"_blank\" href=https://qrz.com/db/"+row[11]+">"+row[11]+"</a></b></font><span style=\"font: 7pt arial,sans-serif\"> ("+row[10]+")</span></TD><TD><font color=#002d62><b></b></font></TD><TD>"+dur+"</TD><TD>"+row[6]+"</TD><TD>"+row[4]+"</TD></TR>"
+                                   hline="<TR style=\"background-color:#f9f9f9f9;\"><TD>"+row[0][:10]+"</TD><TD>"+row[0][11:16]+"</TD><TD>"+row[7][2:]+"</TD><TD><font color=blue><b>"+row[8][2:]+"</b></font></TD><TD><font color=green><b>"+row[9]+"</b></font></TD><TD><font color=brown><b><a target=\"_blank\" href=https://qrz.com/db/"+row[11]+">"+row[11]+"</a></b></font><span style=\"font: 7pt arial,sans-serif\"> ("+row[10]+")</span></TD><TD><font color=#002d62><b></b></font></TD><TD>"+dur+"</TD><TD>"+row[6]+"</TD><TD>"+row[4]+"</TD></TR>"
                                    my_list.append(row[10])
                                    n += 1
                                else:
-                                   hline="<TR style=\"background-color:#f9f9f9f9;\"><TD>"+row[0][:10]+"</TD><TD>"+row[0][11:16]+"</TD><TD>"+row[7][2:]+"</TD><TD><font color=#996633><b>"+row[8][2:]+"</b></font></TD><TD><font color=#356244><b>"+row[9]+"</b></font></TD><TD><font color=brown><b><a target=\"_blank\" href=https://qrz.com/db/"+row[11]+">"+row[11]+"</a></b></font><span style=\"font: 7pt arial,sans-serif\"> ("+row[10]+")</span></TD><TD><font color=#002d62><b>"+row[12]+"</b></font></TD><TD>"+dur+"</TD><TD>"+row[6]+"</TD><TD>"+row[4]+"</TD></TR>"
+                                   hline="<TR style=\"background-color:#f9f9f9f9;\"><TD>"+row[0][:10]+"</TD><TD>"+row[0][11:16]+"</TD><TD>"+row[7][2:]+"</TD><TD><font color=blue><b>"+row[8][2:]+"</b></font></TD><TD><font color=green><b>"+row[9]+"</b></font></TD><TD><font color=brown><b><a target=\"_blank\" href=https://qrz.com/db/"+row[11]+">"+row[11]+"</a></b></font><span style=\"font: 7pt arial,sans-serif\"> ("+row[10]+")</span></TD><TD><font color=#002d62><b>"+row[12]+"</b></font></TD><TD>"+dur+"</TD><TD>"+row[6]+"</TD><TD>"+row[4]+"</TD></TR>"
                                    my_list.append(row[10])
                                    n += 1
                                f.write(hline+"\n")
