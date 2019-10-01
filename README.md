@@ -51,3 +51,16 @@ This program is distributed in the hope that it will be useful, but WITHOUT ANY 
 
 You should have received a copy of the GNU General Public License along with this program; if not, write to the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301  USA
 
+
+    cd /opt
+    git clone https://github.com/sp2ong/HBmonitor.git
+    cd HBmonitor
+    chmod +x install.sh
+    ./install.sh
+    cp config-SAMPLE.py config.py
+    edit config.py and change what you necessary
+    cp utils/hbmon.service /lib/systemd/system/
+    systemctl enable hbmon
+    systemctl start hbmon
+    systemctl status hbmon
+
