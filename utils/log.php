@@ -22,17 +22,18 @@ echo "<html><Title>Last Heard HBlink</title>\n\n";
 echo "<head>";
 echo "<style>";
 echo "table { border-collapse: collapse; border: 1px solid #C1DAD7; width: 100%;}";
-echo "th { background-color: #f18458; height: 30px; text-align: left; color: white;}";
-echo "tr:nth-child(even) { background-color: #f1fafa; }";
+echo "th { background-color: #f18458; height: 30px; text-align: center; color: white;}";
+echo "tr:nth-child(even) { background-color: #fafafa; }";
 echo "td {font-family: Monospace; height: 20px;}";
 echo "a:link { text-decoration: none; }";
 echo "</style>";
 echo "<meta http-equiv=\"refresh\" content=\"30\"></head>\n\n";
-echo "<body><font face=\"arial,helvetica\"><font size=\"+1\">\n\n";
+echo "<body style=\"background-color:#EEEEEE;font:10pt arial, sans-serif\"><font face=\"arial,helvetica\"><font size=\"+1\">\n\n";
 echo "<H2 align=\"center\">Activity & Last Heard Dashboard HBlink</H2>";
 echo "<p align=\"middle\">\n";
 echo "<font size=\"-2\">&copy; developed by DL1BZ as logging-extension of <A HREF=\"https://github.com/n0mjs710/HBmonitor\">HBmonitor</A> (2018,2019)</font><BR>\n";
 echo "<div style=\"overflow-x:auto;\">\n\n";
+echo "<center><fieldset style=\"background-color:#e0e0e0e0; width:1050px;margin-left:15px;margin-right:15px;margin-top:0px;font-size:14px;border-top-left-radius: 10px; border-top-right-radius: 10px;border-bottom-left-radius: 10px; border-bottom-right-radius: 10px;\">";
 echo "<table>\n\n";
 // define table row titels
 echo "<TR><TH>Date<TH>Time (local)<TH>Slot<TH>TG<TH>TG Name<TH>Callsign (DMR-Id)<TH>Name<TH>Length (min:s)<TH>Source<TH>System</TR>\n\n";
@@ -88,7 +89,7 @@ if ($user_id[$i]=="1234567") {$user_call[$i] = "*NoCallsign*"; $user_id[$i]="-";
 echo "<TR>".$s.$date_eu[2].".".$date_eu[1].".".$date_eu[0].$s.substr($log_time[$i],11,5).$s.$ts[$i].$s.'<font color=blue><b>'.$tg[$i].'</b></font>'.$s.'<font color=green><b>'.$tgname[$i].'</b></font>'.$s.'<font color=brown><b>'.$user_call[$i]."</b></font><font size=\"-1\"> (".$user_id[$i].")</font>".$s.TRIM($user_name[$i]).$s.date('H:i', mktime(0,round($transmit_timer[$i]))).$s.$src_name[$i].$s.$system[$i]."</TR>\n";
 }
 
-echo "\n</table></div></body></html>";
+echo "\n</table><fieldset></div></body></html>";
 
 // close logfile after parsing
 fclose ($handle);
