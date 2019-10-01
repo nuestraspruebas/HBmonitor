@@ -29,7 +29,7 @@ echo "a:link { text-decoration: none; }";
 echo "</style>";
 echo "<meta http-equiv=\"refresh\" content=\"30\"></head>\n\n";
 echo "<body style=\"background-color:#EEEEEE;font:10pt arial, sans-serif\"><font face=\"arial,helvetica\"><font size=\"+1\">\n\n";
-echo "<H2 align=\"center\">Activity & Last Heard Dashboard HBlink</H2>";
+echo "<H2 align=\"center\">Dashboard Activity & Last Heard HBlink</H2>";
 echo "<p align=\"middle\">\n";
 echo "<font size=\"-2\">&copy; developed by DL1BZ as logging-extension of <A HREF=\"https://github.com/n0mjs710/HBmonitor\">HBmonitor</A> (2018,2019)</font><BR>\n";
 echo "<div style=\"overflow-x:auto;\">\n\n";
