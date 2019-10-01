@@ -159,21 +159,21 @@ def add_hb_peer(_peer_conf, _ctable_loc, _peer):
     # if the Frequency is 000.xxx assume it's not an RF peer, otherwise format the text fields
     # (9 char, but we are just software)  see https://wiki.brandmeister.network/index.php/Homebrew/example/php2
 
-    if _peer_conf['TX_FREQ'][:3].decode('utf-8') == '000' or _peer_conf['RX_FREQ'][:3].decode('utf-8') == '000':
+    if _peer_conf['TX_FREQ'][:3] == b'000' or _peer_conf['RX_FREQ'][:3] == b'000':
         _ctable_peer['TX_FREQ'] = 'N/A'
         _ctable_peer['RX_FREQ'] = 'N/A'
     else:
         _ctable_peer['TX_FREQ'] = _peer_conf['TX_FREQ'][:3].decode('utf-8') + '.' + _peer_conf['TX_FREQ'][3:7].decode('utf-8') + ' MHz'
         _ctable_peer['RX_FREQ'] = _peer_conf['RX_FREQ'][:3].decode('utf-8') + '.' + _peer_conf['RX_FREQ'][3:7].decode('utf-8') + ' MHz'
 
-    # timeslots are kinda complicated too. 0 = none, 1 or 2 mean that one slot, 3 is both, and anythign else it considered DMO
+    # timeslots are kinda complicated too. 0 = none, 1 or 2 mean that one slot, 3 is both, and anything else it considered DMO
     # Slots (0, 1=1, 2=2, 1&2=3 Duplex, 4=Simplex) see https://wiki.brandmeister.network/index.php/Homebrew/example/php2
     
-    if (_peer_conf['SLOTS'].decode('utf-8') == '0'):
+    if (_peer_conf['SLOTS'] == b'0'):
         _ctable_peer['SLOTS'] = 'NONE'
-    elif (_peer_conf['SLOTS'].decode('utf-8') == '1' or _peer_conf['SLOTS'].decode('utf-8') == '2'):
+    elif (_peer_conf['SLOTS'] == b'1' or _peer_conf['SLOTS'] == b'2'):
         _ctable_peer['SLOTS'] = _peer_conf['SLOTS'].decode('utf-8')
-    elif (_peer_conf['SLOTS'].decode('utf-8') == '3'):
+    elif (_peer_conf['SLOTS'] == b'3'):
         _ctable_peer['SLOTS'] = 'Duplex'
     else:
         _ctable_peer['SLOTS'] = 'Simplex'
@@ -247,11 +247,11 @@ def build_hblink_table(_config, _stats_table):
                         _stats_table['PEERS'][_hbp]['STATS']['CONNECTED'] = "--   --"
                     _stats_table['PEERS'][_hbp]['STATS']['PINGS_SENT'] = _hbp_data['STATS']['PINGS_SENT']
                     _stats_table['PEERS'][_hbp]['STATS']['PINGS_ACKD'] = _hbp_data['STATS']['PINGS_ACKD']
-                if _hbp_data['SLOTS'].decode('utf-8') == 0:
+                if _hbp_data['SLOTS'] == b'0':
                     _stats_table['PEERS'][_hbp]['SLOTS'] = 'NONE'
-                elif _hbp_data['SLOTS'].decode('utf-8')  == '1' or _hbp_data['SLOTS'].decode('utf-8') == '2':
+                elif _hbp_data['SLOTS'] == b'1' or _hbp_data['SLOTS'] == b'2':
                     _stats_table['PEERS'][_hbp]['SLOTS'] = _hbp_data['SLOTS'].decode('utf-8')
-                elif _hbp_data['SLOTS'].decode('utf-8')  == '3':
+                elif _hbp_data['SLOTS'] == b'3':
                     _stats_table['PEERS'][_hbp]['SLOTS'] = '1&2'
                 else:
                     _stats_table['PEERS'][_hbp]['SLOTS'] = 'DMO'
