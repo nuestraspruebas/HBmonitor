@@ -469,22 +469,12 @@ def rts_update(p):
             color = BLACK
 
         if action == 'START':
-            if destination == 9 and sourcePeer == 2602122:
-                CTABLE['PEERS'][system][timeSlot]['TS'] = False
-                CTABLE['PEERS'][system][timeSlot]['COLOR'] = BLACK
-                CTABLE['PEERS'][system][timeSlot]['BGCOLOR'] = WHITE2
-                CTABLE['PEERS'][system][timeSlot]['TYPE'] = ''
-                CTABLE['PEERS'][system][timeSlot]['SUB'] = ''
-                CTABLE['PEERS'][system][timeSlot]['SRC'] = ''
-                CTABLE['PEERS'][system][timeSlot]['DEST'] = ''
-            else:
-                CTABLE['PEERS'][system][timeSlot]['TS'] = True
-                CTABLE['PEERS'][system][timeSlot]['COLOR'] = color
-                CTABLE['PEERS'][system][timeSlot]['BGCOLOR'] = bgcolor
-#               CTABLE['PEERS'][system][timeSlot]['TYPE'] = callType[6:]
-                CTABLE['PEERS'][system][timeSlot]['SUB'] = '{} ({})'.format(alias_short(sourceSub, subscriber_ids), sourceSub)
-                CTABLE['PEERS'][system][timeSlot]['SRC'] = sourcePeer
-                CTABLE['PEERS'][system][timeSlot]['DEST'] = '{} ({})'.format(alias_tgid(destination,talkgroup_ids),destination)
+            CTABLE['PEERS'][system][timeSlot]['TS'] = True
+            CTABLE['PEERS'][system][timeSlot]['COLOR'] = color
+            CTABLE['PEERS'][system][timeSlot]['BGCOLOR'] = bgcolor
+            CTABLE['PEERS'][system][timeSlot]['SUB'] = '{} ({})'.format(alias_short(sourceSub,subscriber_ids),sourceSub)
+            CTABLE['PEERS'][system][timeSlot]['SRC'] = sourcePeer
+            CTABLE['PEERS'][system][timeSlot]['DEST'] = '{} ({})'.format(alias_tgid(destination,talkgroup_ids),destination)
         if action == 'END':
             CTABLE['PEERS'][system][timeSlot]['TS'] = False
             CTABLE['PEERS'][system][timeSlot]['COLOR'] = BLACK
