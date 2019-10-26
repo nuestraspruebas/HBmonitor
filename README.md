@@ -63,4 +63,4 @@ You should have received a copy of the GNU General Public License along with thi
     systemctl enable hbmon
     systemctl start hbmon
     systemctl status hbmon
-
+    forward TCP ports 8080 and 9000 in firewall
