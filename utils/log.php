@@ -22,7 +22,7 @@ echo "<html><Title>Last Heard HBlink</title>\n\n";
 echo "<head>";
 echo "<style>";
 echo "table { border-collapse: collapse; border: 1px solid #C1DAD7; width: 100%;}";
-echo "th { background-color: #f18458; height: 30px; text-align: center; color: white;}";
+echo "th { background-color: #9dc209; height: 30px; text-align: left; color: black;}";
 echo "tr:nth-child(even) { background-color: #fafafa; }";
 echo "td {font-family: Monospace; height: 20px;}";
 echo "a:link { text-decoration: none; }";
@@ -36,7 +36,7 @@ echo "<div style=\"overflow-x:auto;\">\n\n";
 echo "<center><fieldset style=\"background-color:#e0e0e0e0; width:1050px;margin-left:15px;margin-right:15px;margin-top:0px;font-size:14px;border-top-left-radius: 10px; border-top-right-radius: 10px;border-bottom-left-radius: 10px; border-bottom-right-radius: 10px;\">";
 echo "<table>\n\n";
 // define table row titels
-echo "<TR><TH>&nbsp;&nbsp;Date<TH>Time (local)<TH>Slot<TH>TG<TH>TG Name<TH>Callsign (DMR-Id)<TH>Name<TH>Length (min:s)<TH>Source<TH>System</TR>\n\n";
+echo "<TR><TH>&nbsp;&nbsp;Date<TH>Time (local)<TH>Slot<TH>TG<TH>TG Name<TH>Callsign (DMR-Id)<TH>Name<TH>Dur TX (s)<TH>Source<TH>System</TR>\n\n";
 
 // define location and name of logfile
 // best practise is write logfile in the directory where this php script is saved because some php installations have problems to read files outside the webserver directories
@@ -86,7 +86,7 @@ $log_time[$i]=substr($log_time[$i],0,19);
 if ($user_id[$i]=="1234567") {$user_call[$i] = "*NoCallsign*"; $user_id[$i]="-";}
 
 // output table
-echo "<TR>".$s.'&nbsp;'.$date_eu[2].".".$date_eu[1].".".$date_eu[0].$s.substr($log_time[$i],11,5).$s.$ts[$i].$s.'<font color=blue><b>'.$tg[$i].'</b></font>'.$s.'<font color=green><b>'.$tgname[$i].'</b></font>'.$s.'<font color=brown><b>'.$user_call[$i]."</b></font><font size=\"-1\"> (".$user_id[$i].")</font>".$s.TRIM($user_name[$i]).$s.date('H:i', mktime(0,round($transmit_timer[$i]))).$s.$src_name[$i].$s.$system[$i]."</TR>\n";
+echo "<TR>".$s.'&nbsp;'.$date_eu[2].".".$date_eu[1].".".$date_eu[0].$s.substr($log_time[$i],11,5).$s.$ts[$i].$s.'<font color=blue><b>'.$tg[$i].'</b></font>'.$s.'<font color=green><b>'.$tgname[$i].'</b></font>'.$s.'<font color=brown><b>'.$user_call[$i]."</b></font><font size=\"-1\"> (".$user_id[$i].")</font>".$s.TRIM($user_name[$i]).$s."<center>".round($transmit_timer[$i])."</center>".$s.$src_name[$i].$s.$system[$i]."</TR>\n";
 }
 
 echo "\n</table><fieldset></div></body></html>";
