@@ -537,7 +537,7 @@ def process_message(_bmessage):
                       n=0
                       f = open(curDir+"/templates/lastheard.html", "w")
                       f.write("<br><fieldset style=\"border-radius: 8px; background-color:#e0e0e0e0; text-algin: lef; margin-left:15px;margin-right:15px;font-size:14px;border-top-left-radius: 10px; border-top-right-radius: 10px;border-bottom-left-radius: 10px; border-bottom-right-radius: 10px;\">\n")
-                      f.write("<legend><b><font color=\"#000\">&nbsp;.: Lastheard (10) :.&nbsp;</font></b></legend>\n")
+                      f.write("<legend><b><font color=\"#000\">&nbsp;.: Lastheard :.&nbsp;</font></b></legend>\n")
                       f.write("<table style=\"width:100%; font: 10pt arial, sans-serif\">\n")
                       f.write("<TR style=\" height: 32px;font: 10pt arial, sans-serif; background-color:#9dc209; color:black\"><TH>Date</TH><TH>Time</TH><TH>Slot</TH><TH>TG#</TH><TH>TG Name<TH>Callsign (DMR-Id)</TH><TH>Name</TH><TH>Dur TX (s)</TH><TH>Source ID<TH>System</TH></TR>\n")
                       with open(curDir+"/log/lastheard.log", "r") as textfile:
