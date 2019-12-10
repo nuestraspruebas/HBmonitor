@@ -158,14 +158,17 @@ def add_hb_peer(_peer_conf, _ctable_loc, _peer):
 
     # if the Frequency is 000.xxx assume it's not an RF peer, otherwise format the text fields
     # (9 char, but we are just software)  see https://wiki.brandmeister.network/index.php/Homebrew/example/php2
-
-    if _peer_conf['TX_FREQ'][:3] == b'000' or _peer_conf['RX_FREQ'][:3] == b'000':
-        _ctable_peer['TX_FREQ'] = 'N/A'
-        _ctable_peer['RX_FREQ'] = 'N/A'
+    
+    if _peer_conf['TX_FREQ'].isalnum() and _peer_conf['RX_FREQ'].isalnum():
+        if _peer_conf['TX_FREQ'][:3] == b'000' or _peer_conf['RX_FREQ'][:3] == b'000':
+            _ctable_peer['TX_FREQ'] = 'N/A'
+            _ctable_peer['RX_FREQ'] = 'N/A'
+        else:
+            _ctable_peer['TX_FREQ'] = _peer_conf['TX_FREQ'][:3].decode('utf-8') + '.' + _peer_conf['TX_FREQ'][3:7].decode('utf-8') + ' MHz'
+            _ctable_peer['RX_FREQ'] = _peer_conf['RX_FREQ'][:3].decode('utf-8') + '.' + _peer_conf['RX_FREQ'][3:7].decode('utf-8') + ' MHz'
     else:
-        _ctable_peer['TX_FREQ'] = _peer_conf['TX_FREQ'][:3].decode('utf-8') + '.' + _peer_conf['TX_FREQ'][3:7].decode('utf-8') + ' MHz'
-        _ctable_peer['RX_FREQ'] = _peer_conf['RX_FREQ'][:3].decode('utf-8') + '.' + _peer_conf['RX_FREQ'][3:7].decode('utf-8') + ' MHz'
-
+        _ctable_peer['TX_FREQ'] = 'N/A'
+        _ctable_peer['RX_FREQ'] = 'N/A'      
     # timeslots are kinda complicated too. 0 = none, 1 or 2 mean that one slot, 3 is both, and anything else it considered DMO
     # Slots (0, 1=1, 2=2, 1&2=3 Duplex, 4=Simplex) see https://wiki.brandmeister.network/index.php/Homebrew/example/php2
     
