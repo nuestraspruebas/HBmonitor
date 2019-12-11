@@ -721,24 +721,7 @@ class web_server(Resource):
     isLeaf = True
     def render_GET(self, request):
         logging.info('static website requested: %s', request)
-        if WEB_AUTH:
-          user = WEB_USER.encode('utf-8')
-          password = WEB_PASS.encode('utf-8')
-          auth = request.getHeader('Authorization')
-          if auth and auth.split(' ')[0] == 'Basic':
-             decodeddata = base64.b64decode(auth.split(' ')[1])
-             if decodeddata.split(b':') == [user, password]:
-                 return (index_html).encode('utf-8')
-          request.setResponseCode(401)
-          request.setHeader('WWW-Authenticate', 'Basic realm="realmname"')
-          return "<html<head><meta http-equiv=\"refresh\" content=\"10;url=http://hblink.pl\"> \
-                  </hread><body style=\"background-color: #EEEEEE;\"><br><br><br><center> \
-                    <fieldset style=\"width:600px;background-color:#e0e0e0e0;text-algin: center; margin-left:15px;margin-right:15px; \
-                     font-size:14px;border-top-left-radius: 10px; border-top-right-radius: 10px; \
-                     border-bottom-left-radius: 10px; border-bottom-right-radius: 10px;\"> \
-                  <p><font size=5><b>Wymagana autoryzacja</font></p></filed></center></body></html>".encode('utf-8')
-        else:
-            return (index_html).encode('utf-8')
+        return (index_html).encode('utf-8')
 
 if __name__ == '__main__':
     logging.basicConfig(
