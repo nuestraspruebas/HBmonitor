@@ -530,20 +530,19 @@ def process_message(_bmessage):
                 # log only to file if system is NOT OpenBridge event (not logging open bridge system, name depends on your OB definitions) AND transmit time is LONGER as 2sec (make sense for very short transmits)
                 if LASTHEARD_INC:
                    if int(float(p[9]))> 2: 
-                      curDir = os.getcwd()
                       log_lh_message = '{},{},{},{},{},{},{},TS{},TG{},{},{},{}'.format(_now, p[9], p[0], p[1], p[3], p[5], alias_call(int(p[5]), subscriber_ids), p[7], p[8],alias_tgid(int(p[8]),talkgroup_ids),p[6], alias_short(int(p[6]), subscriber_ids))
-                      lh_logfile = open(curDir+"/log/lastheard.log", "a")
+                      lh_logfile = open(LOG_PATH+"lastheard.log", "a")
                       lh_logfile.write(log_lh_message + '\n')
                       lh_logfile.close()
                       # Lastheard in Dashboard by SP2ONG
                       my_list=[]
                       n=0
-                      f = open(curDir+"/templates/lastheard.html", "w")
+                      f = open(PATH+"templates/lastheard.html", "w")
                       f.write("<br><fieldset style=\"border-radius: 8px; background-color:#e0e0e0e0; text-algin: lef; margin-left:15px;margin-right:15px;font-size:14px;border-top-left-radius: 10px; border-top-right-radius: 10px;border-bottom-left-radius: 10px; border-bottom-right-radius: 10px;\">\n")
                       f.write("<legend><b><font color=\"#000\">&nbsp;.: Lastheard :.&nbsp;</font></b></legend>\n")
                       f.write("<table style=\"width:100%; font: 10pt arial, sans-serif\">\n")
                       f.write("<TR style=\" height: 32px;font: 10pt arial, sans-serif; background-color:#9dc209; color:black\"><TH>Date</TH><TH>Time</TH><TH>Slot</TH><TH>TG#</TH><TH>TG Name<TH>Callsign (DMR-Id)</TH><TH>Name</TH><TH>Dur TX (s)</TH><TH>Source ID<TH>System</TH></TR>\n")
-                      with open(curDir+"/log/lastheard.log", "r") as textfile:
+                      with open(LOG_PATH+"lastheard.log", "r") as textfile:
                           for row in islice(reversed(list(csv.reader(textfile))),100):
                             duration=row[1]
                             dur=str(int(float(duration.strip())))
