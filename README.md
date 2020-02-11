@@ -1,5 +1,5 @@
 # hbmonitor3
-Python 3 implementation of N0MJS HBmonitor for HBlink
+Python 3 implementation of N0MJS HBmonitor for HBlink https://github.com/kc1awv/hbmonitor3
 
 ***This software is VERY, VERY, VERY new!***
 
