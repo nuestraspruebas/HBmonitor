@@ -36,6 +36,7 @@ from twisted.protocols.basic import NetstringReceiver
 from twisted.internet import reactor, task
 from twisted.web.server import Site
 from twisted.web.resource import Resource
+import base64
 
 # Autobahn provides websocket service under Twisted
 from autobahn.twisted.websocket import WebSocketServerProtocol, WebSocketServerFactory
@@ -684,12 +685,45 @@ class dashboardFactory(WebSocketServerFactory):
 #
 # STATIC WEBSERVER
 #
-
 class web_server(Resource):
     isLeaf = True
     def render_GET(self, request):
+        global BRIDGES_INC
         logging.info('static website requested: %s', request)
-        return (index_html).encode('utf-8')
+        if WEB_AUTH:
+          user = WEB_USER.encode('utf-8')
+          password = WEB_PASS.encode('utf-8')
+          auth = request.getHeader('Authorization')
+          if auth and auth.split(' ')[0] == 'Basic':
+             decodeddata = base64.b64decode(auth.split(' ')[1])
+             if decodeddata.split(b':') == [user, password]:
+                 logging.info('Authorization OK')
+                 if request.uri == b'/':
+                    BRIDGES_INC = False
+                    return (index_html).encode('utf-8')
+                 elif request.uri == b'/bridges':
+                    BRIDGES_INC = True
+                    return (bridges_html).encode('utf-8')
+                 else:
+                    return  "Bad request".encode('utf-8')
+          request.setResponseCode(401)
+          request.setHeader('WWW-Authenticate', 'Basic realm="realmname"')
+          logging.info('Someone wanted to get access without authorization')
+          return "<html<head> \
+                  </hread><body style=\"background-color: #EEEEEE;\"><br><br><br><center> \
+                    <fieldset style=\"width:600px;background-color:#e0e0e0e0;text-algin: center; margin-left:15px;margin-right:15px; \
+                     font-size:14px;border-top-left-radius: 10px; border-top-right-radius: 10px; \
+                     border-bottom-left-radius: 10px; border-bottom-right-radius: 10px;\"> \
+                  <p><font size=5><b>Authorization Required</font></p></filed></center></body></html>".encode('utf-8')
+        else:
+            if request.uri == b'/':
+                BRIDGES_INC = False
+                return (index_html).encode('utf-8')
+            elif request.uri == b'/bridges':
+                BRIDGES_INC = True
+                return (bridges_html).encode('utf-8')
+            else:
+                return  "Bad request".encode('utf-8')
 
 if __name__ == '__main__':
     logging.basicConfig(
@@ -749,13 +783,16 @@ if __name__ == '__main__':
     btemplate = env.get_template('bridge_table.html')
 
     # Create Static Website index file
+    bridges_html = get_template(PATH + 'bridge_template.html')
+    bridges_html = bridges_html.replace('<<<system_name>>>', REPORT_NAME)
     index_html = get_template(PATH + 'index_template.html')
     index_html = index_html.replace('<<<system_name>>>', REPORT_NAME)
     if CLIENT_TIMEOUT > 0:
         index_html = index_html.replace('<<<timeout_warning>>>', 'Continuous connections not allowed. Connections time out in {} seconds'.format(CLIENT_TIMEOUT))
+        bridges_html = bridges_html.replace('<<<timeout_warning>>>', 'Continuous connections not allowed. Connections time out in {} seconds'.format(CLIENT_TIMEOUT))
     else:
         index_html = index_html.replace('<<<timeout_warning>>>', '')
-
+        bridges_html = bridges_html.replace('<<<timeout_warning>>>', '')
     # Start update loop
     update_stats = task.LoopingCall(build_stats)
     update_stats.start(FREQUENCY)
