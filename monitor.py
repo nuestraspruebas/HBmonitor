@@ -91,6 +91,14 @@ WHITE       = 'ffffff'
 WHITE2      = 'f9f9f9f9'
 YELLOW      = 'fffccd'
 
+# OPB Filter for lastheard
+def get_opbf():
+   if len(OPB_FILTER) !=0:
+       mylist = OPBFILTER.replace(' ','').split(',')
+   else:
+       mylist = []
+   return mylist
+
 # For importing HTML templates
 def get_template(_file):
     with open(_file, 'r') as html:
@@ -539,7 +547,8 @@ def process_message(_bmessage):
                 log_message = '{}: {} {}:   SYS: {:8.8s} SRC: {:9.9s}; {:9.9s} TS: {} TGID: {:7.7s} {:17.17s} SUB: {:9.9s}; {:18.18s} Time: {}s'.format(_now[11:], p[0][6:], p[1], p[3], p[5], alias_call(int(p[5]), subscriber_ids), p[7],p[8],alias_tgid(int(p[8]),talkgroup_ids), p[6], alias_short(int(p[6]), subscriber_ids), int(float(p[9])))
                 # log only to file if system is NOT OpenBridge event (not logging open bridge system, name depends on your OB definitions) AND transmit time is LONGER as 2sec (make sense for very short transmits)
                 if LASTHEARD_INC:
-                   if int(float(p[9]))> 2: 
+                   opbfilter = get_opbf()
+                   if p[5] not in opbfilter and int(float(p[9]))> 2: 
                       log_lh_message = '{},{},{},{},{},{},{},TS{},TG{},{},{},{}'.format(_now, p[9], p[0], p[1], p[3], p[5], alias_call(int(p[5]), subscriber_ids), p[7], p[8],alias_tgid(int(p[8]),talkgroup_ids),p[6], alias_short(int(p[6]), subscriber_ids))
                       lh_logfile = open(LOG_PATH+"lastheard.log", "a")
                       lh_logfile.write(log_lh_message + '\n')
