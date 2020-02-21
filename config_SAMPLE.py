@@ -9,7 +9,7 @@ FREQUENCY       = 10                             # Frequency to push updates to 
 WEB_SERVER_PORT = 8080                           # Has to be above 1024 if you're not running as root
 CLIENT_TIMEOUT  = 0                              # Clients are timed out after this many seconds, 0 to disable
 
-# Put list of NET_ID from OPB links to don't show in lastheard, for example: "260210,260211,260212"
+# Put list of NETWORK_ID from OPB links to don't show in lastheard, for example: "260210,260211,260212"
 OPB_FILTER = ""
 
 # Files and stuff for loading alias files for mapping numbers to names
