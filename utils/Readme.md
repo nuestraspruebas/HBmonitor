@@ -14,7 +14,7 @@ The line:
 
 we can skip show in last heard for exmaple from MASTER with name OPB-Link
 
-    if p[3] != 'OPB-Link' and int(float(p[9])) > 2:
+    if p[5] != 'OPB-Link' and int(float(p[9])) > 2:
 
 
 I recommed to shorten the lastheard.log from time to time (I cut every day to 150 lines, longer values maybe extend the load time and parsing) with this script lastheard:
