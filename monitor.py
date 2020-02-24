@@ -36,6 +36,7 @@ from twisted.protocols.basic import NetstringReceiver
 from twisted.internet import reactor, task
 from twisted.web.server import Site
 from twisted.web.resource import Resource
+import base64
 
 # Autobahn provides websocket service under Twisted
 from autobahn.twisted.websocket import WebSocketServerProtocol, WebSocketServerFactory
