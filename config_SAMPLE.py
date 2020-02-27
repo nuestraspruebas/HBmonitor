@@ -12,6 +12,11 @@ CLIENT_TIMEOUT  = 0                              # Clients are timed out after t
 # Put list of NETWORK_ID from OPB links to don't show in lastheard, for example: "260210,260211,260212"
 OPB_FILTER = ""
 
+# Authorization of access to dashboard
+WEB_AUTH =  False
+WEB_USER =  'hblink'
+WEB_PASS =  'hblink'
+
 # Files and stuff for loading alias files for mapping numbers to names
 PATH            = './'                           # MUST END IN '/'
 PEER_FILE       = 'peer_ids.json'                # Will auto-download from DMR-MARC
