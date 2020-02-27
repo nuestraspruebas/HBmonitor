@@ -95,7 +95,7 @@ YELLOW      = 'fffccd'
 # OPB Filter for lastheard
 def get_opbf():
    if len(OPB_FILTER) !=0:
-       mylist = OPBFILTER.replace(' ','').split(',')
+       mylist = OPB_FILTER.replace(' ','').split(',')
    else:
        mylist = []
    return mylist
