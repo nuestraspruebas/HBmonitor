@@ -471,10 +471,6 @@ def rts_update(p):
 
     if system in CTABLE['OPENBRIDGES']:
         CTABLE['OPENBRIDGES'][system]['TRX'] = trx
-        if trx == 'RX':
-                CTABLE['OPENBRIDGES'][system]['COLOR'] = GREEN2
-        else:
-                CTABLE['OPENBRIDGES'][system]['COLOR'] = RED
         if action == 'START':
             CTABLE['OPENBRIDGES'][system]['STREAMS'][streamId] = (trx, alias_call(sourceSub, subscriber_ids),'TG{}'.format(destination))
         if action == 'END':
