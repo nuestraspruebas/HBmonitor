@@ -64,3 +64,6 @@ You should have received a copy of the GNU General Public License along with thi
     systemctl start hbmon
     systemctl status hbmon
     forward TCP ports 8080 and 9000 in firewall
+    
+    Please remember the table lastherad displays only station transmissions that are longer than 2 seconds
+    
