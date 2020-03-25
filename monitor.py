@@ -789,7 +789,7 @@ if __name__ == '__main__':
     btemplate = env.get_template('bridge_table.html')
 
     # Create Static Website index file
-    bridges_html = get_template(PATH + 'bridges_template.html')
+    bridges_html = get_template(PATH + 'bridge_template.html')
     bridges_html = bridges_html.replace('<<<system_name>>>', REPORT_NAME)
     index_html = get_template(PATH + 'index_template.html')
     index_html = index_html.replace('<<<system_name>>>', REPORT_NAME)
