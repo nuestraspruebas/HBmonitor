@@ -4,9 +4,9 @@
 
 ---
 
-**hbmonitor3**
+**hbmonitor3 by KC1AWV**
 
-Python 3 implementation of N0MJS HBmonitor for HBlink https://github.com/kc1awv/hbmonitor3 by KC1AWV
+Python 3 implementation of N0MJS HBmonitor for HBlink https://github.com/kc1awv/hbmonitor3 
 
 ---
 
