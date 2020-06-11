@@ -470,7 +470,6 @@ def rts_update(p):
                 CTABLE['MASTERS'][system]['PEERS'][peer][timeSlot]['DEST'] = ''
 
     if system in CTABLE['OPENBRIDGES']:
-        CTABLE['OPENBRIDGES'][system]['TRX'] = trx
         if action == 'START':
             CTABLE['OPENBRIDGES'][system]['STREAMS'][streamId] = (trx, alias_call(sourceSub, subscriber_ids),'TG{}'.format(destination))
         if action == 'END':
