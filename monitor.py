@@ -21,10 +21,16 @@
 #   Python 3 port by Steve Miller, KC1AWV <smiller@kc1awv.net>
 #
 ###############################################################################
+###############################################################################
+#
+#   Version HBmibitor by Waldek SP2ONG
+#
+###############################################################################
 
 # Standard modules
 import logging
 import sys
+import datetime
 
 import os
 import csv
@@ -160,7 +166,52 @@ def since(_time):
     else:
         return '{}s'.format(seconds)
 
+def cleanTE():
+##################################################
+# Cleaning entries in tables - Timeout (5 min) 
+#
+    timeout = datetime.datetime.now().timestamp()
 
+    for system in CTABLE['MASTERS']:
+        for peer in CTABLE['MASTERS'][system]['PEERS']:
+            for timeS in range(1,3):
+              if CTABLE['MASTERS'][system]['PEERS'][peer][timeS]['TS']:
+                ts = CTABLE['MASTERS'][system]['PEERS'][peer][timeS]['TIMEOUT']
+                td = ts - timeout if ts > timeout else timeout - ts
+                td = int(round(abs((td)) / 60))
+                if td > 4:
+                    CTABLE['MASTERS'][system]['PEERS'][peer][timeS]['TS'] = False
+                    CTABLE['MASTERS'][system]['PEERS'][peer][timeS]['COLOR'] = BLACK
+                    CTABLE['MASTERS'][system]['PEERS'][peer][timeS]['BGCOLOR'] = WHITE2
+                    CTABLE['MASTERS'][system]['PEERS'][peer][timeS]['TYPE'] = ''
+                    CTABLE['MASTERS'][system]['PEERS'][peer][timeS]['SUB'] = ''
+                    CTABLE['MASTERS'][system]['PEERS'][peer][timeS]['SRC'] = ''
+                    CTABLE['MASTERS'][system]['PEERS'][peer][timeS]['DEST'] = ''
+
+    for system in CTABLE['PEERS']:
+        for timeS in range(1,3):
+            if CTABLE['PEERS'][system][timeS]['TS']:
+              ts = CTABLE['PEERS'][system][timeS]['TIMEOUT']
+              td = ts - timeout if ts > timeout else timeout - ts
+              td = int(round(abs((td)) / 60))
+              if td > 4:
+                 CTABLE['PEERS'][system][timeS]['TS'] = False
+                 CTABLE['PEERS'][system][timeS]['COLOR'] = BLACK
+                 CTABLE['PEERS'][system][timeS]['BGCOLOR'] = WHITE2
+                 CTABLE['PEERS'][system][timeS]['TYPE'] = ''
+                 CTABLE['PEERS'][system][timeS]['SUB'] = ''
+                 CTABLE['PEERS'][system][timeS]['SRC'] = ''
+                 CTABLE['PEERS'][system][timeS]['DEST'] = ''
+
+    for system in CTABLE['OPENBRIDGES']:
+        for streamId in list(CTABLE['OPENBRIDGES'][system]['STREAMS']):
+            ts = CTABLE['OPENBRIDGES'][system]['STREAMS'][streamId][3]
+            td = ts - timeout if ts > timeout else timeout - ts
+            td = int(round(abs((td)) / 60))
+            if td > 4:
+                 del CTABLE['OPENBRIDGES'][system]['STREAMS'][streamId]
+
+                    
 def add_hb_peer(_peer_conf, _ctable_loc, _peer):
     _ctable_loc[int_id(_peer)] = {}
     _ctable_peer = _ctable_loc[int_id(_peer)]
@@ -344,7 +395,8 @@ def update_hblink_table(_config, _stats_table):
                 _stats_table['PEERS'][_hbp]['STATS']['CONNECTION'] = _config[_hbp]['STATS']['CONNECTION']
                 _stats_table['PEERS'][_hbp]['STATS']['PINGS_SENT'] = 0
                 _stats_table['PEERS'][_hbp]['STATS']['PINGS_ACKD'] = 0
-
+    
+    cleanTE()
     build_stats()
 
 ######################################################################
@@ -442,7 +494,8 @@ def rts_update(p):
     sourceSub = int(p[6])
     timeSlot = int(p[7])
     destination = int(p[8])
-
+    timeout = datetime.datetime.now().timestamp()
+    
     if system in CTABLE['MASTERS']:
         for peer in CTABLE['MASTERS'][system]['PEERS']:
             if sourcePeer == peer:
@@ -453,6 +506,7 @@ def rts_update(p):
                 color = BLACK
 
             if action == 'START':
+                CTABLE['MASTERS'][system]['PEERS'][peer][timeSlot]['TIMEOUT'] = timeout
                 CTABLE['MASTERS'][system]['PEERS'][peer][timeSlot]['TS'] = True
                 CTABLE['MASTERS'][system]['PEERS'][peer][timeSlot]['COLOR'] = color
                 CTABLE['MASTERS'][system]['PEERS'][peer][timeSlot]['BGCOLOR'] = bgcolor
@@ -471,7 +525,7 @@ def rts_update(p):
 
     if system in CTABLE['OPENBRIDGES']:
         if action == 'START':
-            CTABLE['OPENBRIDGES'][system]['STREAMS'][streamId] = (trx, alias_call(sourceSub, subscriber_ids),'TG{}'.format(destination))
+            CTABLE['OPENBRIDGES'][system]['STREAMS'][streamId] = (trx, alias_call(sourceSub, subscriber_ids),'TG{}'.format(destination),timeout)
         if action == 'END':
             if streamId in CTABLE['OPENBRIDGES'][system]['STREAMS']:
                 del CTABLE['OPENBRIDGES'][system]['STREAMS'][streamId]
@@ -486,6 +540,7 @@ def rts_update(p):
             color = BLACK
 
         if action == 'START':
+            CTABLE['PEERS'][system][timeSlot]['TIMEOUT'] = timeout
             CTABLE['PEERS'][system][timeSlot]['TS'] = True
             CTABLE['PEERS'][system][timeSlot]['COLOR'] = color
             CTABLE['PEERS'][system][timeSlot]['BGCOLOR'] = bgcolor
