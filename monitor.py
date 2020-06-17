@@ -795,7 +795,7 @@ if __name__ == '__main__':
     logger = logging.getLogger(__name__)
 
     logging.info('monitor.py starting up')
-    logger.info('\n\n\tCopyright (c) 2016, 2017, 2018, 2019\n\tThe Regents of the K0USY Group. All rights reserved.\n\n\tPython 3 port:\n\t2019 Steve Miller, KC1AWV <smiller@kc1awv.net>\n\n\tModifed by:\t SP2ONG 2019,2020\n\n')
+    logger.info('\n\n\tCopyright (c) 2016, 2017, 2018, 2019\n\tThe Regents of the K0USY Group. All rights reserved.\n\n\tPython 3 port:\n\t2019 Steve Miller, KC1AWV <smiller@kc1awv.net>\n\n\tVersion by:\t SP2ONG 2019-2020\n\n')
 
     # Download alias files
     result = try_download(PATH, PEER_FILE, PEER_URL, (FILE_RELOAD * 86400))
