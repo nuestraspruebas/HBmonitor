@@ -22,6 +22,8 @@ You should have received a copy of the GNU General Public License along with thi
 
 ***This is version of HBMonitor by SP2ONG 2019-2020***
 
+I recommend not running HBmonitor on the same computer as Hblink3
+
 
     cd /opt
     git clone https://github.com/sp2ong/HBmonitor.git
@@ -56,3 +58,4 @@ You should have received a copy of the GNU General Public License along with thi
       WEB_USER =  'hblink'
       WEB_PASS =  'hblink'
 
+    If not need monitor online rules please use in config.py BRIDGES_INC = False
