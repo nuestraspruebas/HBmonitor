@@ -24,6 +24,8 @@ You should have received a copy of the GNU General Public License along with thi
 
 I recommend not running HBmonitor on the same computer as Hblink3
 
+HBmonitor tested on Debian v9 STRETCH
+
 
     cd /opt
     git clone https://github.com/sp2ong/HBmonitor.git
