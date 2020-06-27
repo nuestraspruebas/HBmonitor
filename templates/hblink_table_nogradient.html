@@ -72,7 +72,7 @@
     </tr>
     {% endfor %}
 </table>
-
+    {% if _table['OPENBRIDGES']|length >0 %}
 <br>
 <table style="table-layout:fixed;width:100%; font: 10pt arial, sans-serif">
     <tr style="width:100%; font: 10pt arial, sans-serif; background-color:#12ad2a; color:white">
@@ -90,4 +90,5 @@
     </tr>
     {% endfor %}
 </table>
+    {% endif %}
 </fieldset>
