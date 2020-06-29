@@ -464,7 +464,7 @@ def build_stats():
         if CONFIG:
             table = 'd' + dtemplate.render(_table=CTABLE)
             dashboard_server.broadcast(table)
-        if BRIDGES:
+        if BRIDGES and BRIDGES_INC:
             table = 'b' + btemplate.render(_table=BTABLE['BRIDGES'])
             dashboard_server.broadcast(table)
         build_time = now
@@ -687,6 +687,10 @@ class reportClientFactory(ReconnectingClientFactory):
         return report()
 
     def clientConnectionLost(self, connector, reason):
+        CTABLE['MASTERS'].clear()
+        CTABLE['PEERS'].clear()
+        CTABLE['OPENBRIDGES'].clear()
+        BTABLE['BRIDGES'].clear()
         logging.info('Lost connection.  Reason: %s', reason)
         ReconnectingClientFactory.clientConnectionLost(self, connector, reason)
         dashboard_server.broadcast('q' + 'Connection to HBlink Lost')
