@@ -22,7 +22,7 @@ You should have received a copy of the GNU General Public License along with thi
 
 ***This is version of HBMonitor by SP2ONG 2019-2020***
 
-I recommend not running HBmonitor on the same computer as Hblink3
+I recommend not running HBmonitor on the same computer as HBlink3
 
 HBmonitor tested on Debian v9 STRETCH
 
@@ -40,7 +40,9 @@ HBmonitor tested on Debian v9 STRETCH
     systemctl status hbmon
     forward TCP ports 8080 and 9000 in firewall
     
-    Please remember the table lastherad displays only station transmissions that are longer than 2 seconds
+    If you use openbrige links, in config.py in OPB_FILTER enter NETWORK_ID to browse unnecessary entries in LASTHEARD.
+    
+    Please remember the table lastherad displays only station transmissions that are longer than 2 seconds.
     
     If you don't want to have the lasherad list set in config.py :  
       LASTHEARD_INC = False
