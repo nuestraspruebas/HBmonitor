@@ -40,7 +40,7 @@ HBmonitor tested on Debian v9 STRETCH
     systemctl status hbmon
     forward TCP ports 8080 and 9000 in firewall
     
-    If you use openbrige links, in config.py in OPB_FILTER enter NETWORK_ID to browse unnecessary entries in LASTHEARD.
+    If you use openbrige links, in config.py in OPB_FILTER enter NETWORK_ID to do not display unnecessary entries in LASTHEARD.
     
     Please remember the table lastherad displays only station transmissions that are longer than 2 seconds.
     
