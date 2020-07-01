@@ -47,9 +47,6 @@ HBmonitor tested on Debian v9 STRETCH
     If you don't want to have the lasherad list set in config.py :  
       LASTHEARD_INC = False
     
-    in addition, you can delete an empty lastheard table by deleting line in templates/hblink_table.html :  
-       {% include 'lastheard.html' %}
-    
     If you want to have more than the last 10 entries in the Lastherad table
     change in the monitor.py file on line 629 https://github.com/sp2ong/HBmonitor/blob/master/monitor.py#L629
       if n == 10:
