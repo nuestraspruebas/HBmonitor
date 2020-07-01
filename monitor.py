@@ -81,7 +81,7 @@ OPCODE = {
 
 # Global Variables:
 CONFIG      = {}
-CTABLE      = {'MASTERS': {}, 'PEERS': {}, 'OPENBRIDGES': {}}
+CTABLE      = {'MASTERS': {}, 'PEERS': {}, 'OPENBRIDGES': {}, 'SETUP': {}}
 BRIDGES     = {}
 BTABLE      = {}
 BTABLE['BRIDGES'] = {}
@@ -97,6 +97,9 @@ ORANGE      = 'ff8000'
 WHITE       = 'ffffff'
 WHITE2      = 'f9f9f9f9'
 YELLOW      = 'fffccd'
+
+# Define setup setings
+CTABLE['SETUP']['LASTHEARD'] = LASTHEARD_INC
 
 # OPB Filter for lastheard
 def get_opbf():
