@@ -83,8 +83,8 @@ OPCODE = {
 CONFIG      = {}
 CTABLE      = {'MASTERS': {}, 'PEERS': {}, 'OPENBRIDGES': {}, 'SETUP': {}}
 BRIDGES     = {}
-BTABLE      = {}
-BTABLE['BRIDGES'] = {}
+BTABLE      = {'BRIDGES': {}, 'SETUP': {}}
+#BTABLE['BRIDGES'] = {}
 BRIDGES_RX  = ''
 CONFIG_RX   = ''
 LOGBUF      = deque(100*[''], 100)
@@ -100,6 +100,7 @@ YELLOW      = 'fffccd'
 
 # Define setup setings
 CTABLE['SETUP']['LASTHEARD'] = LASTHEARD_INC
+BTABLE['SETUP']['BRIDGES'] = BRIDGES_INC
 
 # OPB Filter for lastheard
 def get_opbf():
@@ -468,7 +469,7 @@ def build_stats():
             table = 'd' + dtemplate.render(_table=CTABLE)
             dashboard_server.broadcast(table)
         if BRIDGES and BRIDGES_INC:
-            table = 'b' + btemplate.render(_table=BTABLE['BRIDGES'])
+            table = 'b' + btemplate.render(_table=BTABLE)
             dashboard_server.broadcast(table)
         build_time = now
 
@@ -568,7 +569,7 @@ def rts_update(p):
 #
 
 def process_message(_bmessage):
-    global CTABLE, CONFIG, BRIDGES, CONFIG_RX, BRIDGES_RX
+    global CTABLE, CONFIG, BRIDGES, CONFIG_RX, BRIDGES_RX, BRIDGES_INC
     _message = _bmessage.decode('utf-8', 'ignore')
     opcode = _message[:1]
     _now = strftime('%Y-%m-%d %H:%M:%S %Z', localtime(time()))
@@ -716,7 +717,7 @@ class dashboard(WebSocketServerProtocol):
         logging.info('WebSocket connection open.')
         self.factory.register(self)
         self.sendMessage(('d' + dtemplate.render(_table=CTABLE)).encode('utf-8'))
-        self.sendMessage(('b' + btemplate.render(_table=BTABLE['BRIDGES'])).encode('utf-8'))
+        self.sendMessage(('b' + btemplate.render(_table=BTABLE)).encode('utf-8'))
         for _message in LOGBUF:
             if _message:
                 _bmessage = ('l' + _message).encode('utf-8')
@@ -765,6 +766,7 @@ class dashboardFactory(WebSocketServerFactory):
 class web_server(Resource):
     isLeaf = True
     def render_GET(self, request):
+        global BRIDGES_INC
         logging.info('static website requested: %s', request)
         if WEB_AUTH:
           user = WEB_USER.encode('utf-8')
@@ -774,7 +776,14 @@ class web_server(Resource):
              decodeddata = base64.b64decode(auth.split(' ')[1])
              if decodeddata.split(b':') == [user, password]:
                  logging.info('Authorization OK')
-                 return (index_html).encode('utf-8')
+                 if request.uri == b'/':
+                    BRIDGES_INC = False
+                    return (index_html).encode('utf-8')
+                 elif request.uri == b'/bridges':
+                    BRIDGES_INC = True
+                    return (bridges_html).encode('utf-8')
+                 else:
+                    return  "Bad request".encode('utf-8')
           request.setResponseCode(401)
           request.setHeader('WWW-Authenticate', 'Basic realm="realmname"')
           logging.info('Someone wanted to get access without authorization')
@@ -784,7 +793,14 @@ class web_server(Resource):
                      border-bottom-left-radius: 10px; border-bottom-right-radius: 10px;\"> \
                   <p><font size=5><b>Authorization Required</font></p></filed></center></body></html>".encode('utf-8')
         else:
-            return (index_html).encode('utf-8')
+            if request.uri == b'/':
+                BRIDGES_INC = False
+                return (index_html).encode('utf-8')
+            elif request.uri == b'/bridges':
+                BRIDGES_INC = True
+                return (bridges_html).encode('utf-8')
+            else:
+                return  "Bad request".encode('utf-8')
         
 if __name__ == '__main__':
     logging.basicConfig(
@@ -844,11 +860,15 @@ if __name__ == '__main__':
     btemplate = env.get_template('bridge_table.html')
 
     # Create Static Website index file
+    bridges_html = get_template(PATH + 'bridges_template.html')
+    bridges_html = bridges_html.replace('<<<system_name>>>', REPORT_NAME)   
     index_html = get_template(PATH + 'index_template.html')
     index_html = index_html.replace('<<<system_name>>>', REPORT_NAME)
     if CLIENT_TIMEOUT > 0:
+        bridges_html = bridges_html.replace('<<<timeout_warning>>>', 'Continuous connections not allowed. Connections time out in {} seconds'.format(CLIENT_TIMEOUT))
         index_html = index_html.replace('<<<timeout_warning>>>', 'Continuous connections not allowed. Connections time out in {} seconds'.format(CLIENT_TIMEOUT))
     else:
+        bridges_html = bridges_html.replace('<<<timeout_warning>>>', '')
         index_html = index_html.replace('<<<timeout_warning>>>', '')
 
     # Start update loop
