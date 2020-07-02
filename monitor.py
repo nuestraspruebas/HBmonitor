@@ -468,7 +468,7 @@ def build_stats():
         if CONFIG:
             table = 'd' + dtemplate.render(_table=CTABLE)
             dashboard_server.broadcast(table)
-        if BRIDGES and BRIDGES_INC:
+        if BRIDGES and BRIDGES_INC and BTABLE['SETUP']['BRIDGES']:
             table = 'b' + btemplate.render(_table=BTABLE)
             dashboard_server.broadcast(table)
         build_time = now
@@ -587,7 +587,7 @@ def process_message(_bmessage):
         logging.debug('got BRIDGE_SND opcode')
         BRIDGES = load_dictionary(_bmessage)
         BRIDGES_RX = strftime('%Y-%m-%d %H:%M:%S', localtime(time()))
-        if BRIDGES_INC:
+        if BRIDGES_INC and BTABLE['SETUP']['BRIDGES']:
            BTABLE['BRIDGES'] = build_bridge_table(BRIDGES)
 
     elif opcode == OPCODE['LINK_EVENT']:
