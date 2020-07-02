@@ -26,10 +26,12 @@ I recommend not running HBmonitor on the same computer as HBlink3
 
 HBmonitor tested on Debian v9 STRETCH
 
+This is version HBMonitor with display BRIDGES status on separate page
 
     cd /opt
     git clone https://github.com/sp2ong/HBmonitor.git
     cd HBmonitor
+    git checkout bridges
     chmod +x install.sh
     ./install.sh
     cp config-SAMPLE.py config.py
