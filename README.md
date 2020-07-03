@@ -30,6 +30,11 @@ HBmonitor tested on Debian v9 STRETCH
     cd /opt
     git clone https://github.com/sp2ong/HBmonitor.git
     cd HBmonitor
+    
+    If you want to try the HBMonitor version with BRIDGE status display on a separate page, 
+    run the command below, if not skip this command:
+    git checkout bridges
+    
     chmod +x install.sh
     ./install.sh
     cp config-SAMPLE.py config.py
