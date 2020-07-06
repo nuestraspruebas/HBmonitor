@@ -21,7 +21,7 @@
     </tr>
     {% for _client, _cdata in _table['MASTERS'][_master]['PEERS'].items() %}
     <tr style="background-color:#f9f9f9f9;">
-        <td rowspan="2"><div class="tooltip"><b><font color=blue>{{ _cdata['CALLSIGN'] }}</font>
+        <td rowspan="2"><div class="tooltip"><b><font color=#0066ff>{{ _cdata['CALLSIGN'] }}</font>
         </b><span style="font: 8pt arial,sans-serif">(Id: {{ _client }})</span><span class="tooltiptext">
         <span style="font: 9pt arial,sans-serif;color:#FFFFFF">
         {% if _cdata['RX_FREQ'] == 'N/A' and _cdata['TX_FREQ'] == 'N/A' %}
@@ -70,7 +70,7 @@
     {% for _peer, _pdata  in _table['PEERS'].items() %}
     <tr style="background-color:#f9f9f9f9;">
         <td style="font-weight:bold" rowspan="2"> {{ _peer}}<br><span style="font-weight:normal; font: 7pt arial, sans-serif;">Mode: {{ _table['PEERS'][_peer]['MODE'] }}</span></td>
-        <td rowspan="2"><div class="tooltip"><b><font color=blue>{{_table['PEERS'][_peer]['CALLSIGN']}}</font></b><span style="font-weight:normal; font: 8pt arial, sans-serif;">(Id: {{ _table['PEERS'][_peer]['RADIO_ID'] }})</span><span class="tooltiptext">&nbsp;&nbsp;&nbsp;<b>Linked Time Slot</b>: {{ _table['PEERS'][_peer]['SLOTS'] }}</span></div><br><div style="font: 92% arial, sans-serif; color: brown;font-weight:bold">{{_table['PEERS'][_peer]['LOCATION']}}</div></td>
+        <td rowspan="2"><div class="tooltip"><b><font color=#0066ff>{{_table['PEERS'][_peer]['CALLSIGN']}}</font></b><span style="font-weight:normal; font: 8pt arial, sans-serif;">(Id: {{ _table['PEERS'][_peer]['RADIO_ID'] }})</span><span class="tooltiptext">&nbsp;&nbsp;&nbsp;<b>Linked Time Slot</b>: {{ _table['PEERS'][_peer]['SLOTS'] }}</span></div><br><div style="font: 92% arial, sans-serif; color: brown;font-weight:bold">{{_table['PEERS'][_peer]['LOCATION']}}</div></td>
         <td rowspan="2"; style="font: 9pt arial, sans-serif;{{ 'background-color:#98FB98' if _table['PEERS'][_peer]['STATS']['CONNECTION'] == 'YES' else ';background-color:#ff704d' }}">{{ _table['PEERS'][_peer]['STATS']['CONNECTED'] }}<br><div style="font: 8pt arial, sans-serif">{{ _table['PEERS'][_peer]['STATS']['PINGS_SENT'] }} / {{ _table['PEERS'][_peer]['STATS']['PINGS_ACKD'] }} / {{ _table['PEERS'][_peer]['STATS']['PINGS_SENT'] - _table['PEERS'][_peer]['STATS']['PINGS_ACKD'] }}</div></td>
         
         <td style="font: 10pt arial, sans-serif;background-color:#{{ _pdata[1]['BGCOLOR'] }}; color:#{{ _pdata[1]['COLOR'] }}"><span style="color:#b70101">TS1</span></td>
@@ -99,7 +99,7 @@
     <tr style="background-color:#f9f9f9f9;">
         <td style="font-weight:bold; padding-left: 20px; text-align:left;"> {{ _openbridge}} </td>
         <td><div style="font: 9pt arial, sans-serif;margin-top:3px;margin-bottom:3px;">Net ID: <span style="font: 9pt arial, sans-serif;font-weight:bold;">{{ _table['OPENBRIDGES'][_openbridge]['NETWORK_ID'] }}</td>
-        <td style="background-color:#f9f9f9f9; font: 9pt arial, sans-serif; font-weight: 600; color:#6699cc;">{% for entry in _table['OPENBRIDGES'][_openbridge]['STREAMS']  %}({{ _table['OPENBRIDGES'][_openbridge]['STREAMS'][entry][0] }} | {{ _table['OPENBRIDGES'][_openbridge]['STREAMS'][entry][1] }} >> {{ _table['OPENBRIDGES'][_openbridge]['STREAMS'][entry][2] }}) {% endfor %}</td>
+        <td style="background-color:#f9f9f9f9; font: 9pt arial, sans-serif; font-weight: 600; color:#0066ff;">{% for entry in _table['OPENBRIDGES'][_openbridge]['STREAMS']  %}({{ _table['OPENBRIDGES'][_openbridge]['STREAMS'][entry][0] }} | {{ _table['OPENBRIDGES'][_openbridge]['STREAMS'][entry][1] }} >> {{ _table['OPENBRIDGES'][_openbridge]['STREAMS'][entry][2] }}) {% endfor %}</td>
     </tr>
     {% endfor %}
 </table>
