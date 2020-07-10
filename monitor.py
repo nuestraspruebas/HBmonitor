@@ -870,7 +870,10 @@ if __name__ == '__main__':
     else:
         bridges_html = bridges_html.replace('<<<timeout_warning>>>', '')
         index_html = index_html.replace('<<<timeout_warning>>>', '')
-
+    if BTABLE['SETUP']['BRIDGES']:
+        index_html = index_html.replace('<<<bridges_display>>>', '<a href="/bridges"><button class="button link">Bridges</button></a>&nbsp;')
+    else:
+        index_html = index_html.replace('<<<bridges_display>>>', '')
     # Start update loop
     update_stats = task.LoopingCall(build_stats)
     update_stats.start(FREQUENCY)
