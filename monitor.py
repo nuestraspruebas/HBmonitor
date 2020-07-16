@@ -182,7 +182,7 @@ def cleanTE():
                 ts = CTABLE['MASTERS'][system]['PEERS'][peer][timeS]['TIMEOUT']
                 td = ts - timeout if ts > timeout else timeout - ts
                 td = int(round(abs((td)) / 60))
-                if td > 4:
+                if td > 3:
                     CTABLE['MASTERS'][system]['PEERS'][peer][timeS]['TS'] = False
                     CTABLE['MASTERS'][system]['PEERS'][peer][timeS]['COLOR'] = BLACK
                     CTABLE['MASTERS'][system]['PEERS'][peer][timeS]['BGCOLOR'] = WHITE2
@@ -197,7 +197,7 @@ def cleanTE():
               ts = CTABLE['PEERS'][system][timeS]['TIMEOUT']
               td = ts - timeout if ts > timeout else timeout - ts
               td = int(round(abs((td)) / 60))
-              if td > 4:
+              if td > 3:
                  CTABLE['PEERS'][system][timeS]['TS'] = False
                  CTABLE['PEERS'][system][timeS]['COLOR'] = BLACK
                  CTABLE['PEERS'][system][timeS]['BGCOLOR'] = WHITE2
@@ -211,7 +211,7 @@ def cleanTE():
             ts = CTABLE['OPENBRIDGES'][system]['STREAMS'][streamId][3]
             td = ts - timeout if ts > timeout else timeout - ts
             td = int(round(abs((td)) / 60))
-            if td > 4:
+            if td > 3:
                  del CTABLE['OPENBRIDGES'][system]['STREAMS'][streamId]
 
                     
