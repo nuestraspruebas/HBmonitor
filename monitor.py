@@ -598,7 +598,7 @@ def process_message(_bmessage):
         rts_update(p)
         if p[0] == 'GROUP VOICE' and p[2] != 'TX':
             if p[1] == 'END':
-                log_message = '{} {} {}   SYS: {:8.8s} SRC: {:9.9s}; {:9.9s} TS: {} TGID: {:7.7s} {:17.17s} SUB: {:9.9s}; {:18.18s} Time: {}s'.format(_now[10:19], p[0][6:], p[1], p[3], p[5], alias_call(int(p[5]), subscriber_ids), p[7],p[8],alias_tgid(int(p[8]),talkgroup_ids), p[6], alias_short(int(p[6]), subscriber_ids), int(float(p[9])))
+                log_message = '{} {} {}   SYS: {:8.8s} SRC: {:9.9s}; {:9.9s} TS: {} TGID: {:7.7s} {:17.17s} SUB: {:9.9s}; {:18.18s} Time: {}s '.format(_now[10:19], p[0][6:], p[1], p[3], p[5], alias_call(int(p[5]), subscriber_ids), p[7],p[8],alias_tgid(int(p[8]),talkgroup_ids), p[6], alias_short(int(p[6]), subscriber_ids), int(float(p[9])))
                 # log only to file if system is NOT OpenBridge event (not logging open bridge system, name depends on your OB definitions) AND transmit time is LONGER as 2sec (make sense for very short transmits)
                 if LASTHEARD_INC:
                    opbfilter = get_opbf()
