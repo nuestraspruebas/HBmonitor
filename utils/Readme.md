@@ -1,21 +1,6 @@
-Requirements:
-
-- a webserver with activated PHP (apache, nginx or whatever) – PHP 7.x is ok
-
- 
+Requirements webserver with activated PHP (apache, nginx or whatever) – PHP 7.x is ok
 
 Extension of hbmonitor  – we log if a call is ended (I think it’s better as start) Please check permissions for writing the logfile in target folder !
-
-
-
-The line: 
-
-    if int(float(p[9])) > 2:
-
-we can skip show in last heard for exmaple from MASTER with name OPB-Link
-
-    if p[5] != 'OPB-Link' and int(float(p[9])) > 2:
-
 
 I recommed to shorten the lastheard.log from time to time (I cut every day to 150 lines, longer values maybe extend the load time and parsing) with this script lastheard:
 
@@ -33,7 +18,7 @@ chmod +x /etc/cron.daily/lastheard
 
 
 
-Call the website with http://[YOUR_HOST/log.php it runs with a refresh/reload time of 30sec, change the script for other timeset.
+Call the website with http://YOUR_HOST/log.php it runs with a refresh/reload time of 30sec, change the script for other timeset.
 
 
 
