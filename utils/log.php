@@ -89,7 +89,7 @@ if ($user_id[$i]=="1234567") {$user_call[$i] = "*NoCallsign*"; $user_id[$i]="-";
 echo "<TR>".$s.'&nbsp;'.$date_eu[2].".".$date_eu[1].".".$date_eu[0].$s.'&nbsp;'.substr($log_time[$i],11,5).$s.'<font color=#0066ff><b>&nbsp;'.$user_call[$i]."</b></font><font size=\"-1\"> (".$user_id[$i].")</font>".$s.TRIM($user_name[$i]).$s.'<font color=#b5651d><b>'.$tg[$i].'</b></font>'.$s.'<font color=green><b>&nbsp;'.$tgname[$i].'</b></font>'.$s."<center>".round($transmit_timer[$i])."</center>".$s."<center>&nbsp;".$ts[$i]."&nbsp;</center>".$s.$src_name[$i].$s.$system[$i]."</TR>\n";
 }
 
-echo "\n</table><fieldset></div></body></html>";
+echo "\n</table></fieldset></div></body></html>";
 
 // close logfile after parsing
 fclose ($handle);
