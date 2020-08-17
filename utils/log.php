@@ -33,7 +33,7 @@ echo "<H2 align=\"center\">Dashboard Activity & Last Heard HBlink</H2>";
 echo "<p align=\"middle\">\n";
 echo "<font size=\"-2\">&copy; developed by DL1BZ as logging-extension of <A HREF=\"https://github.com/n0mjs710/HBmonitor\">HBmonitor</A> (2018,2019)</font><BR>\n";
 echo "<div style=\"overflow-x:auto;\">\n\n";
-echo "<center><fieldset style=\"background-color:#e0e0e0e0; width:1050px;margin-left:15px;margin-right:15px;margin-top:0px;font-size:14px;border-top-left-radius: 10px; border-top-right-radius: 10px;border-bottom-left-radius: 10px; border-bottom-right-radius: 10px;\">";
+echo "<center><fieldset style=\"background-color:#e0e0e0e0; width:1100px;margin-left:15px;margin-right:15px;margin-top:0px;font-size:14px;border-top-left-radius: 10px; border-top-right-radius: 10px;border-bottom-left-radius: 10px; border-bottom-right-radius: 10px;\">";
 echo "<table>\n\n";
 // define table row titels
 echo "<TR><TH>&nbsp;&nbsp;Date<TH>Time<TH>Callsign (DMR-Id)<TH>Name<TH>TG#<TH>TG Name<TH>TX (s)<TH>Slot<TH>Source<TH>System</TR>\n\n";
@@ -86,7 +86,7 @@ $log_time[$i]=substr($log_time[$i],0,19);
 if ($user_id[$i]=="1234567") {$user_call[$i] = "*NoCallsign*"; $user_id[$i]="-";}
 
 // output table
-echo "<TR>".$s.'&nbsp;'.$date_eu[2].".".$date_eu[1].".".$date_eu[0].$s.'&nbsp;'.substr($log_time[$i],11,5).$s.'<font color=#0066ff><b>'.$user_call[$i]."</b></font><font size=\"-1\"> (".$user_id[$i].")</font>".$s.TRIM($user_name[$i]).$s.'<font color=#b5651d><b>'.$tg[$i].'</b></font>'.$s.'<font color=green><b>'.$tgname[$i].'</b></font>'.$s."<center>".round($transmit_timer[$i])."</center>".$s.$ts[$i].$s.$src_name[$i].$s.$system[$i]."</TR>\n";
+echo "<TR>".$s.'&nbsp;'.$date_eu[2].".".$date_eu[1].".".$date_eu[0].$s.'&nbsp;'.substr($log_time[$i],11,5).$s.'<font color=#0066ff><b>'.$user_call[$i]."</b></font><font size=\"-1\"> (".$user_id[$i].")</font>".$s.TRIM($user_name[$i]).$s.'<font color=#b5651d><b>'.$tg[$i].'</b></font>'.$s.'<font color=green><b>'.$tgname[$i].'</b></font>'.$s."<center>".round($transmit_timer[$i])."</center>".$s."<center>".$ts[$i]."</center>".$s.$src_name[$i].$s.$system[$i]."</TR>\n";
 }
 
 echo "\n</table><fieldset></div></body></html>";
