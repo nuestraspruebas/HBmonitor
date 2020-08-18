@@ -33,10 +33,10 @@ echo "<H2 align=\"center\">Dashboard Activity & Last Heard HBlink</H2>";
 echo "<p align=\"middle\">\n";
 echo "<font size=\"-2\">&copy; developed by DL1BZ as logging-extension of <A HREF=\"https://github.com/n0mjs710/HBmonitor\">HBmonitor</A> (2018,2019)</font><BR>\n";
 echo "<div style=\"overflow-x:auto;\">\n\n";
-echo "<center><fieldset style=\"background-color:#e0e0e0e0; width:1100px;margin-left:15px;margin-right:15px;margin-top:0px;font-size:14px;border-top-left-radius: 10px; border-top-right-radius: 10px;border-bottom-left-radius: 10px; border-bottom-right-radius: 10px;\">";
+echo "<center><fieldset style=\"background-color:#e0e0e0e0; width:1150px;margin-left:15px;margin-right:15px;margin-top:0px;font-size:14px;border-top-left-radius: 10px; border-top-right-radius: 10px;border-bottom-left-radius: 10px; border-bottom-right-radius: 10px;\">";
 echo "<table>\n\n";
 // define table row titels
-echo "<TR><TH>&nbsp;&nbsp;Date<TH>Time<TH>&nbsp;Callsign (DMR-Id)<TH>Name<TH>&nbsp;TG#<TH>TG Name<TH>TX (s)<TH>&nbsp;Slot&nbsp;<TH>Source<TH>System</TR>\n\n";
+echo "<TR><TH>&nbsp;&nbsp;Date<TH>&nbsp;Time<TH>&nbsp;Callsign (DMR-Id)<TH>&nbsp;&nbsp;Name<TH>&nbsp;TG#<TH>&nbsp;&nbsp;TG Name<TH>TX (s)&nbsp;<TH>&nbsp;Slot&nbsp;<TH>Source<TH>System</TR>\n\n";
 
 // define location and name of logfile
 // best practise is write logfile in the directory where this php script is saved because some php installations have problems to read files outside the webserver directories
