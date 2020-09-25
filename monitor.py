@@ -65,7 +65,7 @@ from dmr_utils3.utils import int_id, get_alias, try_download, mk_full_id_dict, b
 from config import *
 
 # SP2ONG - Increase the value if HBlink link break occurs
-#NetstringReceiver.MAX_LENGTH = 500000
+NetstringReceiver.MAX_LENGTH = 500000
 
 # Opcodes for reporting protocol to HBlink
 OPCODE = {
