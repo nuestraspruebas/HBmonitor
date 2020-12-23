@@ -307,8 +307,17 @@ def build_hblink_table(_config, _stats_table):
             elif (_hbp_data['MODE'] == 'XLXPEER' or _hbp_data['MODE'] == 'PEER') and HOMEBREW_INC:
                 _stats_table['PEERS'][_hbp] = {}
                 _stats_table['PEERS'][_hbp]['MODE'] = _hbp_data['MODE']
-                _stats_table['PEERS'][_hbp]['CALLSIGN'] = _hbp_data['CALLSIGN'].decode('utf-8')
-                _stats_table['PEERS'][_hbp]['LOCATION'] = _hbp_data['LOCATION'].decode('utf-8')
+
+                if str(type(_hbp_data['LOCATION'])).find("bytes") != -1:
+                     _stats_table['PEERS'][_hbp]['LOCATION'] = _hbp_data['LOCATION'].decode('utf-8').strip()
+                else:
+                     _stats_table['PEERS'][_hbp]['LOCATION'] = _hbp_data['LOCATION']
+
+                if str(type(_hbp_data['CALLSIGN'])).find("bytes") != -1:
+                     _stats_table['PEERS'][_hbp]['CALLSIGN'] = _hbp_data['CALLSIGN'].decode('utf-8').strip()
+                else:
+                     _stats_table['PEERS'][_hbp]['CALLSIGN'] = _hbp_data['CALLSIGN']
+
                 _stats_table['PEERS'][_hbp]['RADIO_ID'] = int_id(_hbp_data['RADIO_ID'])
                 _stats_table['PEERS'][_hbp]['MASTER_IP'] = _hbp_data['MASTER_IP']
                 _stats_table['PEERS'][_hbp]['MASTER_PORT'] = _hbp_data['MASTER_PORT']
