@@ -223,7 +223,7 @@ def add_hb_peer(_peer_conf, _ctable_loc, _peer):
     # if the Frequency is 000.xxx assume it's not an RF peer, otherwise format the text fields
     # (9 char, but we are just software)  see https://wiki.brandmeister.network/index.php/Homebrew/example/php2
     
-    if _peer_conf['TX_FREQ'].isalnum() and _peer_conf['RX_FREQ'].isalnum():
+    if _peer_conf['TX_FREQ'].isalnum() and _peer_conf['RX_FREQ'].isalnum() and str(type(_peer_conf['TX_FREQ'])).find("bytes") != -1 and str(type(_peer_conf['RX_FREQ'])).find("bytes") != -1:
         if _peer_conf['TX_FREQ'][:3] == b'000' or _peer_conf['RX_FREQ'][:3] == b'000':
             _ctable_peer['TX_FREQ'] = 'N/A'
             _ctable_peer['RX_FREQ'] = 'N/A'
@@ -246,11 +246,27 @@ def add_hb_peer(_peer_conf, _ctable_loc, _peer):
         _ctable_peer['SLOTS'] = 'Simplex'
 
     # Simple translation items
-    _ctable_peer['SOFTWARE_ID'] = _peer_conf['SOFTWARE_ID'].decode('utf-8').strip()
-    _ctable_peer['PACKAGE_ID'] = _peer_conf['PACKAGE_ID'].decode('utf-8').strip()
+    if str(type(_peer_conf['PACKAGE_ID'])).find("bytes") != -1:
+       _ctable_peer['PACKAGE_ID'] = _peer_conf['PACKAGE_ID'].decode('utf-8')
+    else:
+       _ctable_peer['PACKAGE_ID'] = _peer_conf['PACKAGE_ID']
+
+    if str(type(_peer_conf['SOFTWARE_ID'])).find("bytes") != -1:
+       _ctable_peer['SOFTWARE_ID'] = _peer_conf['SOFTWARE_ID'].decode('utf-8')
+    else:
+       _ctable_peer['SOFTWARE_ID'] = _peer_conf['SOFTWARE_ID']
+
+    if str(type(_peer_conf['LOCATION'])).find("bytes") != -1:
+       _ctable_peer['LOCATION'] = _peer_conf['LOCATION'].decode('utf-8')
+    else:
+       _ctable_peer['LOCATION'] = _peer_conf['LOCATION']
+
+    if str(type(_peer_conf['CALLSIGN'])).find("bytes") != -1:
+       _ctable_peer['CALLSIGN'] = _peer_conf['CALLSIGN'].decode('utf-8')
+    else:
+       _ctable_peer['CALLSIGN'] = _peer_conf['CALLSIGN']
+
     _ctable_peer['COLORCODE'] = _peer_conf['COLORCODE'].decode('utf-8')
-    _ctable_peer['CALLSIGN'] = _peer_conf['CALLSIGN'].decode('utf-8')
-    _ctable_peer['LOCATION'] = _peer_conf['LOCATION'].decode('utf-8')
     _ctable_peer['CONNECTION'] = _peer_conf['CONNECTION']
     _ctable_peer['CONNECTED'] = since(_peer_conf['CONNECTED'])
     _ctable_peer['IP'] = _peer_conf['IP']
