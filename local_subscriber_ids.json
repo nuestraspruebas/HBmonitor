@@ -12,24 +12,14 @@
       "surname": ""
     },
        {
-      "callsign": "------", 
+      "callsign": "N0CALL", 
       "city": "", 
       "country": "", 
-      "fname": "------", 
+      "fname": "", 
       "id": 0, 
       "remarks": "", 
       "state": "", 
       "surname": ""
-    },
-    {
-      "callsign": "SP2ABC", 
-      "city": "", 
-      "country": "", 
-      "fname": "Jan", 
-      "id": 26032254, 
-      "remarks": "", 
-      "state": "", 
-      "surname": ""
-    } 
+    }
   ]
 }
