@@ -1,8 +1,11 @@
 REPORT_NAME     = 'Dashboard of local DMR network'           # Name of the monitored HBlink system
-CONFIG_INC      = True                           # Include HBlink stats
-LASTHEARD_INC   = True                           # Include Lastheard (10)
-HOMEBREW_INC    = True                           # Include Homebrew Peers 
-BRIDGES_INC     = True                           # Include Bridge stats (confbrige.py)
+#
+CONFIG_INC      = True                           # Include Masters stats
+HOMEBREW_INC    = True                           # Display Homebrew Peers status
+LASTHEARD_INC   = True                           # Display lastheard table on main page
+BRIDGES_INC     = False                          # Display Bridge status and button
+EMPTY_MASTERS   = False                          # Display (True) or not (False) empty master in status
+#
 HBLINK_IP       = '127.0.0.1'                    # HBlink's IP Address
 HBLINK_PORT     = 4321                           # HBlink's TCP reporting socket
 FREQUENCY       = 10                             # Frequency to push updates to web clients
