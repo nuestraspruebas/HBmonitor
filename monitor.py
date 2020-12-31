@@ -490,7 +490,7 @@ def build_stats():
     now = time()
     if True: #now > build_time + 1:
         if CONFIG:
-            table = 'd' + dtemplate.render(_table=CTABLE)
+            table = 'd' + dtemplate.render(_table=CTABLE,emaster=EMPTY_MASTERS)
             dashboard_server.broadcast(table)
         if BRIDGES and BRIDGES_INC:
             table = 'b' + btemplate.render(_table=BTABLE['BRIDGES'])
@@ -740,7 +740,7 @@ class dashboard(WebSocketServerProtocol):
     def onOpen(self):
         logging.info('WebSocket connection open.')
         self.factory.register(self)
-        self.sendMessage(('d' + dtemplate.render(_table=CTABLE)).encode('utf-8'))
+        self.sendMessage(('d' + dtemplate.render(_table=CTABLE,emaster=EMPTY_MASTERS)).encode('utf-8'))
         self.sendMessage(('b' + btemplate.render(_table=BTABLE['BRIDGES'])).encode('utf-8'))
         for _message in LOGBUF:
             if _message:
