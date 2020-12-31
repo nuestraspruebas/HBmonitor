@@ -223,7 +223,7 @@ def add_hb_peer(_peer_conf, _ctable_loc, _peer):
     # if the Frequency is 000.xxx assume it's not an RF peer, otherwise format the text fields
     # (9 char, but we are just software)  see https://wiki.brandmeister.network/index.php/Homebrew/example/php2
     
-    if _peer_conf['TX_FREQ'].strip().isdecimal() and _peer_conf['RX_FREQ'].strip().isdecimal() and str(type(_peer_conf['TX_FREQ'])).find("bytes") != -1 and str(type(_peer_conf['RX_FREQ'])).find("bytes") != -1:
+    if _peer_conf['TX_FREQ'].strip().isdigit() and _peer_conf['RX_FREQ'].strip().isdigit() and str(type(_peer_conf['TX_FREQ'])).find("bytes") != -1 and str(type(_peer_conf['RX_FREQ'])).find("bytes") != -1:
         if _peer_conf['TX_FREQ'][:3] == b'000' or _peer_conf['RX_FREQ'][:3] == b'000':
             _ctable_peer['TX_FREQ'] = 'N/A'
             _ctable_peer['RX_FREQ'] = 'N/A'
