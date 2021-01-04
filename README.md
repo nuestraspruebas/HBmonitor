@@ -2,7 +2,7 @@
 
 **HBmonitor is a "web dashboard" for HBlink by N0MJS.**
 
-***This is version of HBMonitor by SP2ONG 2019-2020***
+***This is version of HBMonitor V1 by SP2ONG 2019-2021***
 
 I recommend not running HBmonitor on the same computer as HBlink3
 
