@@ -625,7 +625,7 @@ def process_message(_bmessage):
         opbfilter = get_opbf()
         if p[0] == 'GROUP VOICE' and p[2] != 'TX' and p[5] not in opbfilter:
             if p[1] == 'END':
-                log_message = '{} {} {}   SYS: {:8.8s} SRC: {:9.9s}; {:9.9s} TS: {} TGID: {:7.7s} {:17.17s} SUB: {:9.9s}; {:18.18s} Time: {}s '.format(_now[10:19], p[0][6:], p[1], p[3], p[5], alias_call(int(p[5]), subscriber_ids), p[7],p[8],alias_tgid(int(p[8]),talkgroup_ids), p[6], alias_short(int(p[6]), subscriber_ids), int(float(p[9])))
+                log_message = '{} {} {}   SYS: {:8.8s} SRC_ID: {:9.9s} TS: {} TGID: {:7.7s} {:17.17s} SUB: {:9.9s}; {:18.18s} Time: {}s '.format(_now[10:19], p[0][6:], p[1], p[3], p[5],p[7],p[8],alias_tgid(int(p[8]),talkgroup_ids), p[6], alias_short(int(p[6]), subscriber_ids), int(float(p[9])))
                 # log only to file if system is NOT OpenBridge event (not logging open bridge system, name depends on your OB definitions) AND transmit time is LONGER as 2sec (make sense for very short transmits)
                 if LASTHEARD_INC:
                    if int(float(p[9]))> 2: 
@@ -640,18 +640,18 @@ def process_message(_bmessage):
                       f.write("<br><fieldset style=\"border-radius: 8px; background-color:#e0e0e0e0; text-algin: lef; margin-left:15px;margin-right:15px;font-size:14px;border-top-left-radius: 10px; border-top-right-radius: 10px;border-bottom-left-radius: 10px; border-bottom-right-radius: 10px;\">\n")
                       f.write("<legend><b><font color=\"#000\">&nbsp;.: Lastheard :.&nbsp;</font></b></legend>\n")
                       f.write("<table style=\"width:100%; font: 10pt arial, sans-serif\">\n")
-                      f.write("<TR style=\" height: 32px;font: 10pt arial, sans-serif; background-color:#9dc209; color:black\"><TH>Date</TH><TH>Time</TH><TH>Callsign (DMR-Id)</TH><TH>Name</TH><TH>TG#</TH><TH>TG Name</TH><TH>TX (s)</TH><TH>Slot</TH><TH>Source ID</TH><TH>System</TH></TR>\n")
+                      f.write("<TR style=\" height: 32px;font: 10pt arial, sans-serif; background-color:#9dc209; color:black\"><TH>Date</TH><TH>Time</TH><TH>Callsign (DMR-Id)</TH><TH>Name</TH><TH>TG#</TH><TH>TG Name</TH><TH>TX (s)</TH><TH>Slot</TH><TH>System</TH></TR>\n")
                       with open(LOG_PATH+"lastheard.log", "r") as textfile:
                           for row in islice(reversed(list(csv.reader(textfile))),100):
                             duration=row[1]
                             dur=str(int(float(duration.strip())))
                             if row[10] not in my_list:
                                if len(row) < 13:
-                                   hline="<TR style=\"background-color:#f9f9f9f9;\"><TD>"+row[0][:10]+"</TD><TD>"+row[0][11:16]+"</TD><TD><font color=#0066ff><b><a target=\"_blank\" href=https://qrz.com/db/"+row[11]+">"+row[11]+"</a></b></font><span style=\"font: 7pt arial,sans-serif\"> ("+row[10]+")</span></TD><TD><font color=#002d62><b></b></font></TD><TD><font color=#b5651d><b>"+row[8][2:]+"</b></font></TD><TD><font color=green><b>"+row[9]+"</b></font></TD><TD>"+dur+"</TD><TD>"+row[7][2:]+"</TD><TD>"+row[6]+"</TD><TD>"+row[4]+"</TD></TR>"
+                                   hline="<TR style=\"background-color:#f9f9f9f9;\"><TD>"+row[0][:10]+"</TD><TD>"+row[0][11:16]+"</TD><TD><font color=#0066ff><b><a target=\"_blank\" href=https://qrz.com/db/"+row[11]+">"+row[11]+"</a></b></font><span style=\"font: 7pt arial,sans-serif\"> ("+row[10]+")</span></TD><TD><font color=#002d62><b></b></font></TD><TD><font color=#b5651d><b>"+row[8][2:]+"</b></font></TD><TD><font color=green><b>"+row[9]+"</b></font></TD><TD>"+dur+"</TD><TD>"+row[7][2:]+"</TD><TD>"+row[4]+"</TD></TR>"
                                    my_list.append(row[10])
                                    n += 1
                                else:
-                                   hline="<TR style=\"background-color:#f9f9f9f9;\"><TD>"+row[0][:10]+"</TD><TD>"+row[0][11:16]+"</TD><TD><font color=#0066ff><b><a target=\"_blank\" href=https://qrz.com/db/"+row[11]+">"+row[11]+"</a></b></font><span style=\"font: 7pt arial,sans-serif\"> ("+row[10]+")</span></TD><TD><font color=#002d62><b>"+row[12]+"</b></font></TD><TD><font color=#b5651d><b>"+row[8][2:]+"</b></font></TD><TD><font color=green><b>"+row[9]+"</b></font></TD><TD>"+dur+"</TD><TD>"+row[7][2:]+"</TD><TD>"+row[6]+"</TD><TD>"+row[4]+"</TD></TR>"
+                                   hline="<TR style=\"background-color:#f9f9f9f9;\"><TD>"+row[0][:10]+"</TD><TD>"+row[0][11:16]+"</TD><TD><font color=#0066ff><b><a target=\"_blank\" href=https://qrz.com/db/"+row[11]+">"+row[11]+"</a></b></font><span style=\"font: 7pt arial,sans-serif\"> ("+row[10]+")</span></TD><TD><font color=#002d62><b>"+row[12]+"</b></font></TD><TD><font color=#b5651d><b>"+row[8][2:]+"</b></font></TD><TD><font color=green><b>"+row[9]+"</b></font></TD><TD>"+dur+"</TD><TD>"+row[7][2:]+"</TD><TD>"+row[4]+"</TD></TR>"
                                    my_list.append(row[10])
                                    n += 1
                                f.write(hline+"\n")
@@ -661,9 +661,9 @@ def process_message(_bmessage):
                       f.close()
                  # End of Lastheard
             elif p[1] == 'START':
-                log_message = '{} {} {} SYS: {:8.8s} SRC: {:9.9s}; {:9.9s} TS: {} TGID: {:7.7s} {:17.17s} SUB: {:9.9s}; {:18.18s}'.format(_now[10:19], p[0][6:], p[1], p[3], p[5], alias_call(int(p[5]), subscriber_ids), p[7],p[8], alias_tgid(int(p[8]),talkgroup_ids), p[6], alias_short(int(p[6]), subscriber_ids))
+                log_message = '{} {} {} SYS: {:8.8s} SRC_ID: {:9.9s} TS: {} TGID: {:7.7s} {:17.17s} SUB: {:9.9s}; {:18.18s}'.format(_now[10:19], p[0][6:], p[1], p[3], p[5], p[7],p[8], alias_tgid(int(p[8]),talkgroup_ids), p[6], alias_short(int(p[6]), subscriber_ids))
             elif p[1] == 'END WITHOUT MATCHING START':
-                log_message = '{} {} {} on SYSTEM {:8.8s}: SRC: {:9.9s}; {:9.9s} TS: {} TGID: {:7.7s} {:17.17s} SUB: {:9.9s}; {:18.18s}'.format(_now[10:19], p[0][6:], p[1], p[3], p[5], alias_call(int(p[5]), subscriber_ids), p[7], p[8],alias_tgid(int(p[8]),talkgroup_ids),p[6], alias_short(int(p[6]), subscriber_ids))
+                log_message = '{} {} {} on SYSTEM {:8.8s}: SRC_ID: {:9.9s} TS: {} TGID: {:7.7s} {:17.17s} SUB: {:9.9s}; {:18.18s}'.format(_now[10:19], p[0][6:], p[1], p[3], p[5], p[7], p[8],alias_tgid(int(p[8]),talkgroup_ids),p[6], alias_short(int(p[6]), subscriber_ids))
             else:
                 log_message = '{} UNKNOWN GROUP VOICE LOG MESSAGE'.format(_now)
 
